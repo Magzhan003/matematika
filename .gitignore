@@ -1,0 +1,19 @@
+# dependencies (restore with npm install)
+node_modules/
+
+# build output (rebuild with: npm --prefix app run build:html)
+app/dist/
+app/dist-single/
+*.tsbuildinfo
+
+# video work files
+video/*.wav
+video/*.mp3
+video/out/
+
+# logs and editor files
+*.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
