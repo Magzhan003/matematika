@@ -5,7 +5,9 @@ import { Tex } from '../components/Tex'
 import type { Level } from '../data/formulas'
 import { sections, topicById, type Section } from '../data/topics'
 import type { Lang } from '../i18n'
+import { Link } from 'react-router-dom'
 import { gens, gensFor, pickGens, seeded, type Problem } from '../lib/bank'
+import { encodeWork } from '../lib/workcode'
 
 const levels: Level[] = ['easy', 'medium', 'hard']
 
@@ -36,16 +38,20 @@ export function Teacher() {
   const topicList = [...new Set(gensFor({ sections: secs }).map((g) => g.topic))]
   const pool = gensFor({ sections: secs, topics: topics.filter((tp) => topicList.includes(tp)), level })
 
-  const sheets = useMemo(() => {
-    if (seed === null || !pool.length) return []
-    // parallel variants: the same task types in the same order, different numbers
-    const types = pickGens(pool, count, seeded(seed))
-    return Array.from({ length: variants }, (_, v) => {
+  // parallel variants: the same task types in the same order, different numbers
+  const types = useMemo(
+    () => (seed === null || !pool.length ? [] : pickGens(pool, count, seeded(seed))),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [seed, count, pool.map((g) => g.id).join(',')],
+  )
+  const sheets = useMemo(
+    () => (seed === null ? [] : Array.from({ length: variants }, (_, v) => {
       const r = seeded(seed * 10 + v + 1)
       return types.map((g) => g.make(r))
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seed, variants, count, pool.map((g) => g.id).join(',')])
+    })),
+    [seed, variants, types],
+  )
+  const online = seed !== null && types.length ? encodeWork(seed, types) : ''
 
   const toggle = <T,>(list: T[], x: T) => (list.includes(x) ? list.filter((y) => y !== x) : [...list, x])
   const heading = title.trim() || t('teach.defaultTitle')
@@ -118,6 +124,15 @@ export function Teacher() {
             <button className="btn btn-sm" type="submit">{t('teach.restore')}</button>
           </form>
         </div>
+
+        {online && (
+          <div className="card online-box">
+            <div><b>📱 {t('teach.online')}</b></div>
+            <div className="result-code">{online}</div>
+            <p className="muted small" style={{ margin: 0 }}>{t('teach.onlineHint')}</p>
+            <div><Link className="btn btn-sm" to={`/journal?c=${online}`}>📋 {t('teach.journal')}</Link></div>
+          </div>
+        )}
       </div>
 
       {sheets.length > 0 && (

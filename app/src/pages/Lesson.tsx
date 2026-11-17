@@ -220,6 +220,12 @@ function Practice({ f }: { f: Formula }) {
           <div><button className="btn" onClick={() => setRound(round + 1)}>🎲 {t('ls.morePractice')}</button></div>
         </>
       )}
+      {f.topic === 'word-problems' && (
+        <Link className="tile" to="/word" style={{ display: 'grid', gap: 4 }}>
+          <b>🧩 {t('nav.word')}</b>
+          <span className="muted small">{t('wp.intro')}</span>
+        </Link>
+      )}
       {next && (
         <Link className="tile dark" to={`/lesson/${next.id}`} style={{ display: 'grid', gap: 4 }}>
           <span className="muted small">{t('ls.nextLesson')}</span>

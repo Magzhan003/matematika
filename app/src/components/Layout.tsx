@@ -16,6 +16,10 @@ const extra = [
   { to: '/review', key: 'review', emoji: '🔁' },
   { to: '/games', key: 'games', emoji: '🎮' },
   { to: '/progress', key: 'progress', emoji: '📊' },
+  { to: '/geometry', key: 'geometry', emoji: '📐' },
+  { to: '/word', key: 'word', emoji: '🧩' },
+  { to: '/work', key: 'work', emoji: '📝' },
+  { to: '/cheatsheet', key: 'cheat', emoji: '📄' },
   { to: '/teacher', key: 'teacher', emoji: '🖨' },
 ] as const
 

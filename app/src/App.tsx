@@ -1,4 +1,9 @@
 // HashRouter (#/formulas) so the app also works when opened as a local .html file.
+import { Cheatsheet } from './pages/Cheatsheet'
+import { Geometry } from './pages/Geometry'
+import { Journal } from './pages/Journal'
+import { Work } from './pages/Work'
+import { WordProblems } from './pages/WordProblems'
 import { HashRouter as BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { StoreProvider } from './lib/store'
@@ -33,6 +38,11 @@ export default function App() {
             <Route path="ent" element={<Ent />} />
             <Route path="review" element={<Review />} />
             <Route path="teacher" element={<Teacher />} />
+            <Route path="journal" element={<Journal />} />
+            <Route path="work" element={<Work />} />
+            <Route path="cheatsheet" element={<Cheatsheet />} />
+            <Route path="geometry" element={<Geometry />} />
+            <Route path="word" element={<WordProblems />} />
             <Route path="game/:id/:level" element={<Game />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

@@ -483,3 +483,95 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
   body.print-summary .lesson-summary { position: absolute; left: 0; top: 0; width: 100%; border: 0; background: #fff; color: #111; }
   body.print-summary .lesson-summary .katex { color: #111; }
 }
+
+/* ---------- cheat sheets, class work, journal ---------- */
+.check-row { display: flex; gap: 8px; align-items: center; }
+.cheat { background: #fff; color: #111; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; column-width: 300px; column-gap: 26px; column-rule: 1px solid #ddd; }
+.cheat .katex { color: #111; }
+.cheat-head { column-span: all; font-size: 20px; font-weight: 800; border-bottom: 2px solid #111; padding-bottom: 6px; margin-bottom: 10px; }
+.cheat-section h2 { font-size: 16px; margin: 10px 0 4px; padding: 3px 8px; background: #26215c; color: #fff; border-radius: 6px; break-after: avoid; }
+.cheat-topic h3 { font-size: 13px; margin: 8px 0 2px; color: #b06a00; text-transform: uppercase; letter-spacing: .03em; break-after: avoid; }
+.cheat-item { break-inside: avoid; padding: 4px 0; border-bottom: 1px dotted #ccc; }
+.cheat-name { font-size: 12px; color: #555; }
+.cheat-grade { font-size: 10px; color: #999; border: 1px solid #ccc; border-radius: 4px; padding: 0 3px; }
+.cheat-tex { font-size: 15px; overflow-x: auto; overflow-y: hidden; }
+.cheat-ex { font-size: 12px; color: #444; }
+.cheat.small { column-width: 230px; }
+.cheat.small .cheat-tex { font-size: 12.5px; }
+.cheat.small .cheat-name, .cheat.small .cheat-ex { font-size: 10.5px; }
+.result-code { font-family: ui-monospace, Consolas, monospace; font-size: 26px; font-weight: 800; letter-spacing: .08em; color: var(--accent); word-break: break-all; }
+.online-box { display: grid; gap: 8px; border: 2px dashed var(--accent); }
+.code-input { font-family: ui-monospace, Consolas, monospace; text-transform: uppercase; letter-spacing: .05em; }
+.work-list { display: grid; gap: 12px; padding-left: 0; list-style: none; margin: 0; counter-reset: task; }
+.work-item { display: grid; gap: 10px; counter-increment: task; }
+.work-item::before { content: counter(task) '.'; font-weight: 800; color: var(--accent); }
+.work-options { display: grid; gap: 8px; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.journal { border-collapse: collapse; width: 100%; font-size: 14px; }
+.journal th, .journal td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: center; white-space: nowrap; }
+.journal td:first-child, .journal th:first-child { text-align: left; }
+.journal td.ok { color: var(--good); font-weight: 700; }
+.journal td.bad { color: var(--bad); font-weight: 700; }
+.journal tfoot td { font-weight: 700; background: var(--accent-soft); }
+@media print {
+  .cheat { border: 0; padding: 0; column-width: 62mm; }
+  .cheat.small { column-width: 46mm; }
+}
+
+/* ---------- live geometry ---------- */
+.geo-lab { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 760px) { .geo-lab { grid-template-columns: 1fr; } }
+.geo-board { width: 100%; height: auto; touch-action: none; user-select: none; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+.geo-grid { stroke: var(--line); stroke-width: 1; }
+.geo-axis { stroke: var(--muted); stroke-width: 1.5; }
+.geo-tick { fill: var(--muted); font-size: 11px; }
+.geo-shape { fill: color-mix(in srgb, var(--accent) 18%, transparent); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
+.geo-sector { fill: color-mix(in srgb, var(--bad) 16%, transparent); }
+.geo-line { fill: none; stroke-width: 2; }
+.geo-line.dash { stroke-dasharray: 5 5; stroke-width: 1.5; }
+.geo-line.thin { stroke-width: 1; opacity: .7; }
+.c-base { stroke: var(--ink); }
+.c-h { stroke: var(--bad); }
+.c-m { stroke: var(--geometry); }
+.c-l { stroke: #4c6ef5; }
+.c-out { stroke: #ae3ec9; }
+.c-in { stroke: var(--accent); }
+.c-arc { stroke: var(--bad); stroke-width: 5; opacity: .6; }
+.geo-dot { fill: var(--space); stroke: #fff; stroke-width: 2; }
+.geo-dot.mid { fill: var(--geometry); }
+.geo-hit { fill: transparent; }
+.geo-handle { cursor: grab; }
+.geo-handle.on { cursor: grabbing; }
+.geo-handle.on .geo-dot, .geo-handle:hover .geo-dot { fill: var(--accent); }
+.geo-label { fill: var(--ink); font-weight: 800; font-size: 16px; }
+.geo-angle { fill: var(--ink); font-size: 12px; font-weight: 700; }
+.geo-angle.eq1 { fill: var(--bad); }
+.geo-angle.eq2 { fill: #4c6ef5; }
+.geo-side { fill: var(--muted); font-size: 12px; }
+.geo-vec { stroke-width: 3; }
+.geo-vec.va { stroke: var(--bad); } .geo-tip.va { fill: var(--bad); }
+.geo-vec.vb { stroke: #4c6ef5; } .geo-tip.vb { fill: #4c6ef5; }
+.geo-vec.vs { stroke: var(--geometry); } .geo-tip.vs { fill: var(--geometry); }
+.geo-side-panel { display: grid; gap: 12px; }
+.geo-kind { font-weight: 800; color: var(--accent); }
+.geo-facts { display: grid; gap: 6px; }
+.geo-fact { display: grid; gap: 2px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; overflow-y: hidden; }
+.geo-toggles { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.geo-toggle i { width: 14px; height: 4px; border-radius: 2px; display: inline-block; }
+
+/* ---------- word-problem constructor ---------- */
+.wp-types { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)); gap: 8px; }
+.wp-type { display: grid; gap: 4px; justify-items: start; text-align: left; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-weight: 600; cursor: pointer; }
+.wp-type.on { background: var(--space); color: var(--space-ink); border-color: var(--space); }
+.wp-icon { font-size: 20px; letter-spacing: 1px; }
+.wp-vars { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 10px; }
+.wp-var { display: grid; gap: 4px; }
+.wp-var.is-unknown .input { background: var(--accent-soft); font-weight: 800; text-align: center; }
+.wp-problem { display: grid; gap: 10px; border-left: 4px solid var(--accent); }
+.wp-known { color: var(--space); white-space: nowrap; }
+:root[data-theme='cosmos'] .wp-known { color: var(--accent); }
+.wp-unknown { display: inline-block; min-width: 28px; text-align: center; background: var(--accent); color: #fff; border-radius: 6px; padding: 0 6px; }
+.wp-solution { display: grid; gap: 10px; }
+.wp-solution h3 { margin: 6px 0 0; font-size: 17px; }
+.wp-note { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.wp-table td { font-size: 16px; }

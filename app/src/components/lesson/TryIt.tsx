@@ -7,10 +7,11 @@ import { tex } from '../../lib/mathcore'
 import { ranges } from '../../lib/quiz'
 import { solveFormula } from '../../lib/solver'
 import { Graph } from '../calc/Graph'
+import { GeoLab, labForTopic } from '../geo/GeoLab'
 import { Tex } from '../Tex'
 
 /** Does this formula have an interactive "try it yourself" slide? */
-export const hasTry = (f: Formula) => Boolean(plots[f.id] || f.calc)
+export const hasTry = (f: Formula) => Boolean(plots[f.id] || f.calc || labForTopic[f.topic!])
 
 const fmt = (v: number) => String(Number(v.toFixed(4))).replace('.', '{,}')
 const sub = (expr: string, vals: Record<string, number>) =>
@@ -122,5 +123,6 @@ export function TryIt({ f }: { f: Formula }) {
   const plot = plots[f.id]
   if (plot) return <GraphLab plot={plot} />
   if (f.calc) return <FormulaLab f={f} />
-  return null
+  const lab = labForTopic[f.topic!]
+  return lab ? <GeoLab id={lab} /> : null
 }
