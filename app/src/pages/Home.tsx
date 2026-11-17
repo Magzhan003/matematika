@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { DailyTask } from '../components/DailyTask'
 import { LevelBadge } from '../components/FormulaCard'
 import { Icon } from '../components/Icon'
 import { Tex } from '../components/Tex'
@@ -16,7 +17,7 @@ function branchStats(branch: Branch, viewed: string[]) {
 export function Home() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language as Lang
-  const { level, levelXp, streak, viewed } = useStore()
+  const { level, levelXp, streak, viewed, dueKeys } = useStore()
   const day = Math.floor(Date.now() / 86400000)
   const fod = formulas[day % formulas.length]
 
@@ -33,6 +34,22 @@ export function Home() {
         <div className="bar"><div style={{ width: `${levelXp}%` }} /></div>
         <span className="muted small">{t('home.toNext', { n: XP_PER_LEVEL - levelXp })}</span>
       </div>
+
+      {dueKeys.length > 0 && (
+        <Link to="/review" className="review-banner">
+          <span style={{ fontSize: 24 }}>🔁</span>
+          <span style={{ flex: 1 }}><strong>{t('rev.banner', { n: dueKeys.length })}</strong><br /><span className="muted small">{t('rev.bannerHint')}</span></span>
+          <span className="btn btn-primary btn-sm">{t('rev.start')}</span>
+        </Link>
+      )}
+
+      <div className="grid">
+        <Link to="/ent" className="tile dark"><span className="tile-icon">🎓</span><strong style={{ fontSize: 18 }}>{t('nav.ent')}</strong><span className="muted small">{t('home.entDesc')}</span></Link>
+        <Link to="/review" className="tile"><span className="tile-icon">🔁</span><strong style={{ fontSize: 18 }}>{t('nav.review')}</strong><span className="muted small">{t('home.reviewDesc', { n: dueKeys.length })}</span></Link>
+        <Link to="/teacher" className="tile"><span className="tile-icon">🖨</span><strong style={{ fontSize: 18 }}>{t('nav.teacher')}</strong><span className="muted small">{t('home.teacherDesc')}</span></Link>
+      </div>
+
+      <DailyTask />
 
       <div className="grid">
         {(['algebra', 'geometry'] as const).map((b) => {

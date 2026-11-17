@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { formulaById } from '../data/formulas'
 import type { Lang } from '../i18n'
 import { checkNumber, type Question } from '../lib/quiz'
+import { useStore } from '../lib/store'
 import { Tex } from './Tex'
 
 type Props = { questions: Question[]; onFinish: (correct: number) => void }
@@ -16,6 +17,7 @@ export function Quiz({ questions, onFinish }: Props) {
   const [verdict, setVerdict] = useState<boolean | null>(null)
   const [error, setError] = useState('')
   const [score, setScore] = useState(0)
+  const { recordAnswers } = useStore()
 
   const q = questions[idx]
   const title = formulaById(q.fid)?.title[lang] ?? ''
@@ -32,6 +34,7 @@ export function Quiz({ questions, onFinish }: Props) {
     }
     setError('')
     setVerdict(ok)
+    recordAnswers([{ key: `f:${q.fid}`, ok: Boolean(ok) }])
     if (ok) setScore((s) => s + 1)
   }
 

@@ -16,7 +16,7 @@ const shuffle = <T,>(a: T[]): T[] => {
 }
 
 /** Ranges for random givens: [min, max, multiplier]. Default is [2, 12, 1]. */
-const ranges: Record<string, Record<string, [number, number, number]>> = {
+export const ranges: Record<string, Record<string, [number, number, number]>> = {
   percent: { a: [2, 50, 10], p: [1, 10, 5] },
   motion: { v: [1, 12, 5], t: [1, 6, 1] },
   proportion: { b: [1, 12, 1], c: [1, 12, 1], d: [1, 12, 1] },
@@ -38,6 +38,8 @@ const ranges: Record<string, Record<string, [number, number, number]>> = {
   'half-life': { m0: [1, 10, 16], t: [1, 4, 5], T: [1, 1, 5] },
   'parallelogram-diagonals': { d1: [2, 6, 1], a: [4, 8, 1], b: [4, 8, 1] },
   'adjacent-angles': { be: [2, 16, 10] },
+  'ring-area': { R: [6, 12, 1], r: [1, 5, 1] },
+  'sphere-section': { R: [6, 12, 1], d: [1, 5, 1] },
 }
 
 const levelRank: Record<Level, number> = { easy: 0, medium: 1, hard: 2 }

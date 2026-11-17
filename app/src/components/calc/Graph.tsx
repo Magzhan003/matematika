@@ -41,11 +41,23 @@ function autoView(fs: ((x: number) => number)[], points: GraphPoint[]): View {
   return { x0, x1, y0, y1 }
 }
 
-export function Graph({ fns, points = [], height = 320, labels }: { fns: string[]; points?: GraphPoint[]; height?: number; labels?: string[] }) {
+export function Graph({ fns, points = [], height = 320, labels, fixedView }: {
+  fns: string[]; points?: GraphPoint[]; height?: number; labels?: string[]
+  /** keep this view while the functions change (sliders in lessons) */
+  fixedView?: [number, number, number, number]
+}) {
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
   const funcs = useMemo(() => fns.filter(Boolean).map((f) => fnOf(f)), [fns])
-  const initial = useMemo(() => autoView(funcs, points), [funcs, points])
+  const fv = fixedView?.join(',')
+  const initial = useMemo(() => {
+    if (fixedView) {
+      const [x0, x1, y0, y1] = fixedView
+      return { x0, x1, y0, y1 }
+    }
+    return autoView(funcs, points)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, fv ? [fv] : [funcs, points])
   const [view, setView] = useState<View>(initial)
   const [hover, setHover] = useState<{ x: number; y: number } | null>(null)
   const drag = useRef<{ x: number; y: number; v: View } | null>(null)

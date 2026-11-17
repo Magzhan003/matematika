@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Achievements } from '../components/Achievements'
 import { formulas } from '../data/formulas'
 import { useStore } from '../lib/store'
 
@@ -25,6 +26,8 @@ export function Progress() {
           </div>
         ))}
       </div>
+
+      <Achievements />
 
       <div className="card">
         <h2>{t('progress.byBranch')}</h2>

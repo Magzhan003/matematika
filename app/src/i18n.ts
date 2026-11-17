@@ -1,12 +1,13 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { kzCalc, ruCalc } from './i18n-calc'
+import { kzMore, ruMore } from './i18n-more'
 
 export type Lang = 'ru' | 'kz'
 
 const ru = {
   app: { name: 'Математика' },
-  nav: { home: 'Главная', formulas: 'Формулы', calculator: 'Калькулятор', lessons: 'Уроки', progress: 'Прогресс', games: 'Игры' },
+  nav: { home: 'Главная', formulas: 'Формулы', calculator: 'Калькулятор', lessons: 'Уроки', progress: 'Прогресс', games: 'Игры', ent: 'ЕНТ', review: 'Повторение', teacher: 'Учителю', more: 'Ещё' },
   theme: { paper: 'Тетрадь', cosmos: 'Космос', toggle: 'Сменить оформление' },
   level: { easy: 'Лёгкий', medium: 'Средний', hard: 'Сложный', all: 'Все уровни' },
   branch: { algebra: 'Алгебра', geometry: 'Геометрия', all: 'Всё' },
@@ -21,6 +22,7 @@ const ru = {
     streak: 'Серия: {{count}} дн.', formulaOfDay: 'Формула дня', studied: 'изучено {{done}} из {{total}}',
     formulasDesc: 'Все формулы с примерами', calcDesc: 'Решение по шагам', lessonsDesc: 'Уроки по уровням',
     gamesDesc: 'Скоро', open: 'Открыть',
+    entDesc: 'Пробный тест с таймером и разбором ошибок', reviewDesc: 'На сегодня: {{n}}', teacherDesc: 'Контрольные с вариантами и ответами',
   },
   formulas: {
     title: 'Формулы', search: 'Поиск: дискриминант, площадь круга…', found: 'Найдено: {{n}}',
@@ -94,7 +96,7 @@ const ru = {
 
 const kz: typeof ru = {
   app: { name: 'Математика' },
-  nav: { home: 'Басты бет', formulas: 'Формулалар', calculator: 'Калькулятор', lessons: 'Сабақтар', progress: 'Үлгерім', games: 'Ойындар' },
+  nav: { home: 'Басты бет', formulas: 'Формулалар', calculator: 'Калькулятор', lessons: 'Сабақтар', progress: 'Үлгерім', games: 'Ойындар', ent: 'ҰБТ', review: 'Қайталау', teacher: 'Мұғалімге', more: 'Тағы' },
   theme: { paper: 'Дәптер', cosmos: 'Ғарыш', toggle: 'Безендіруді ауыстыру' },
   level: { easy: 'Жеңіл', medium: 'Орташа', hard: 'Күрделі', all: 'Барлық деңгей' },
   branch: { algebra: 'Алгебра', geometry: 'Геометрия', all: 'Барлығы' },
@@ -109,6 +111,7 @@ const kz: typeof ru = {
     streak: 'Қатарынан {{count}} күн', formulaOfDay: 'Күн формуласы', studied: '{{total}} формуланың {{done}} меңгерілді',
     formulasDesc: 'Барлық формулалар мысалдармен', calcDesc: 'Қадамдап шешу', lessonsDesc: 'Деңгейлер бойынша сабақтар',
     gamesDesc: 'Жақында', open: 'Ашу',
+    entDesc: 'Таймері бар сынақ тест және қателерді талдау', reviewDesc: 'Бүгінге: {{n}}', teacherDesc: 'Нұсқалары мен жауаптары бар бақылау жұмыстары',
   },
   formulas: {
     title: 'Формулалар', search: 'Іздеу: дискриминант, дөңгелектің ауданы…', found: 'Табылды: {{n}}',
@@ -189,7 +192,7 @@ function savedLang(): Lang {
 }
 
 i18n.use(initReactI18next).init({
-  resources: { ru: { translation: { ...ru, ...ruCalc } }, kz: { translation: { ...kz, ...kzCalc } } },
+  resources: { ru: { translation: { ...ru, ...ruCalc, ...ruMore } }, kz: { translation: { ...kz, ...kzCalc, ...kzMore } } },
   lng: savedLang(),
   fallbackLng: 'ru',
   interpolation: { escapeValue: false },
