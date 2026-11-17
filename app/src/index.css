@@ -575,3 +575,40 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
 .wp-solution h3 { margin: 6px 0 0; font-size: 17px; }
 .wp-note { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
 .wp-table td { font-size: 16px; }
+
+/* ---------- new games ---------- */
+.scale { position: relative; padding: 18px 8px 10px; }
+.scale-beam { height: 8px; background: var(--ink); border-radius: 4px; margin: 0 6%; }
+.scale-post { width: 10px; height: 34px; background: var(--ink); margin: 0 auto; border-radius: 0 0 4px 4px; }
+.scale-pans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: -2px; }
+.pan { display: grid; align-content: end; min-height: 110px; border-left: 2px solid var(--muted); border-right: 2px solid var(--muted); border-radius: 0 0 6px 6px; padding: 0 6px; }
+.pan-items { display: flex; flex-wrap: wrap-reverse; gap: 4px; justify-content: center; align-items: flex-end; padding: 6px 0; }
+.pan-plate { height: 8px; background: var(--accent); border-radius: 0 0 40px 40px; margin: 0 -6px; }
+.bx { width: 34px; height: 34px; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 800; font-style: italic; display: grid; place-items: center; font-family: 'Times New Roman', serif; font-size: 20px; }
+.wt { display: grid; place-items: center; border-radius: 50%; background: var(--space); color: var(--space-ink); font-weight: 700; font-size: 12px; }
+.wt.w1 { width: 22px; height: 22px; }
+.wt.w5 { width: 30px; height: 30px; background: var(--geometry); color: #fff; }
+.wt.w10 { width: 38px; height: 38px; background: var(--bad); color: #fff; font-size: 14px; }
+.balance-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.graph-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 8px; }
+.numline { width: 100%; height: auto; touch-action: manipulation; cursor: crosshair; user-select: none; }
+.numline-hit { fill: transparent; }
+.numline-axis { stroke: var(--ink); stroke-width: 3; }
+.numline-tick { stroke: var(--ink); stroke-width: 2; }
+.numline-tick.small { stroke: var(--muted); stroke-width: 1.5; }
+.numline-label { fill: var(--ink); font-size: 20px; }
+.numline-shot { fill: var(--accent); stroke: #fff; stroke-width: 2; }
+.numline-true { fill: var(--good); }
+.numline-value { fill: var(--good); font-size: 18px; font-weight: 800; }
+.numline-gap { stroke: var(--bad); stroke-width: 6; opacity: .5; }
+.boss-arena { display: grid; justify-items: center; gap: 6px; padding: 14px; border-radius: 16px; background: var(--space); color: var(--space-ink); position: relative; }
+.boss-hearts { position: absolute; left: 12px; top: 10px; font-size: 20px; letter-spacing: 2px; }
+.boss-face { font-size: 72px; line-height: 1.1; position: relative; transition: transform .2s; }
+.boss-face.hurt { animation: shake .35s; filter: brightness(1.4); }
+.boss-face.attack { transform: scale(1.25); }
+.boss-hit { position: absolute; right: -46px; top: 0; font-size: 24px; font-weight: 800; color: var(--accent); animation: pop .45s ease both; }
+.boss-hit.me { color: var(--bad); }
+.boss-name { font-weight: 700; }
+.boss-hp { width: min(100%, 320px); }
+.boss-hp > div { background: var(--bad); }
+.boss-arena .muted { color: var(--space-muted); }

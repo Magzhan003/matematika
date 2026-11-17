@@ -192,7 +192,10 @@ function savedLang(): Lang {
 }
 
 i18n.use(initReactI18next).init({
-  resources: { ru: { translation: { ...ru, ...ruCalc, ...ruMore } }, kz: { translation: { ...kz, ...kzCalc, ...kzMore } } },
+  resources: {
+    ru: { translation: { ...ru, ...ruCalc, ...ruMore, games: { ...ru.games, ...ruMore.moreGames } } },
+    kz: { translation: { ...kz, ...kzCalc, ...kzMore, games: { ...kz.games, ...kzMore.moreGames } } },
+  },
   lng: savedLang(),
   fallbackLng: 'ru',
   interpolation: { escapeValue: false },

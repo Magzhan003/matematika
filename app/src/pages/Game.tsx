@@ -2,7 +2,11 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { LevelBadge } from '../components/FormulaCard'
+import { Balance } from '../components/games/Balance'
+import { Boss } from '../components/games/Boss'
 import { Flashcards } from '../components/games/Flashcards'
+import { GraphGuess } from '../components/games/GraphGuess'
+import { Sniper } from '../components/games/Sniper'
 import { Memory } from '../components/games/Memory'
 import { Sprint } from '../components/games/Sprint'
 import { TruthOrError } from '../components/games/TruthOrError'
@@ -13,6 +17,7 @@ import { useStore } from '../lib/store'
 
 const components: Record<GameId, (p: GameProps) => React.ReactNode> = {
   memory: Memory, cards: Flashcards, truth: TruthOrError, sprint: Sprint,
+  balance: Balance, graph: GraphGuess, line: Sniper, boss: Boss,
 }
 
 export function Game() {

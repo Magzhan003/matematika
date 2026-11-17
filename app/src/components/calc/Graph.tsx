@@ -41,10 +41,12 @@ function autoView(fs: ((x: number) => number)[], points: GraphPoint[]): View {
   return { x0, x1, y0, y1 }
 }
 
-export function Graph({ fns, points = [], height = 320, labels, fixedView }: {
+export function Graph({ fns, points = [], height = 320, labels, fixedView, quiz = false }: {
   fns: string[]; points?: GraphPoint[]; height?: number; labels?: string[]
   /** keep this view while the functions change (sliders in lessons) */
   fixedView?: [number, number, number, number]
+  /** hide the formulas (graph-guessing game) */
+  quiz?: boolean
 }) {
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
@@ -195,10 +197,10 @@ export function Graph({ fns, points = [], height = 320, labels, fixedView }: {
         onPointerUp={() => { drag.current = null }}
         onPointerLeave={() => { drag.current = null; setHover(null) }}
         role="img"
-        aria-label={fns.join(', ')}
+        aria-label={quiz ? 'graph' : fns.join(', ')}
       />
       <div className="graph-tools">
-        {fns.filter(Boolean).map((f, k) => (
+        {!quiz && fns.filter(Boolean).map((f, k) => (
           <span key={k} className="graph-legend"><i style={{ background: `var(${COLORS[k % COLORS.length]})` }} />y = {labels?.[k] ?? f}</span>
         ))}
         <span style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>

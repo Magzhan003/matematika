@@ -6,7 +6,9 @@ import type { Level } from '../data/formulas'
 import { gameIds, levels, type GameId } from '../lib/games'
 import { useStore } from '../lib/store'
 
-const icons: Record<GameId, string> = { memory: 'puzzle', cards: 'book', truth: 'search', sprint: 'flame' }
+const icons: Record<GameId, string> = {
+  memory: 'puzzle', cards: 'book', truth: 'search', sprint: 'flame', balance: 'variable', graph: 'chart', line: 'star', boss: 'triangle',
+}
 
 export function Games() {
   const { t } = useTranslation()
