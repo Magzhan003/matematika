@@ -17,3 +17,6 @@ video/out/
 .idea/
 .DS_Store
 Thumbs.db
+
+# finished videos (large files)
+Видеоуроки/

@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script src="katex/katex.min.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+  #stage {
+    position: relative; overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #fbfaf5;
+    background-image:
+      linear-gradient(#dde6f2 2px, transparent 2px),
+      linear-gradient(90deg, #dde6f2 2px, transparent 2px);
+    background-size: 48px 48px;
+  }
+  /* red margin line of a school notebook */
+  #stage::before { content: ''; position: absolute; top: 0; bottom: 0; left: 120px; width: 3px; background: #f2b8b5; }
+  .tall #stage::before { left: 60px; }
+  .tex { white-space: nowrap; line-height: 1.1; }
+  .txt { white-space: nowrap; line-height: 1.2; }
+  .card { background: #fff; border-radius: 28px; box-shadow: 0 12px 40px rgba(38, 33, 92, .15); border: 3px solid #e4e0d4; }
+  .countdown { font-weight: 800; color: #1d70b8; }
+  #sub {
+    /* width: max-content, otherwise the box shrinks to the space right of "left: 50%" (half the screen) */
+    position: absolute; left: 50%; transform: translateX(-50%); bottom: 34px; width: max-content; max-width: 1700px; box-sizing: border-box;
+    background: rgba(38, 33, 92, .92); color: #fff; font-size: 38px; font-weight: 600; line-height: 1.3;
+    padding: 12px 28px; border-radius: 16px; text-align: center; transition: none;
+  }
+  .tall #sub { bottom: 230px; max-width: 960px; font-size: 44px; }
+  .outro { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #26215c; color: #fff; border: 0; }
+  .outro .logo { width: 150px; height: 150px; border-radius: 34px; background: #ef9f27; color: #26215c; font-size: 110px; font-weight: 800; display: grid; place-items: center; }
+  .outro .oname { font-size: 72px; font-weight: 800; }
+  .outro .osub { font-size: 34px; color: #cfcbe8; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="engine.js"></script>
+</body>
+</html>
