@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
+import { MistakeHint } from '../components/MistakeHint'
+import { ProblemVisual } from '../components/ProblemVisual'
 import { Solution } from '../components/ProblemCard'
 import { Tex } from '../components/Tex'
 import type { Lang } from '../i18n'
@@ -119,6 +121,7 @@ function Solve({ work, variant, name, onExit }: { work: W; variant: number; name
             <li key={i} className={`card work-item ent-item ${state}`}>
               <div className="problem-text">{p.text[lang]}</div>
               {p.tex && <div className="problem-tex"><Tex tex={p.tex} /></div>}
+              <ProblemVisual p={p} />
               {typed(p) ? (
                 <input className="input" value={answers[i].text} disabled={!!result} placeholder={t('pc.placeholder')}
                   onChange={(e) => set(i, { text: e.target.value })} aria-label={`${t('pc.placeholder')} ${i + 1}`} />
@@ -139,6 +142,7 @@ function Solve({ work, variant, name, onExit }: { work: W; variant: number; name
                   <div className={result.ok[i] ? 'answer' : 'answer wrong'}>
                     {result.ok[i] ? t('test.correct') : t('pc.wrong')} {!result.ok[i] && <Tex tex={p.answer} />}
                   </div>
+                  {!result.ok[i] && <MistakeHint p={p} typed={typed(p) ? answers[i].text : undefined} picked={!typed(p) && answers[i].pick !== null ? opts[i].options[answers[i].pick!] : undefined} />}
                   <div><button className="btn btn-sm" onClick={() => setOpen(open === i ? null : i)}>{open === i ? t('pc.hideSolution') : t('pc.showSolution')}</button></div>
                   {open === i && <Solution p={p} />}
                 </div>

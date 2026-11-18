@@ -1,7 +1,7 @@
 import { formulas, type Formula, type Level } from '../data/formulas'
 
-export type GameId = 'memory' | 'cards' | 'truth' | 'sprint' | 'balance' | 'graph' | 'line' | 'boss'
-export const gameIds: GameId[] = ['boss', 'balance', 'graph', 'line', 'memory', 'cards', 'truth', 'sprint']
+export type GameId = 'memory' | 'cards' | 'truth' | 'sprint' | 'balance' | 'graph' | 'line' | 'boss' | 'duel'
+export const gameIds: GameId[] = ['boss', 'duel', 'balance', 'graph', 'line', 'memory', 'cards', 'truth', 'sprint']
 export const levels: Level[] = ['easy', 'medium', 'hard']
 
 const rank: Record<Level, number> = { easy: 0, medium: 1, hard: 2 }
@@ -24,7 +24,7 @@ export function formulaPool(level: Level): Formula[] {
 
 /** Lower is better for these games (fewest moves). */
 export const lowerIsBetter: Record<GameId, boolean> = {
-  memory: true, cards: false, truth: false, sprint: false, balance: false, graph: false, line: false, boss: false,
+  memory: true, cards: false, truth: false, sprint: false, balance: false, graph: false, line: false, boss: false, duel: false,
 }
 
 /* ---------------- "Find the mistake": corrupt a formula ---------------- */

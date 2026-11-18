@@ -27,7 +27,22 @@ export type Problem = {
   solveAction?: 'auto' | 'diff' | 'integrate' | 'factor' | 'expand' | 'simplify'
   /** Short solution lines (TeX) when the solver does not apply. */
   steps?: string[]
+  /** Typical wrong answers with the reason (i18n key under "mist."); they also become answer options. */
+  mistakes?: Mistake[]
+  /** A table or a bar chart that belongs to the statement (math literacy tasks). */
+  visual?: Visual
 }
+
+type Cell = string | number | L
+export type Visual =
+  | { kind: 'table'; head: Cell[]; rows: Cell[][] }
+  | { kind: 'bars'; title: L; labels: Cell[]; values: number[]; unit?: L }
+
+export type Mistake = { tex: string; values?: number[]; why: string }
+/** A typical wrong number (tex is built from the value unless given). */
+export const mk = (v: number, why: string, tex = numTex(v)): Mistake => ({ tex, values: [v], why })
+/** A typical wrong answer written in TeX (an expression, roots, an interval…). */
+export const mkT = (tex: string, why: string, values?: number[]): Mistake => ({ tex, values, why })
 
 export type Gen = { id: string; topic: string; level: Level; grade: number; make: (r: Rng) => Problem }
 

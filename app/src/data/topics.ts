@@ -25,6 +25,7 @@ export const topics: Topic[] = [
   T('proportions', 'arithmetic', 'Пропорции и масштаб', 'Пропорция және масштаб'),
   T('divisibility', 'arithmetic', 'Делимость', 'Бөлінгіштік'),
   T('word-problems', 'arithmetic', 'Текстовые задачи', 'Мәтінді есептер'),
+  T('literacy', 'arithmetic', 'Математическая грамотность', 'Математикалық сауаттылық'),
 
   T('powers', 'algebra', 'Степени', 'Дәрежелер'),
   T('roots', 'algebra', 'Корни', 'Түбірлер'),

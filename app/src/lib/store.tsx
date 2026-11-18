@@ -19,9 +19,17 @@ type Progress = {
   review: Record<string, { box: number; due: string }>
   /** Days on which the task of the day was solved. */
   daily: string[]
+  /** Every answer counted per item key ("g:gen" / "f:formula"): right and total. */
+  stats: Record<string, { ok: number; n: number }>
+  /** Answers per day (for the report): "YYYY-MM-DD" -> count. */
+  activity: Record<string, number>
+  /** Diagnostic test: date and share of right answers per topic (0..1). */
+  diag: { date: string; grade: number; topics: Record<string, number> } | null
+  /** Student name for the report (optional). */
+  name: string
 }
 
-const EMPTY: Progress = { xp: 0, viewed: [], solved: 0, streak: 0, lastDay: '', lessonsDone: [], tests: {}, games: {}, ent: [], review: {}, daily: [] }
+const EMPTY: Progress = { xp: 0, viewed: [], solved: 0, streak: 0, lastDay: '', lessonsDone: [], tests: {}, games: {}, ent: [], review: {}, daily: [], stats: {}, activity: {}, diag: null, name: '' }
 export const XP_PER_LEVEL = 100
 
 function read<T>(key: string, fallback: T): T {
@@ -59,6 +67,22 @@ type Ctx = Progress & {
   markDaily: (xp: number) => void
   dueKeys: string[]
   reset: () => void
+  saveDiag: (topics: Record<string, number>, grade: number) => void
+  setName: (name: string) => void
+  /** Replace all progress with a saved copy; false if the data does not look like progress. */
+  importProgress: (data: unknown) => boolean
+}
+
+/** Everything that is saved to a backup file. */
+export function exportProgress(): string {
+  const journals: Record<string, unknown> = {}
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i)!
+      if (k.startsWith('journal:')) journals[k] = JSON.parse(localStorage.getItem(k) ?? '[]')
+    }
+  } catch { /* storage unavailable */ }
+  return JSON.stringify({ app: 'matematika', version: 1, saved: new Date().toISOString(), progress: read('progress', EMPTY), journals }, null, 1)
 }
 
 const StoreCtx = createContext<Ctx | null>(null)
@@ -104,7 +128,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const recordAnswers = useCallback((items: { key: string; ok: boolean }[], fromReview = false) => {
     setP((s) => {
       const review = { ...s.review }
+      const stats = { ...s.stats }
+      const d = today()
+      const activity = { ...s.activity, [d]: (s.activity[d] ?? 0) + items.length }
+      for (const k of Object.keys(activity).sort().slice(0, -120)) delete activity[k]
       for (const { key, ok } of items) {
+        const st = stats[key] ?? { ok: 0, n: 0 }
+        stats[key] = { ok: st.ok + (ok ? 1 : 0), n: st.n + 1 }
         const cur = review[key]
         if (!ok) review[key] = { box: 0, due: dayPlus(INTERVALS[0]) }
         else if (cur && fromReview) {
@@ -113,13 +143,26 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           else review[key] = { box, due: dayPlus(INTERVALS[box]) }
         }
       }
-      return { ...s, review }
+      return { ...s, review, stats, activity }
     })
   }, [])
   const markDaily = useCallback((xp: number) => {
     setP((s) => (s.daily.includes(today()) ? s : { ...s, xp: s.xp + xp, daily: [...s.daily, today()].slice(-400) }))
   }, [])
   const reset = useCallback(() => setP({ ...EMPTY, streak: 1, lastDay: today() }), [])
+  const saveDiag = useCallback((topics: Record<string, number>, grade: number) => {
+    setP((s) => ({ ...s, xp: s.xp + 30, diag: { date: today(), grade, topics } }))
+  }, [])
+  const setName = useCallback((name: string) => setP((s) => ({ ...s, name: name.slice(0, 60) })), [])
+  const importProgress = useCallback((data: unknown) => {
+    const d = data as { app?: string; progress?: Partial<Progress>; journals?: Record<string, unknown> }
+    if (!d || d.app !== 'matematika' || typeof d.progress !== 'object' || typeof d.progress?.xp !== 'number') return false
+    setP({ ...EMPTY, ...d.progress, lastDay: today() })
+    try {
+      for (const [k, v] of Object.entries(d.journals ?? {})) if (k.startsWith('journal:')) localStorage.setItem(k, JSON.stringify(v))
+    } catch { /* storage unavailable */ }
+    return true
+  }, [])
 
   const value: Ctx = {
     ...p,
@@ -137,6 +180,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     markDaily,
     dueKeys: Object.entries(p.review).filter(([, v]) => v.due <= today()).map(([k]) => k),
     reset,
+    saveDiag,
+    setName,
+    importProgress,
   }
   return <StoreCtx.Provider value={value}>{children}</StoreCtx.Provider>
 }

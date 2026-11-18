@@ -7,7 +7,7 @@ import { gameIds, levels, type GameId } from '../lib/games'
 import { useStore } from '../lib/store'
 
 const icons: Record<GameId, string> = {
-  memory: 'puzzle', cards: 'book', truth: 'search', sprint: 'flame', balance: 'variable', graph: 'chart', line: 'star', boss: 'triangle',
+  memory: 'puzzle', cards: 'book', truth: 'search', sprint: 'flame', balance: 'variable', graph: 'chart', line: 'star', boss: 'triangle', duel: 'flame',
 }
 
 export function Games() {

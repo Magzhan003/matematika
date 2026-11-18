@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LevelBadge } from '../components/FormulaCard'
+import { ProblemVisual } from '../components/ProblemVisual'
 import { Tex } from '../components/Tex'
 import type { Level } from '../data/formulas'
 import { sections, topicById, type Section } from '../data/topics'
 import type { Lang } from '../i18n'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { gens, gensFor, pickGens, seeded, type Problem } from '../lib/bank'
 import { encodeWork } from '../lib/workcode'
 
@@ -16,6 +17,7 @@ function ProblemView({ p, lang }: { p: Problem; lang: Lang }) {
   return (
     <span className="pr-body">
       {p.text[lang]} {p.tex && <Tex tex={p.tex} />}
+      <ProblemVisual p={p} />
     </span>
   )
 }
@@ -24,8 +26,11 @@ export function Teacher() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language as Lang
   const [title, setTitle] = useState('')
-  const [secs, setSecs] = useState<Section[]>(['algebra'])
-  const [topics, setTopics] = useState<string[]>([])
+  // topics may come from the program page: /teacher?topics=fractions,percents
+  const [params] = useSearchParams()
+  const initTopics = (params.get('topics') ?? '').split(',').filter((id) => topicById(id))
+  const [secs, setSecs] = useState<Section[]>(() => (initTopics.length ? [...new Set(initTopics.map((id) => topicById(id)!.section))] : ['algebra']))
+  const [topics, setTopics] = useState<string[]>(initTopics)
   const [level, setLevel] = useState<Level>('medium')
   const [count, setCount] = useState(6)
   const [variants, setVariants] = useState(2)
@@ -60,6 +65,7 @@ export function Teacher() {
     <div className="page">
       <div className="no-print" style={{ display: 'grid', gap: 14 }}>
         <h1 style={{ margin: 0 }}>{t('teach.title')}</h1>
+        <Link to="/program" className="small">📅 {t('prog.title')} — {t('prog.short')}</Link>
         <p className="muted" style={{ margin: 0 }}>{t('teach.intro')}</p>
 
         <div className="card" style={{ display: 'grid', gap: 12 }}>

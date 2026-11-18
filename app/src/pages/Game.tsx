@@ -4,6 +4,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { LevelBadge } from '../components/FormulaCard'
 import { Balance } from '../components/games/Balance'
 import { Boss } from '../components/games/Boss'
+import { Duel } from '../components/games/Duel'
 import { Flashcards } from '../components/games/Flashcards'
 import { GraphGuess } from '../components/games/GraphGuess'
 import { Sniper } from '../components/games/Sniper'
@@ -17,7 +18,7 @@ import { useStore } from '../lib/store'
 
 const components: Record<GameId, (p: GameProps) => React.ReactNode> = {
   memory: Memory, cards: Flashcards, truth: TruthOrError, sprint: Sprint,
-  balance: Balance, graph: GraphGuess, line: Sniper, boss: Boss,
+  balance: Balance, graph: GraphGuess, line: Sniper, boss: Boss, duel: Duel,
 }
 
 export function Game() {

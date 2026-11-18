@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import type { Lang } from '../i18n'
 import { checkTyped, choices, type Problem } from '../lib/bank'
 import { solveAny } from '../lib/calc'
+import { MistakeHint } from './MistakeHint'
+import { ProblemVisual } from './ProblemVisual'
 import { Tex } from './Tex'
 
 /** Full solution: the step-by-step solver when the problem has an input for it, else the short steps. */
@@ -65,6 +67,7 @@ export function ProblemCard({ p, mode = 'auto', onResult }: Props) {
     <div className="card problem" style={{ display: 'grid', gap: 12 }}>
       <div className="problem-text">{p.text[lang]}</div>
       {p.tex && <div className="problem-tex"><Tex tex={p.tex} /></div>}
+      <ProblemVisual p={p} />
 
       {typed ? (
         <form onSubmit={(e) => { e.preventDefault(); if (verdict === null) check() }}>
@@ -94,6 +97,7 @@ export function ProblemCard({ p, mode = 'auto', onResult }: Props) {
           {verdict ? t('test.correct') : t('pc.wrong')} {!verdict && <Tex tex={p.answer} />}
         </div>
       )}
+      {verdict === false && <MistakeHint p={p} typed={typed ? input : undefined} picked={!typed && picked !== null ? ch.options[picked] : undefined} />}
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {verdict === null && <button className="btn btn-primary" onClick={check}>{t('test.check')}</button>}

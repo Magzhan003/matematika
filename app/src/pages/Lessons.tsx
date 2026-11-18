@@ -22,6 +22,10 @@ export function Lessons() {
   return (
     <div className="page" style={{ display: 'grid', gap: 18 }}>
       <h1 style={{ margin: 0 }}>{t('lessons.title')}</h1>
+      <Link to="/program" className="tile dark" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <span style={{ fontSize: 26 }}>📅</span>
+        <span style={{ display: 'grid', gap: 2 }}><strong>{t('prog.title')}</strong><span className="muted small">{t('prog.short')}</span></span>
+      </Link>
 
       <div className="space-panel" style={{ display: 'grid', gap: 12 }}>
         <h2 style={{ margin: 0 }}>{t('test.tests')}</h2>

@@ -3,13 +3,14 @@ import { topicById, type Section } from '../../data/topics'
 import { normalize, num } from '../mathcore'
 import { prepare } from '../calc/tools'
 import { algGens } from './alg'
-import { numericWrong, seeded, type Gen, type Problem, type Rng } from './core'
+import { numericWrong, seeded, type Gen, type Mistake, type Problem, type Rng } from './core'
 import { geoGens } from './geo'
+import { literacyGens } from './literacy'
 
-export type { Gen, Problem, Rng } from './core'
+export type { Gen, Mistake, Problem, Rng } from './core'
 export { seeded } from './core'
 
-export const gens: Gen[] = [...algGens, ...geoGens]
+export const gens: Gen[] = [...algGens, ...geoGens, ...literacyGens]
 export const genById = (id: string) => gens.find((g) => g.id === id)
 
 const rank: Record<Level, number> = { easy: 0, medium: 1, hard: 2 }
@@ -27,7 +28,8 @@ export function gensFor(opts: { topics?: string[]; sections?: Section[]; level?:
 
 /** Multiple-choice options: the answer plus distractors, shuffled. */
 export function choices(p: Problem, r: Rng = Math.random, n = 5): { options: string[]; correct: number } {
-  let wrong = (p.wrong ?? []).filter((w) => w !== p.answer)
+  // typical mistakes come first: they are the most "tempting" wrong options
+  let wrong = [...(p.mistakes ?? []).map((m) => m.tex), ...(p.wrong ?? [])].filter((w) => w !== p.answer)
   if (wrong.length < n - 1 && p.values?.length === 1) wrong = [...wrong, ...numericWrong(p.values[0], r, n)]
   wrong = [...new Set(wrong)].filter((w) => w !== p.answer)
   // fallback: shift the last number of the answer until there are enough options
@@ -41,16 +43,36 @@ export function choices(p: Problem, r: Rng = Math.random, n = 5): { options: str
   return { options, correct: options.indexOf(p.answer) }
 }
 
-/** Check a typed answer: every expected value must appear (order free). */
-export function checkTyped(p: Problem, input: string): boolean | null {
-  if (!p.values?.length) return null
+/** Numbers typed by the student ("x = 2; 3", "-1 и 4"), or null if something is not a number. */
+function parseTyped(input: string): number[] | null {
   const parts = input
     .replace(/x\s*[_\d]*\s*=|y\s*=|\(|\)/gi, ' ')
     .split(/[;\n]|,(?!\d)|\s+и\s+|\s+және\s+/)
     .map((s) => s.trim())
     .filter(Boolean)
   const vals = parts.map((s) => num(prepare(normalize(s))))
-  if (!vals.length || vals.some((v) => !Number.isFinite(v))) return null
+  return !vals.length || vals.some((v) => !Number.isFinite(v)) ? null : vals
+}
+
+const sameSet = (a: number[], b: number[]) =>
+  a.length === b.length && [...a].sort((x, y) => x - y).every((v, i) => Math.abs(v - [...b].sort((x, y) => x - y)[i]) <= Math.max(0.011, Math.abs(v) * 1e-4))
+
+/** Which typical mistake a wrong answer matches (a chosen option or typed numbers). */
+export function findMistake(p: Problem, answer: { picked?: string; typed?: string }): Mistake | undefined {
+  const list = (p.mistakes ?? []).filter((m) => m.tex !== p.answer && !(m.values && p.values && sameSet(m.values, p.values)))
+  if (answer.picked !== undefined) return list.find((m) => m.tex === answer.picked)
+  if (answer.typed !== undefined) {
+    const vals = parseTyped(answer.typed)
+    return vals ? list.find((m) => m.values && sameSet(m.values, vals)) : undefined
+  }
+  return undefined
+}
+
+/** Check a typed answer: every expected value must appear (order free). */
+export function checkTyped(p: Problem, input: string): boolean | null {
+  if (!p.values?.length) return null
+  const vals = parseTyped(input)
+  if (!vals) return null
   const need = [...p.values]
   if (vals.length !== need.length) return false
   // integers must match exactly; other answers may be rounded to hundredths

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { DailyTask } from '../components/DailyTask'
+import { MyPlan } from '../components/MyPlan'
 import { LevelBadge } from '../components/FormulaCard'
 import { Icon } from '../components/Icon'
 import { Tex } from '../components/Tex'
@@ -43,13 +44,15 @@ export function Home() {
         </Link>
       )}
 
+      <MyPlan />
+
       <div className="grid">
         <Link to="/ent" className="tile dark"><span className="tile-icon">🎓</span><strong style={{ fontSize: 18 }}>{t('nav.ent')}</strong><span className="muted small">{t('home.entDesc')}</span></Link>
         <Link to="/review" className="tile"><span className="tile-icon">🔁</span><strong style={{ fontSize: 18 }}>{t('nav.review')}</strong><span className="muted small">{t('home.reviewDesc', { n: dueKeys.length })}</span></Link>
         <Link to="/teacher" className="tile"><span className="tile-icon">🖨</span><strong style={{ fontSize: 18 }}>{t('nav.teacher')}</strong><span className="muted small">{t('home.teacherDesc')}</span></Link>
       </div>
 
-      <DailyTask />
+      <div id="daily"><DailyTask /></div>
 
       <div className="grid">
         {(['algebra', 'geometry'] as const).map((b) => {

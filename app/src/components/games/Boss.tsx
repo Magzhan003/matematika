@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import type { Lang } from '../../i18n'
 import { choices, gensFor, pickGens, type Problem } from '../../lib/bank'
 import { useStore } from '../../lib/store'
+import { MistakeHint } from '../MistakeHint'
+import { ProblemVisual } from '../ProblemVisual'
 import { Solution } from '../ProblemCard'
 import { Tex } from '../Tex'
 import type { GameProps } from './common'
@@ -104,6 +106,7 @@ export function Boss({ level, onDone }: GameProps) {
       <div className="card problem" style={{ display: 'grid', gap: 10 }}>
         <div className="problem-text">{p.text[lang]}</div>
         {p.tex && <div className="problem-tex"><Tex tex={p.tex} /></div>}
+        <ProblemVisual p={p} />
         <div className="work-options">
           {ch.options.map((o, k) => {
             const st = picked === null ? '' : k === ch.correct ? 'right' : k === picked ? 'wrong' : ''
@@ -125,6 +128,7 @@ export function Boss({ level, onDone }: GameProps) {
               </button>
               {!ok && <button className="btn" onClick={() => setShowSol(!showSol)}>{showSol ? t('pc.hideSolution') : t('pc.showSolution')}</button>}
             </div>
+            {!ok && picked >= 0 && <MistakeHint p={p} picked={ch.options[picked]} />}
             {showSol && <Solution p={p} />}
           </>
         )}

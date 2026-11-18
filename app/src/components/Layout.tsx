@@ -13,6 +13,9 @@ const main = [
 ] as const
 
 const extra = [
+  { to: '/program', key: 'program', emoji: '📅' },
+  { to: '/map', key: 'map', emoji: '🗺' },
+  { to: '/diagnostic', key: 'diagnostic', emoji: '🧭' },
   { to: '/review', key: 'review', emoji: '🔁' },
   { to: '/games', key: 'games', emoji: '🎮' },
   { to: '/progress', key: 'progress', emoji: '📊' },

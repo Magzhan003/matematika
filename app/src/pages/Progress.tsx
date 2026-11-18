@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Achievements } from '../components/Achievements'
+import { Link } from 'react-router-dom'
+import { Backup } from '../components/Backup'
 import { formulas } from '../data/formulas'
 import { useStore } from '../lib/store'
 
@@ -45,6 +47,13 @@ export function Progress() {
           )
         })}
       </div>
+
+      <Link to="/report" className="tile dark" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <span style={{ fontSize: 26 }}>👪</span>
+        <span style={{ display: 'grid', gap: 2 }}><strong>{t('rep.open')}</strong><span className="muted small">{t('rep.intro')}</span></span>
+      </Link>
+
+      <Backup />
 
       <div>
         <button className="btn btn-sm" onClick={() => { if (window.confirm(t('progress.confirm'))) reset() }}>

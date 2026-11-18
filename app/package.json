@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "build:html": "tsc -b && vite build --mode single && node scripts/make-single-html.mjs",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "audit": "npx tsx scripts/audit.ts"
   },
   "dependencies": {
     "i18next": "^27.1.3",

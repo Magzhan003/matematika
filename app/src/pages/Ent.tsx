@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { MistakeHint } from '../components/MistakeHint'
+import { ProblemVisual } from '../components/ProblemVisual'
 import { Solution } from '../components/ProblemCard'
 import { Tex } from '../components/Tex'
 import { sections, topicById, type Section } from '../data/topics'
@@ -7,16 +9,18 @@ import type { Lang } from '../i18n'
 import { choices, gens, gensFor, sectionOfGen, type Problem } from '../lib/bank'
 import { useStore } from '../lib/store'
 
-type Preset = { id: string; n: number; min: number | null; section?: Section }
+type Preset = { id: string; n: number; min: number | null; section?: Section; topic?: string }
 const presets: Preset[] = [
   { id: 'mini', n: 10, min: 15 },
   { id: 'standard', n: 20, min: 35 },
   { id: 'full', n: 40, min: 70 },
 ]
+const literacy: Preset = { id: 'literacy', n: 10, min: 25, topic: 'literacy' }
 
 /** Mixed exam: about 30 % easy, 50 % medium, 20 % hard, spread over all sections. */
-function buildExam(n: number, section?: Section): Problem[] {
-  const pool = section ? gensFor({ sections: [section] }) : gens
+function buildExam(n: number, section?: Section, topic?: string): Problem[] {
+  // the general exam keeps math literacy as a separate test
+  const pool = topic ? gens.filter((g) => g.topic === topic) : section ? gensFor({ sections: [section] }) : gens.filter((g) => g.topic !== 'literacy')
   const quota = { easy: Math.round(n * 0.3), hard: Math.round(n * 0.2), medium: 0 }
   quota.medium = n - quota.easy - quota.hard
   const out: Problem[] = []
@@ -47,7 +51,7 @@ export function Ent() {
   const [open, setOpen] = useState<number | null>(null)
 
   const start = (p: Preset) => {
-    const ex = buildExam(p.n, p.section)
+    const ex = buildExam(p.n, p.section, p.topic)
     setPreset(p)
     setExam(ex)
     setOpts(ex.map((q) => choices(q)))
@@ -93,6 +97,13 @@ export function Ent() {
             </button>
           ))}
         </div>
+        <button className="card literacy-card" onClick={() => start(literacy)}>
+          <span style={{ fontSize: 28 }}>📊</span>
+          <span style={{ display: 'grid', gap: 4, textAlign: 'left' }}>
+            <strong style={{ fontSize: 18 }}>{t('ent.presets.literacy')}</strong>
+            <span className="muted small">{t('ent.literacyDesc', { n: literacy.n, min: literacy.min })}</span>
+          </span>
+        </button>
         <div className="card" style={{ display: 'grid', gap: 10 }}>
           <strong>{t('ent.byTopic')}</strong>
           <div className="chips">
@@ -138,6 +149,7 @@ export function Ent() {
           <div className="muted small">{t('test.question', { n: cur + 1, total: exam.length })} · {topicById(q.topic)?.title[lang]}</div>
           <div className="problem-text">{q.text[lang]}</div>
           {q.tex && <div className="problem-tex"><Tex tex={q.tex} /></div>}
+          <ProblemVisual p={q} />
           <div style={{ display: 'grid', gap: 8 }}>
             {o.options.map((x, i) => (
               <button key={i} className={`option ${answers[cur] === i ? 'picked' : ''}`} onClick={() => setAnswers(answers.map((a, k) => (k === cur ? (a === i ? null : i) : a)))}>
@@ -200,6 +212,7 @@ export function Ent() {
                   <button className="btn btn-sm" style={{ marginLeft: 8 }} onClick={() => setOpen(open === i ? null : i)}>{open === i ? t('pc.hideSolution') : t('pc.showSolution')}</button>
                 </div>
               )}
+              {!ok && answers[i] !== null && <div style={{ marginTop: 8 }}><MistakeHint p={q} picked={opts[i].options[answers[i]!]} /></div>}
               {open === i && <div style={{ marginTop: 10 }}><Solution p={q} /></div>}
             </div>
           )
