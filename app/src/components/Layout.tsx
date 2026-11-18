@@ -24,6 +24,7 @@ const extra = [
   { to: '/work', key: 'work', emoji: '📝' },
   { to: '/cheatsheet', key: 'cheat', emoji: '📄' },
   { to: '/teacher', key: 'teacher', emoji: '🖨' },
+  { to: '/journal', key: 'journal', emoji: '📋' },
 ] as const
 
 export function Layout() {

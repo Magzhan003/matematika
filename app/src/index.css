@@ -686,3 +686,10 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
 .rep-col span { position: absolute; bottom: -18px; font-size: 10px; color: #555; }
 .rep-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
 @media (max-width: 560px) { .rep-two { grid-template-columns: 1fr; } }
+
+/* ---------- journal list ---------- */
+.jr-list { display: grid; gap: 8px; }
+.jr-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.jr-title { font-size: 22px; font-weight: 800; margin: 6px 0 4px; border-color: transparent; padding-left: 4px; }
+.jr-title:hover, .jr-title:focus { border-color: var(--line); }
+.link-btn { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; font: inherit; }

@@ -136,7 +136,7 @@ export function Teacher() {
             <div><b>📱 {t('teach.online')}</b></div>
             <div className="result-code">{online}</div>
             <p className="muted small" style={{ margin: 0 }}>{t('teach.onlineHint')}</p>
-            <div><Link className="btn btn-sm" to={`/journal?c=${online}`}>📋 {t('teach.journal')}</Link></div>
+            <div><Link className="btn btn-sm" to={`/journal?c=${online}&t=${encodeURIComponent(heading)}`}>📋 {t('teach.journal')}</Link></div>
           </div>
         )}
       </div>
