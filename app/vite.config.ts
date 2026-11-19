@@ -8,6 +8,10 @@ export default defineConfig(({ mode }) => ({
   base: './',
   build:
     mode === 'single'
-      ? { outDir: 'dist-single', assetsInlineLimit: Number.MAX_SAFE_INTEGER, chunkSizeWarningLimit: 5000 }
+      ? {
+          outDir: 'dist-single', assetsInlineLimit: Number.MAX_SAFE_INTEGER, chunkSizeWarningLimit: 8000,
+          // one file: the PowerPoint/Word viewers (loaded on demand) go inside it too
+          rollupOptions: { output: { inlineDynamicImports: true } },
+        }
       : { chunkSizeWarningLimit: 2000 },
 }))

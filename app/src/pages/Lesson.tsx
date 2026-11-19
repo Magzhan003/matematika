@@ -17,7 +17,7 @@ import { gensFor, pickGens, type Problem } from '../lib/bank'
 import { lessonCheck } from '../lib/quiz'
 import { useStore } from '../lib/store'
 
-type Kind = 'goal' | 'hook' | 'picture' | 'derive' | 'formula' | 'try' | 'example' | 'checkpoint' | 'back' | 'trap' | 'summary' | 'check'
+type Kind = 'goal' | 'hook' | 'picture' | 'derive' | 'formula' | 'try' | 'example' | 'example2' | 'checkpoint' | 'back' | 'trap' | 'summary' | 'check'
 type Slide = { kind: Kind; text?: L; lines?: string[]; picture?: PictureId; legend?: boolean }
 
 const ownKinds: Kind[] = ['goal', 'try', 'checkpoint', 'summary']
@@ -260,17 +260,18 @@ function LessonView({ id }: { id: string }) {
 
   const slides = useMemo<Slide[]>(() => {
     if (!f) return []
-    const example: Slide = { kind: 'example', text: f.example.task, lines: [...f.example.steps, `\\Rightarrow\\; ${f.example.answer}`] }
+    const example: Slide[] = [{ kind: 'example', text: f.example.task, lines: [...f.example.steps, `\\Rightarrow\\; ${f.example.answer}`] }]
+    if (f.example2) example.push({ kind: 'example2', text: f.example2.task, lines: [...f.example2.steps, `\\Rightarrow\\; ${f.example2.answer}`] })
     const tryIt: Slide[] = hasTry(f) ? [{ kind: 'try' }] : []
     const checkpoint: Slide[] = practicePool(f).length ? [{ kind: 'checkpoint' }] : []
     const end: Slide[] = [{ kind: 'summary' }, { kind: 'check' }]
     if (!custom) {
-      return [{ kind: 'goal' }, { kind: 'formula', text: f.explain, lines: [f.tex], legend: true }, ...tryIt, example, ...checkpoint, ...end]
+      return [{ kind: 'goal' }, { kind: 'formula', text: f.explain, lines: [f.tex], legend: true }, ...tryIt, ...example, ...checkpoint, ...end]
     }
     const by = (k: Kind) => custom.filter((s) => s.kind === k).map((s): Slide => ({ ...s }))
     const derive = by('derive')
     if (derive.length) derive[derive.length - 1].legend = true
-    return [{ kind: 'goal' }, ...by('hook'), ...by('picture'), ...derive, ...tryIt, example, ...checkpoint, ...by('back'), ...by('trap'), ...end]
+    return [{ kind: 'goal' }, ...by('hook'), ...by('picture'), ...derive, ...tryIt, ...example, ...checkpoint, ...by('back'), ...by('trap'), ...end]
   }, [f, custom])
 
   const [slide, setSlide] = useState(0)

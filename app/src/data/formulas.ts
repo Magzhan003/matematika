@@ -1,5 +1,6 @@
 import { algebraExtra } from './algebra-extra'
 import { catalog } from './catalog'
+import { examples2 } from './examples2'
 import { geometryExtra } from './geometry-extra'
 import { formulaTopic, geometrySections, topicById, type L, type Section } from './topics'
 
@@ -22,6 +23,8 @@ export type Formula = {
   tex: string
   explain: L
   example: { task: L; steps: string[]; answer: string }
+  /** A second, simpler example from everyday life (examples2/). */
+  example2?: { task: L; steps: string[]; answer: string }
   /** Equation for the formula calculator: one unknown is solved from the others. */
   calc?: { eq: string; vars: CalcVar[]; positive?: boolean }
 }
@@ -445,7 +448,7 @@ export const formulas: Formula[] = [...base, ...algebraExtra, ...geometryExtra, 
   .map((f) => {
     const topic = f.topic ?? formulaTopic[f.id]
     const section = topicById(topic)?.section ?? f.section
-    return { ...f, topic, section, branch: geometrySections.includes(section) ? 'geometry' : 'algebra' } as Formula
+    return { ...f, example2: f.example2 ?? examples2[f.id], topic, section, branch: geometrySections.includes(section) ? 'geometry' : 'algebra' } as Formula
   })
   .sort((a, b) => a.grade - b.grade)
 export const grades = [5, 6, 7, 8, 9, 10, 11]

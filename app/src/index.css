@@ -693,3 +693,57 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
 .jr-title { font-size: 22px; font-weight: 800; margin: 6px 0 4px; border-color: transparent; padding-left: 4px; }
 .jr-title:hover, .jr-title:focus { border-color: var(--line); }
 .link-btn { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; font: inherit; }
+
+/* ---------- whiteboard & presentation window ---------- */
+.tool-btn { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-weight: 700; font-size: 14px; cursor: pointer; }
+.tool-btn:hover { border-color: var(--accent); }
+@media (max-width: 1100px) { .tool-label { display: none; } .tool-btn { padding: 0 9px; } }
+.wb { position: fixed; inset: 0; z-index: 100; touch-action: none; }
+.wb-grid { background-color: #fff; background-image: linear-gradient(#e3e9f3 1px, transparent 1px), linear-gradient(90deg, #e3e9f3 1px, transparent 1px); background-size: 32px 32px; }
+.wb-white { background: #fff; }
+.wb-dark { background: #1f2a24; }
+.wb-clear { background: transparent; }
+.wb { overflow: hidden; }
+.wb-canvas { position: absolute; left: 0; top: 0; cursor: crosshair; }
+.wb-canvas.tool-text { cursor: text; }
+.wb-canvas.tool-eraser { cursor: cell; }
+.wb-text { position: absolute; z-index: 2; min-width: 260px; min-height: 60px; background: rgba(255,255,255,.85); border: 2px dashed #ef9f27; border-radius: 8px; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 600; padding: 4px 8px; resize: both; outline: none; }
+.wb-bar { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; background: rgba(255,255,255,.96); border: 1px solid #ddd; border-radius: 16px; padding: 8px 10px; box-shadow: 0 8px 30px rgba(0,0,0,.18); max-width: calc(100vw - 20px); }
+.wb-group { display: flex; gap: 6px; align-items: center; }
+.wb-group + .wb-group { border-left: 1px solid #e5e5e5; padding-left: 10px; }
+.wb-btn { min-width: 40px; height: 40px; border-radius: 10px; border: 1px solid #ddd; background: #fff; color: #222; font-size: 18px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 8px; }
+.wb-btn.on { background: #26215c; color: #fff; border-color: #26215c; }
+.wb-label { font-size: 12px; font-weight: 600; }
+@media (max-width: 1600px) { .wb-label { display: none; } }
+.wb-close { background: #fdecec; border-color: #f4b4b4; }
+.wb-color { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer; padding: 0; }
+.wb-color.on { outline: 3px solid #ef9f27; outline-offset: 2px; }
+.wb-size i { display: block; border-radius: 50%; background: currentColor; }
+.wb-select { height: 40px; border-radius: 10px; border: 1px solid #ddd; padding: 0 8px; font-weight: 600; }
+.pres { position: fixed; inset: 0; z-index: 90; background: var(--bg, #f5f1e8); display: flex; flex-direction: column; }
+.pres-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 10px 14px; background: var(--card); border-bottom: 1px solid var(--line); }
+.pres-name { white-space: nowrap; }
+.pres-form { display: flex; gap: 8px; flex: 1 1 320px; }
+.pres-form .input { flex: 1; min-width: 0; height: 38px; }
+.pres-saved { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px 14px; background: var(--card); border-bottom: 1px solid var(--line); }
+.pres-chip { display: inline-flex; align-items: center; gap: 6px; }
+.pres-del { border: 0; background: transparent; cursor: pointer; font-size: 16px; color: var(--muted); }
+.pres-view { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; background: #111; }
+.pres-view.over { outline: 4px dashed var(--accent); outline-offset: -8px; }
+.pres-view iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+.pres-view img, .pres-view video { max-width: 100%; max-height: 100%; }
+.pres-empty { background: var(--card); color: var(--ink); border-radius: 18px; padding: 28px 32px; max-width: 640px; margin: 20px; }
+.pres-empty ul { padding-left: 20px; display: grid; gap: 6px; color: var(--muted); }
+.pres-note { margin: 0; padding: 6px 14px; font-size: 13px; color: var(--muted); background: var(--card); }
+/* files from the computer: PowerPoint, Word, YouTube card */
+.pres-office { align-self: stretch; width: 100%; overflow: auto; display: flex; flex-direction: column; align-items: center; padding: 16px; }
+.pres-pptx { background: #1b1b1b; justify-content: center; }
+.pres-docx { background: #e7e7e7; }
+.pres-docx .docx-wrapper { background: transparent !important; padding: 0 !important; }
+.pres-loading { color: #ccc; font-weight: 600; }
+.pres-docx .pres-loading { color: #555; }
+.pres-yt { text-align: center; }
+.pres-yt-thumb { position: relative; display: block; width: 100%; max-width: 480px; aspect-ratio: 16 / 9; margin: 0 auto; border: 0; padding: 0; border-radius: 14px; overflow: hidden; background: #000; cursor: pointer; }
+.pres-yt-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pres-yt-play { position: absolute; inset: 0; margin: auto; width: 72px; height: 50px; border-radius: 14px; background: #e62117; color: #fff; font-size: 24px; display: flex; align-items: center; justify-content: center; }
+@media print { .wb, .pres { display: none !important; } }

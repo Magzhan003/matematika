@@ -48,6 +48,7 @@ for (const f of formulas) {
   add('3. Формулы', `${f.id} · название`, f.title.ru, f.title.kz)
   add('3. Формулы', `${f.id} · объяснение`, f.explain.ru, f.explain.kz)
   add('3. Формулы', `${f.id} · пример`, f.example.task.ru, f.example.task.kz)
+  if (f.example2) add('3. Формулы', `${f.id} · пример 2`, f.example2.task.ru, f.example2.task.kz)
   for (const v of f.calc?.vars ?? []) add('3. Формулы', `${f.id} · буква ${v.name}`, v.label.ru, v.label.kz)
 }
 for (const [id, slides] of Object.entries(lessons)) slides.forEach((s, i) => add('4. Уроки', `${id} · слайд ${i + 1} (${s.kind})`, s.text.ru, s.text.kz))

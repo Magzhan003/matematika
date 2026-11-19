@@ -9,6 +9,7 @@
 import katex from 'katex'
 import { parse } from 'mathjs'
 import { formulas } from '../src/data/formulas'
+import { examples2 } from '../src/data/examples2'
 import { lessons } from '../src/data/lessons'
 import { choices, findMistake, gens, seeded } from '../src/lib/bank'
 import { numberQuestion } from '../src/lib/quiz'
@@ -81,11 +82,12 @@ const ev = (expr: string, scope: Record<string, number> = {}): number => {
 const close = (a: number, b: number, rel = 1e-6) => Math.abs(a - b) <= Math.max(1e-9, Math.abs(b) * rel)
 
 const problems: string[] = []
+for (const id of Object.keys(examples2)) if (!formulas.some((f) => f.id === id)) problems.push(`[example2] ${id}: no formula with this id`)
 let rendered = 0, chainsChecked = 0, identities = 0, identitySkipped = 0
 
 for (const f of formulas) {
   // 1) KaTeX
-  for (const t of [f.tex, ...f.example.steps, f.example.answer]) {
+  for (const t of [f.tex, ...f.example.steps, f.example.answer, ...(f.example2 ? [...f.example2.steps, f.example2.answer] : [])]) {
     try {
       katex.renderToString(t, { throwOnError: true })
       rendered++
@@ -96,7 +98,11 @@ for (const f of formulas) {
 
   // 2) numeric chains in the example
   // one line may hold several equalities: "x = 4,\qquad y = 2"
-  const lines = [...f.example.steps, f.example.answer]
+  if (!f.example2) problems.push(`[example2] ${f.id}: no second example`)
+  for (const ex of [f.example, f.example2]) {
+  if (!ex) continue
+  const tag = ex === f.example ? 'example' : 'example2'
+  const lines = [...ex.steps, ex.answer]
     .map((l) => l.replace(/^\s*\\Rightarrow\s*/, ''))
     .filter((l) => !l.includes(':')) // lists like "C_4^k: 1, 4, 6, 4, 1"
     .flatMap((l) => l.split(/,\s*\\(?:qquad|quad|;|\s)|,\\ /))
@@ -142,8 +148,9 @@ for (const f of formulas) {
     const ref = exact[0] ?? c.values[0]
     for (const x of c.values) {
       const ok = x.approx ? close(x.v, ref.v, 0.02) || Math.abs(x.v - ref.v) < 0.051 : close(x.v, ref.v, 1e-6)
-      if (!ok) problems.push(`[example] ${f.id}: ${ref.src} = ${ref.v} but ${x.src} = ${x.v}`)
+      if (!ok) problems.push(`[${tag}] ${f.id}: ${ref.src} = ${ref.v} but ${x.src} = ${x.v}`)
     }
+  }
   }
 
   // 3) identities: exactly one "=", no conditions

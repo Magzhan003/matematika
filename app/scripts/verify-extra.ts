@@ -123,19 +123,20 @@ const checks: Record<string, () => boolean> = {
   'heights-ratio': () => many(100, () => { const a = rnd(3, 6), b = rnd(3, 6), c = rnd(abs(a - b) + 0.5, a + b - 0.5), p = (a + b + c) / 2, S = sqrt(p * (p - a) * (p - b) * (p - c)); const ha = (2 * S) / a, hb = (2 * S) / b, hc = (2 * S) / c, r = S / p; return close(ha / hb, (1 / a) / (1 / b)) && close(1 / r, 1 / ha + 1 / hb + 1 / hc) }),
   'side-via-medians': () => many(100, () => { const a = rnd(3, 6), b = rnd(3, 6), c = rnd(abs(a - b) + 0.5, a + b - 0.5); const m = (x: number, y: number, z: number) => 0.5 * sqrt(2 * y * y + 2 * z * z - x * x); return close(a, (2 / 3) * sqrt(2 * m(b, a, c) ** 2 + 2 * m(c, a, b) ** 2 - m(a, b, c) ** 2)) }),
   'special-right-triangles': () => close(sin(deg(30)) * 2, 1) && close(tan(deg(60)), sqrt(3)) && close(Math.hypot(1, 1), sqrt(2)) && close(Math.hypot(1, sqrt(3)), 2),
-  'chord-secant-angles': () => many(100, () => {
-    // points on the unit circle; intersecting chords AC and BD, and secants from an outside point
-    const ang = [rnd(0, 1.2), rnd(1.4, 2.6), rnd(2.8, 4), rnd(4.2, 6)].map((t) => [cos(t), sin(t)])
-    const [A, B, C, D] = ang
-    const inter = (p1: number[], p2: number[], p3: number[], p4: number[]) => { const d = (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]); const t = ((p1[0] - p3[0]) * (p3[1] - p4[1]) - (p1[1] - p3[1]) * (p3[0] - p4[0])) / d; return [p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1] - p1[1])] }
+  'chord-secant-angles': () => many(300, () => {
+    // four points on the unit circle in counter-clockwise order A, B, C, D
+    const t = [rnd(0, 1.2), rnd(1.4, 2.6), rnd(2.8, 4), rnd(4.2, 6)]
+    const [A, B, C, D] = t.map((x) => [cos(x), sin(x)])
+    const inter = (p1: number[], p2: number[], p3: number[], p4: number[]) => { const d = (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]); const k = ((p1[0] - p3[0]) * (p3[1] - p4[1]) - (p1[1] - p3[1]) * (p3[0] - p4[0])) / d; return [p1[0] + k * (p2[0] - p1[0]), p1[1] + k * (p2[1] - p1[1])] }
     const angle = (v: number[], p: number[], q: number[]) => acos(((p[0] - v[0]) * (q[0] - v[0]) + (p[1] - v[1]) * (q[1] - v[1])) / (Math.hypot(p[0] - v[0], p[1] - v[1]) * Math.hypot(q[0] - v[0], q[1] - v[1])))
-    const arc = (p: number[], q: number[]) => { let d = abs(Math.atan2(p[1], p[0]) - Math.atan2(q[1], q[0])); return d > PI ? 2 * PI - d : d }
-    const X = inter(A, C, B, D) // chords AC and BD cross inside
-    const ok1 = close(angle(X, A, B), (arc(A, B) + arc(C, D)) / 2, 1e-7)
-    const Y = inter(A, B, D, C) // lines AB and DC meet outside
-    const far = (p: number[], q: number[]) => (Math.hypot(p[0] - Y[0], p[1] - Y[1]) > Math.hypot(q[0] - Y[0], q[1] - Y[1]) ? [p, q] : [q, p])
-    const [P1, P2] = far(A, B), [Q1, Q2] = far(D, C)
-    const ok2 = close(angle(Y, P1, Q1), (arc(P1, Q1) - arc(P2, Q2)) / 2, 1e-7) || abs(Math.hypot(Y[0], Y[1])) < 1
+    // arcs measured counter-clockwise (an intercepted arc can be longer than a half circle)
+    const arcAB = t[1] - t[0], arcBC = t[2] - t[1], arcCD = t[3] - t[2], arcDA = 2 * PI - (t[3] - t[0])
+    // chords AC and BD cross inside: the angle is half the sum of the arcs AB and CD
+    const X = inter(A, C, B, D)
+    const ok1 = close(angle(X, A, B), (arcAB + arcCD) / 2, 1e-6)
+    // secants along AB and DC meet outside: the angle is half the difference of the arcs BC and DA
+    const Y = inter(A, B, D, C)
+    const ok2 = abs(arcBC - arcDA) < 1e-3 || close(angle(Y, A, D), abs(arcBC - arcDA) / 2, 1e-6)
     return ok1 && ok2
   }),
   'circle-segment': () => many(100, () => { const r = rnd(1, 9), a = rnd(10, 170); const sector = (PI * r * r * a) / 360, tri = 0.5 * r * r * sin(deg(a)); return close(sector - tri, (r * r / 2) * ((PI * a) / 180 - sin(deg(a)))) }),

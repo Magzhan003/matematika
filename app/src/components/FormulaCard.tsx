@@ -50,6 +50,19 @@ export function FormulaCard({ f, open, onToggle }: { f: Formula; open: boolean; 
           </div>
           <div className="answer">{t('steps.answer')}: <Tex className="step-tex" tex={f.example.answer} /></div>
 
+          {f.example2 && (
+            <div className="example2">
+              <h4>{t('formulas.example2')}</h4>
+              <p style={{ margin: '0 0 8px', fontWeight: 600 }}>{f.example2.task[lang]}</p>
+              <div className="steps">
+                {f.example2.steps.map((s, i) => (
+                  <div className="step" key={i}><Tex className="step-tex" tex={s} /></div>
+                ))}
+              </div>
+              <div className="answer">{t('steps.answer')}: <Tex className="step-tex" tex={f.example2.answer} /></div>
+            </div>
+          )}
+
           {f.calc && (
             <div style={{ marginTop: 14 }}>
               <Link className="btn btn-primary btn-sm" to={`/calculator?f=${f.id}`}>
