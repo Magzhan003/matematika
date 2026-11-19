@@ -48,6 +48,14 @@ export function SolverTab() {
   const [group, setGroup] = useState<keyof typeof keyGroups>('basic')
   const [exGroup, setExGroup] = useState<keyof typeof examples>('smart')
   const inputRef = useRef<HTMLInputElement>(null)
+  const [history, setHistory] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem('calc-history') ?? '[]') } catch { return [] }
+  })
+  const remember = (s: string) => {
+    const next = [s, ...history.filter((h) => h !== s)].slice(0, 20)
+    setHistory(next)
+    try { localStorage.setItem('calc-history', JSON.stringify(next)) } catch { /* storage blocked */ }
+  }
   const live = useMemo(() => {
     try {
       // words and percents ("15% от 200", "5 км в м") are not formulas — nothing to preview
@@ -61,7 +69,7 @@ export function SolverTab() {
   const run = (s: string, a: Action) => {
     const r = solveAny(s, a)
     setResult(r)
-    if (!('error' in r)) addSolved()
+    if (!('error' in r)) { addSolved(); if (s.trim()) remember(s.trim()) }
   }
 
   const insert = (s: string) => {
@@ -134,8 +142,19 @@ export function SolverTab() {
         </div>
       </div>
 
+      {history.length > 0 && (
+        <div className="chips calc-history" aria-label={t('cx.history')}>
+          <span className="muted small">🕘 {t('cx.history')}:</span>
+          {history.slice(0, 8).map((h) => (
+            <button key={h} className="chip ex-chip" onClick={() => { setInput(h); run(h, action) }}>{h}</button>
+          ))}
+          <button className="chip" onClick={() => { setHistory([]); try { localStorage.removeItem('calc-history') } catch { /* blocked */ } }} aria-label={t('wb.clear')}>×</button>
+        </div>
+      )}
+
       {result && (
         <ResultView
+          title={live ? live.replace(/<=/g, '\\le').replace(/>=/g, '\\ge') : `\\text{${input.replace(/[\\{}$]/g, '')}}`}
           result={result}
           onSimilar={input.trim() ? () => { const s = similarProblem(input); setInput(s); run(s, action) } : undefined}
         />

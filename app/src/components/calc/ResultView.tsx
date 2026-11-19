@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { CalcResult } from '../../lib/calc/tools'
 import { Tex } from '../Tex'
 import { Graph } from './Graph'
+import { ShowOnBoard } from './ShowOnBoard'
 import { SignChart } from './SignChart'
 
 type Mode = 'all' | 'step' | 'answer'
@@ -12,11 +13,12 @@ type Mode = 'all' | 'step' | 'answer'
  * Three ways to look at it: all steps, one step at a time (the student tries the next one first), only the answer.
  * Steps with a known rule get a "Why?" button with a short school explanation.
  */
-export function ResultView({ result, onSimilar }: { result: CalcResult; onSimilar?: () => void }) {
+export function ResultView({ result, onSimilar, title }: { result: CalcResult; onSimilar?: () => void; title?: string }) {
   const { t, i18n } = useTranslation()
   const [mode, setMode] = useState<Mode>('all')
   const [shown, setShown] = useState(1)
   const [why, setWhy] = useState<number | null>(null)
+  const [board, setBoard] = useState(false)
   if ('error' in result) return <p className="error" role="alert">{t(result.error)}</p>
 
   const total = result.steps.length
@@ -26,11 +28,13 @@ export function ResultView({ result, onSimilar }: { result: CalcResult; onSimila
 
   return (
     <div style={{ display: 'grid', gap: 14 }}>
+      {board && <ShowOnBoard result={result} title={title ?? result.steps[0]?.tex ?? ''} onClose={() => setBoard(false)} />}
       <div className="chips">
         <button className={`chip ${mode === 'all' ? 'on' : ''}`} onClick={() => pick('all')}>{t('cx.allSteps')}</button>
         <button className={`chip ${mode === 'step' ? 'on' : ''}`} onClick={() => pick('step')}>{t('cx.byStep')}</button>
         <button className={`chip ${mode === 'answer' ? 'on' : ''}`} onClick={() => pick('answer')}>{t('cx.onlyAnswer')}</button>
-        {onSimilar && <button className="chip" style={{ marginLeft: 'auto' }} onClick={onSimilar}>↻ {t('cx.similar')}</button>}
+        <button className="chip" style={{ marginLeft: 'auto' }} onClick={() => setBoard(true)}>📺 {t('cx.onBoard')}</button>
+        {onSimilar && <button className="chip" onClick={onSimilar}>↻ {t('cx.similar')}</button>}
       </div>
 
       {visible > 0 && (

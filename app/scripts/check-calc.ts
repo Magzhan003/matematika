@@ -52,6 +52,49 @@ for (const [q, want] of known) {
   }
 }
 
+// 2b) "find my mistake": the status of every line
+const { checkSolution } = await import('../src/lib/calc/check')
+const mistakes: [string, string][] = [
+  ['2x + 5 = 11\n2x = 11 + 5\n2x = 16\nx = 8', 'task bad follow follow'],
+  ['2x + 5 = 11\n2x = 11 - 5\n2x = 6\nx = 3', 'task ok ok ok'],
+  ['3(x - 2) = 2x + 1\n3x - 2 = 2x + 1\nx = 3', 'task bad follow'],
+  ['x^2 = 9\nx = 3', 'task bad'],
+  ['-2x > 6\nx > -3', 'task bad'],
+  ['-2x > 6\nx < -3', 'task ok'],
+  ['sqrt(x + 2) = x\nx + 2 = x^2\nx = 2, x = -1', 'task warn bad'],
+  ['(x + 3)^2\nx^2 + 6x + 9', 'task ok'],
+  ['(x + 3)^2\nx^2 + 9', 'task bad'],
+  ['x^2 - 5x + 6 = 0\nD = 25 - 24 = 2\nx = 3 или x = 2', 'task bad ok'],
+  ['x^2 + 4 = 0\nнет корней', 'task ok'],
+]
+for (const [text, want] of mistakes) {
+  const got = checkSolution(text).map((l) => l.status).join(' ')
+  if (got !== want) problems.push(`[mistake] ${text.split('\n')[0]}: got ${got}, want ${want}`)
+  for (const l of checkSolution(text)) if (l.reason) notes.add(l.reason)
+}
+
+// 2c) shapes and everyday math
+const { shapes, solveShape } = await import('../src/lib/calc/shapes')
+const shapeCases: [string, Record<string, string>, Record<string, number>][] = [
+  ['square', { S: '49' }, { a: 7, P: 28 }], ['rect', { a: '6', d: '10' }, { b: 8, S: 48 }], ['rtri', { a: '3', b: '4' }, { c: 5, h: 2.4 }],
+  ['trap', { a: '10', b: '4', h: '4' }, { c: 5, S: 28 }], ['rhomb', { d1: '6', d2: '8' }, { a: 5, S: 24 }], ['cone', { r: '3', l: '5' }, { h: 4 }],
+  ['pyr', { a: '6', h: '4' }, { m: 5, V: 48, Sb: 60 }], ['cyl', { r: '1', h: '1' }, { V: Math.PI }], ['sphere', { R: '3' }, { V: 36 * Math.PI }],
+]
+for (const [id, inp, want] of shapeCases) {
+  const r = solveShape(shapes.find((s) => s.id === id)!, inp)
+  for (const [k, v] of Object.entries(want)) if (!(Math.abs((r.values[k] ?? NaN) - v) < 1e-6 * (1 + v))) problems.push(`[shape] ${id}: ${k} = ${r.values[k]}, want ${v}`)
+  if (r.conflict) problems.push(`[shape] ${id}: unexpected conflict ${r.conflict}`)
+}
+if (!solveShape(shapes.find((s) => s.id === 'rect')!, { a: '3', b: '4', d: '6' }).conflict) problems.push('[shape] rect 3, 4, d = 6 must be a conflict')
+const { lifeCalcs } = await import('../src/lib/calc/life')
+for (const c of lifeCalcs) {
+  const out = c.run(Object.fromEntries(c.fields.map((f) => [f.k, f.def])))
+  if ('error' in out) problems.push(`[life] ${c.id}: ${out.error}`)
+  else out.steps.forEach((s) => s.note && notes.add(s.note))
+}
+const loan = lifeCalcs.find((c) => c.id === 'loan')!.run({ sum: 300000, rate: 20, months: 12 })
+if ('error' in loan || !loan.answer.startsWith('27\\,790{,}3')) problems.push(`[life] loan payment: ${'error' in loan ? loan.error : loan.answer}`)
+
 // 3) step notes are translated
 for (const n of notes) {
   for (const lang of ['ru', 'kz']) {

@@ -2,7 +2,10 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { AnalyzeTab } from '../components/calc/AnalyzeTab'
+import { CheckTab } from '../components/calc/CheckTab'
 import { GraphTab } from '../components/calc/GraphTab'
+import { LifeTab } from '../components/calc/LifeTab'
+import { ShapesTab } from '../components/calc/ShapesTab'
 import { SolverTab } from '../components/calc/SolverTab'
 import { StatsTab } from '../components/calc/StatsTab'
 import { TriangleTab } from '../components/calc/TriangleTab'
@@ -13,9 +16,9 @@ import type { Lang } from '../i18n'
 import { solveFormula, type SolveResult } from '../lib/solver'
 import { useStore } from '../lib/store'
 
-const tabs = ['solve', 'graph', 'analyze', 'triangle', 'stats', 'formula'] as const
+const tabs = ['solve', 'check', 'graph', 'analyze', 'shapes', 'triangle', 'life', 'stats', 'formula'] as const
 type Tab = (typeof tabs)[number]
-const icons: Record<Tab, string> = { solve: '✎', graph: '📈', analyze: '𝑓', triangle: '△', stats: 'Σ', formula: '⚙' }
+const icons: Record<Tab, string> = { solve: '✎', check: '🔍', graph: '📈', analyze: '𝑓', shapes: '⬛', triangle: '△', life: '🛒', stats: 'Σ', formula: '⚙' }
 const calcFormulas = formulas.filter((f) => f.calc)
 
 /** Formula calculator: fill the known values, leave the unknown empty. */
@@ -76,7 +79,10 @@ export function Calculator() {
         ))}
       </div>
       {tab === 'solve' && <SolverTab />}
+      {tab === 'check' && <CheckTab />}
       {tab === 'graph' && <GraphTab />}
+      {tab === 'shapes' && <ShapesTab />}
+      {tab === 'life' && <LifeTab />}
       {tab === 'analyze' && <AnalyzeTab />}
       {tab === 'triangle' && <TriangleTab />}
       {tab === 'stats' && <StatsTab />}
