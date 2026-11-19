@@ -9,8 +9,8 @@ export const curriculum: Record<number, [string[], string[], string[], string[]]
   7: [['powers', 'angles-lines'], ['short-mult', 'triangles'], ['linear-fn', 'linear-eq'], ['linear-eq', 'statistics', 'word-problems']],
   8: [['roots', 'quadrilaterals', 'polygons'], ['quadratic', 'right-triangle'], ['quadratic-fn', 'other-fn', 'trig-basics', 'triangle-area'], ['inequalities', 'circle']],
   9: [['inequalities', 'triangles', 'vectors'], ['arith-prog', 'geom-prog', 'coord-plane'], ['trig-basics', 'trig-identities', 'triangle-area', 'polygons'], ['combinatorics', 'probability', 'circle']],
-  10: [['other-fn', 'powers', 'roots'], ['trig-reduction', 'trig-addition', 'trig-double', 'trig-sum-product'], ['trig-equations', 'derivative-table', 'derivative-rules'], ['derivative-apply', 'combinatorics', 'probability', 'prisms']],
-  11: [['antiderivatives', 'integrals'], ['exp-fn', 'log-props'], ['log-eq', 'pyramids', 'bodies-rotation'], ['bodies-rotation', 'statistics', 'literacy']],
+  10: [['other-fn', 'powers', 'roots'], ['trig-reduction', 'trig-addition', 'trig-double', 'trig-sum-product'], ['inverse-trig', 'trig-equations', 'trig-inequalities', 'derivative-table', 'derivative-rules'], ['derivative-apply', 'combinatorics', 'probability', 'prisms']],
+  11: [['antiderivatives', 'integrals', 'integrals-table'], ['exp-fn', 'log-props'], ['log-eq', 'pyramids', 'bodies-rotation'], ['bodies-rotation', 'complex', 'statistics', 'literacy']],
 }
 
 /** School quarter by date: Sep–Oct 1, Nov–Dec 2, Jan–Mar 3, Apr–Aug 4. */

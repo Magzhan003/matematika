@@ -106,6 +106,8 @@ for (const f of formulas) {
   for (const line of lines) {
     // skip lists ("C: 1, 4, 6"), mixed numbers (2\dfrac{3}{5}) and anything with conditions
     if (/:|\d\s*\\[dt]?frac/.test(line)) { cur = null; continue }
+    // periodic decimals "0{,}1(6)" are not products; complex numbers use i as the imaginary unit
+    if (/\{,\}\d*\(/.test(line) || f.topic === 'complex') { cur = null; continue }
     if (/[;]|\\text|\\Leftrightarrow|\\pm|\\in|\\ne|\\le|\\ge|<|>|\\infty|\\int|'/.test(line)) { cur = null; continue }
     const parts = line.split(/=|\\approx/)
     const approxAt = new Set<number>()
@@ -148,7 +150,8 @@ for (const f of formulas) {
   // only true identities (algebra, trigonometry, logarithms), not definitions "X = …"
   const main = f.tex.split(/,\\quad|,\\qquad|\\qquad|\\quad|;\\/)[0]
   // relations between different quantities (not identities): they cannot hold at random points
-  const relations = ['vieta', 'joint-work', 'trig-right-triangle', 'universal-substitution']
+  // (complex numbers and periodic decimals are checked separately in verify-extra.ts)
+  const relations = ['vieta', 'joint-work', 'trig-right-triangle', 'universal-substitution', 'periodic-fraction', 'complex-ops', 'complex-div']
   const definition = relations.includes(f.id) || /^\s*[A-Za-z](_\{?[\w+-]+\}?)?(\^\{?2\}?)?\s*=/.test(main)
   if (['algebra', 'trigonometry', 'logarithms', 'arithmetic'].includes(f.section) && !definition && (main.match(/=/g) ?? []).length === 1 && !/\\Leftrightarrow|\\Rightarrow|\\text|\\int|'|\\lim|\\sum|\\ldots|\\dots|!|\\parallel|\\perp|\\nearrow|\\overline|\\vec|\\angle|C_|A_|P_|\\triangle|\\infty|\\le|\\ge|<|>|\\pm/.test(main)) {
     try {

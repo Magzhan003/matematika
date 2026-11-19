@@ -9,9 +9,12 @@ import { planimetry2 } from './catalog/planimetry2'
 import { space } from './catalog/space'
 import { trig1 } from './catalog/trig1'
 import { trig2 } from './catalog/trig2'
+import { extraMore } from './catalog/extra-more'
+import { extraTrig } from './catalog/extra-trig'
 
 /** The full school catalogue added on top of the original formulas. */
 export const catalog = [
   ...arithmetic, ...algebra, ...functionsAndProgressions, ...trig1, ...trig2,
   ...logsCalculus, ...combinatorics, ...planimetry1, ...planimetry2, ...space, ...more,
+  ...extraTrig, ...extraMore,
 ]

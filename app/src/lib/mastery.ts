@@ -9,7 +9,7 @@ export const prereqs: Record<string, string[]> = {
   inequalities: ['linear-eq'], 'linear-fn': ['linear-eq', 'coord-plane'], 'quadratic-fn': ['quadratic', 'linear-fn'], 'other-fn': ['linear-fn'],
   'arith-prog': ['linear-eq'], 'geom-prog': ['powers'],
   'trig-basics': ['right-triangle'], 'trig-identities': ['trig-basics'], 'trig-reduction': ['trig-identities'], 'trig-addition': ['trig-identities'],
-  'trig-double': ['trig-addition'], 'trig-sum-product': ['trig-addition'], 'trig-equations': ['trig-identities', 'trig-reduction'],
+  'trig-double': ['trig-addition'], 'trig-sum-product': ['trig-addition'], 'trig-equations': ['trig-identities', 'trig-reduction', 'inverse-trig'], 'inverse-trig': ['trig-basics'], 'trig-inequalities': ['trig-equations'], complex: ['quadratic'], 'integrals-table': ['antiderivatives'],
   'exp-fn': ['powers'], 'log-props': ['exp-fn'], 'log-eq': ['log-props', 'quadratic'],
   'derivative-table': ['other-fn', 'powers'], 'derivative-rules': ['derivative-table'], 'derivative-apply': ['derivative-rules', 'inequalities'],
   antiderivatives: ['derivative-table'], integrals: ['antiderivatives'],
