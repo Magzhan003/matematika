@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { solveAny, similarProblem, type Action, type CalcResult } from '../../lib/calc'
+import { rewrite } from '../../lib/calc/smart'
 import { prepare } from '../../lib/calc/tools'
 import { normalize } from '../../lib/mathcore'
 import { preview } from '../../lib/solver'
@@ -13,19 +14,26 @@ const actions: Action[] = ['auto', 'diff', 'diff2', 'integrate', 'simplify', 'fa
 const keyGroups: Record<string, [string, string][]> = {
   basic: [['7', '7'], ['8', '8'], ['9', '9'], ['÷', '/'], ['(', '('], [')', ')'], ['4', '4'], ['5', '5'], ['6', '6'], ['×', '*'], ['x²', '^2'], ['xⁿ', '^'],
     ['1', '1'], ['2', '2'], ['3', '3'], ['−', '-'], ['√', 'sqrt('], ['π', 'pi'], ['0', '0'], [',', '.'], ['x', 'x'], ['+', '+'], ['|x|', '|'], ['⌫', '⌫']],
-  fx: [['sin', 'sin('], ['cos', 'cos('], ['tg', 'tg('], ['ctg', 'ctg('], ['arcsin', 'arcsin('], ['arccos', 'arccos('], ['arctg', 'arctg('],
+  fx: [['°', '°'], ['sin', 'sin('], ['cos', 'cos('], ['tg', 'tg('], ['ctg', 'ctg('], ['arcsin', 'arcsin('], ['arccos', 'arccos('], ['arctg', 'arctg('],
     ['ln', 'ln('], ['lg', 'lg('], ['log₂', 'log_2('], ['eˣ', 'e^('], ['∛', 'cbrt('], ['|x|', '|'], ['⌫', '⌫']],
-  cmp: [['=', '='], ['<', '<'], ['>', '>'], ['≤', '<='], ['≥', '>='], [';', '; '], ['(', '('], [')', ')'], ['⌫', '⌫']],
+  cmp: [['=', '='], ['<', '<'], ['>', '>'], ['≤', '<='], ['≥', '>='], [';', '; '], ['%', '%'], ['(', '('], [')', ')'], ['⌫', '⌫']],
   vars: [['x', 'x'], ['y', 'y'], ['z', 'z'], ['t', 't'], ['a', 'a'], ['b', 'b'], ['k', 'k'], ['n', 'n'], ['⌫', '⌫']],
 }
 
 type Ex = { s: string; a?: Action }
 const examples: Record<string, Ex[]> = {
+  smart: [
+    { s: '15% от 200' }, { s: '5000 - 20%' }, { s: '30 от 120 в %' }, { s: '72 км/ч в м/с' }, { s: '2,5 ч в мин' }, { s: '3 га в м²' },
+    { s: 'НОД(24; 36)' }, { s: 'НОК(4; 6; 10)' }, { s: 'C(6; 2)' }, { s: '0,(3) + 2 1/2' }, { s: 'sin 30° + cos 60°' }, { s: 'lg 1000 + log_2 8' },
+  ],
   eq: [
     { s: 'x^2 - 5x + 6 = 0' }, { s: '|x - 3| = 2x' }, { s: 'sqrt(x + 2) = x' }, { s: '2^(x+1) = 16' }, { s: 'log_2(x - 1) = 3' },
-    { s: 'sin(x) = 1/2' }, { s: 'cos(2x) = -1/2' }, { s: 'x^3 - 6x^2 + 11x - 6 = 0' }, { s: 'x^4 - 5x^2 + 4 = 0' }, { s: '1/x + 1/(x-1) = 5/6' },
+    { s: 'sin(x) = 1/2' }, { s: 'cos(2x) = -1/2' }, { s: '2sin²x - sin x - 1 = 0' }, { s: 'x^3 - 6x^2 + 11x - 6 = 0' }, { s: 'x^4 - 5x^2 + 4 = 0' }, { s: '1/x + 1/(x-1) = 5/6' },
   ],
-  ineq: [{ s: 'x^2 - 5x + 6 < 0' }, { s: '(x - 1)/(x + 2) <= 0' }, { s: '-3x + 6 >= 0' }, { s: 'x^3 >= 4x' }],
+  ineq: [
+    { s: 'x^2 - 5x + 6 < 0' }, { s: '(x - 1)/(x + 2) <= 0' }, { s: '-3x + 6 >= 0' }, { s: 'x^3 >= 4x' }, { s: '|2x + 1| >= 5' },
+    { s: 'sqrt(x - 1) < 2' }, { s: 'log_2(x) <= 3' }, { s: 'sin x > 1/2' }, { s: 'cos 2x <= 0' }, { s: 'x^2 - 4 > 0; x < 5' },
+  ],
   sys: [{ s: '2x + 3y = 13; 3x - y = 3' }, { s: 'x + y + z = 6; x - y + z = 2; 2x + y - z = 1' }, { s: 'x^2 + y^2 = 25; x + y = 7' }],
   deriv: [{ s: 'x^3 * sin(x)', a: 'diff' }, { s: '(x^2 + 1)/(x - 1)', a: 'diff' }, { s: 'sqrt(x^2 + 9)', a: 'diff' }, { s: 'ln(x) * e^x', a: 'diff' }, { s: 'x^2', a: 'integrate' }],
   expr: [{ s: '(a + b)^3', a: 'expand' }, { s: 'x^2 - 9', a: 'factor' }, { s: '(x^2 - 1)/(x - 1)', a: 'simplify' }, { s: '2^10 + sqrt(144)' }],
@@ -38,11 +46,13 @@ export function SolverTab() {
   const [action, setAction] = useState<Action>('auto')
   const [result, setResult] = useState<CalcResult | null>(null)
   const [group, setGroup] = useState<keyof typeof keyGroups>('basic')
-  const [exGroup, setExGroup] = useState<keyof typeof examples>('eq')
+  const [exGroup, setExGroup] = useState<keyof typeof examples>('smart')
   const inputRef = useRef<HTMLInputElement>(null)
   const live = useMemo(() => {
     try {
-      return preview(prepare(normalize(input)).replace(/<=/g, '≤').replace(/>=/g, '≥'))
+      // words and percents ("15% от 200", "5 км в м") are not formulas — nothing to preview
+      if (/[а-яёәіңғүұқөһ%]/i.test(input)) return ''
+      return preview(prepare(normalize(rewrite(input))).replace(/<=/g, '≤').replace(/>=/g, '≥'))
     } catch {
       return ''
     }

@@ -89,6 +89,11 @@ export function Presenter({ onClose }: { onClose: () => void }) {
   const [shown, setShown] = useState<Shown | null>(null)
   const [drawing, setDrawing] = useState(false)
   const [over, setOver] = useState(false)
+  const [side, setSide] = useState(false)
+  const [sideW, setSideW] = useState(() => {
+    try { return Number(localStorage.getItem('pres-side-width')) || 42 } catch { return 42 }
+  })
+  const body = useRef<HTMLDivElement>(null)
   const file = useRef<HTMLInputElement>(null)
   const view = useRef<HTMLDivElement>(null)
 
@@ -96,10 +101,14 @@ export function Presenter({ onClose }: { onClose: () => void }) {
     try { localStorage.setItem(KEY, JSON.stringify(saved)) } catch { /* storage blocked */ }
   }, [saved])
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape' && !drawing) onClose() }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || drawing || (e.target as HTMLElement)?.tagName === 'TEXTAREA') return
+      if (side) setSide(false)
+      else onClose()
+    }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [drawing, onClose])
+  }, [drawing, side, onClose])
   // free the memory of the previous file when another one is shown
   useEffect(() => () => { if (shown?.src.startsWith('blob:')) URL.revokeObjectURL(shown.src) }, [shown])
 
@@ -163,6 +172,7 @@ export function Presenter({ onClose }: { onClose: () => void }) {
           onClick={(e) => { (e.target as HTMLInputElement).value = '' }}
           onChange={(e) => e.target.files?.[0] && openFile(e.target.files[0])} />
         {shown && shown.kind !== 'message' && <button className={`btn btn-sm ${drawing ? 'btn-primary' : ''}`} onClick={() => setDrawing(true)}>✏️ {t('pres.draw')}</button>}
+        <button className={`btn btn-sm ${side ? 'btn-primary' : ''}`} onClick={() => setSide(!side)} aria-pressed={side}>◧ {t('pres.side')}</button>
         {shown?.original && <a className="btn btn-sm" href={shown.original} target="_blank" rel="noreferrer">↗ {t('pres.newTab')}</a>}
         <button className="btn btn-sm" onClick={onClose} aria-label={t('wb.close')}>✕</button>
       </div>
@@ -178,6 +188,7 @@ export function Presenter({ onClose }: { onClose: () => void }) {
         </div>
       )}
 
+      <div className="pres-body" ref={body}>
       <div className={`pres-view ${over ? 'over' : ''}`} ref={view}>
         {!shown && (
           <div className="pres-empty">
@@ -218,30 +229,77 @@ export function Presenter({ onClose }: { onClose: () => void }) {
           </div>
         )}
       </div>
+      {side && (
+        <>
+          <div className="pres-split" role="separator" aria-orientation="vertical" title={t('pres.resize')}
+            onPointerDown={(e) => {
+              const el = e.currentTarget
+              el.setPointerCapture(e.pointerId)
+              document.body.classList.add('pres-dragging')
+              const move = (ev: PointerEvent) => {
+                const r = body.current!.getBoundingClientRect()
+                const vertical = r.width < 700
+                const share = vertical ? (r.bottom - ev.clientY) / r.height : (r.right - ev.clientX) / r.width
+                setSideW(Math.round(Math.min(75, Math.max(20, share * 100))))
+              }
+              const up = () => {
+                el.removeEventListener('pointermove', move)
+                el.removeEventListener('pointerup', up)
+                document.body.classList.remove('pres-dragging')
+                setSideW((w) => { try { localStorage.setItem('pres-side-width', String(w)) } catch { /* blocked */ } return w })
+              }
+              el.addEventListener('pointermove', move)
+              el.addEventListener('pointerup', up)
+            }} />
+          <div className="pres-side" style={{ flexBasis: `${sideW}%` }}>
+            <Whiteboard docked storageKey="whiteboard-side" onClose={() => setSide(false)} />
+          </div>
+        </>
+      )}
+      </div>
       {shown?.kind === 'frame' && !shown.file && <p className="pres-note">{t('pres.blocked')}</p>}
       {drawing && <Whiteboard transparent onClose={() => setDrawing(false)} />}
     </div>
   )
 }
 
-/** PowerPoint (.pptx) slides drawn right in the page; arrows or the buttons below change slides. */
+/** PowerPoint (.pptx) slides drawn right in the page; arrows or the buttons below change slides.
+ *  The slides are drawn once at a fixed size and then scaled to fit the window (also when the board opens next to them). */
 function PptxView({ data, onFail }: { data: ArrayBuffer; onFail: () => void }) {
   const { t } = useTranslation()
+  const outer = useRef<HTMLDivElement>(null)
   const box = useRef<HTMLDivElement>(null)
   const viewer = useRef<{ renderNextSlide(): void; renderPreSlide(): void; destroy(): void } | null>(null)
-  const [ready, setReady] = useState(false)
   const loaded = useRef(false)
+  const [ready, setReady] = useState(false)
+  const [size, setSize] = useState({ w: 1280, h: 720 })
+  const [scale, setScale] = useState(1)
+
+  // fit the drawn slides into the free space
+  useEffect(() => {
+    const el = outer.current!
+    const fit = () => {
+      const r = el.getBoundingClientRect()
+      setScale(Math.max(0.2, Math.min((r.width - 24) / size.w, (r.height - 24) / size.h)))
+    }
+    fit()
+    const ro = new ResizeObserver(fit)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [size])
+
   useEffect(() => {
     let alive = true
     const el = box.current!
     import('pptx-preview')
       .then(async ({ init }) => {
         if (!alive) return
-        const r = el.parentElement!.getBoundingClientRect()
-        const w = Math.max(320, Math.min(r.width - 32, ((r.height - 80) * 16) / 9))
+        const r = outer.current!.getBoundingClientRect()
+        const w = Math.round(Math.max(640, r.width - 24)), h = Math.round((w * 9) / 16)
         el.innerHTML = ''
-        const v = init(el, { width: Math.round(w), height: Math.round((w * 9) / 16), mode: 'slide' })
+        const v = init(el, { width: w, height: h, mode: 'slide' })
         viewer.current = v
+        setSize({ w, h })
         await v.preview(data.slice(0))
         loaded.current = true
         if (alive) setReady(true)
@@ -249,7 +307,7 @@ function PptxView({ data, onFail }: { data: ArrayBuffer; onFail: () => void }) {
       .catch(() => { if (alive) onFail() })
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || !loaded.current) return
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || !loaded.current) return
       if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); viewer.current?.renderNextSlide() }
       if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); viewer.current?.renderPreSlide() }
     }
@@ -262,9 +320,11 @@ function PptxView({ data, onFail }: { data: ArrayBuffer; onFail: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
   return (
-    <div className="pres-office pres-pptx">
+    <div className="pres-office pres-pptx" ref={outer}>
       {!ready && <p className="pres-loading">{t('pres.loading')}</p>}
-      <div ref={box} />
+      <div style={{ position: 'relative', width: size.w * scale, height: size.h * scale, flex: '0 0 auto' }}>
+        <div ref={box} style={{ position: 'absolute', left: 0, top: 0, width: size.w, transform: `scale(${scale})`, transformOrigin: '0 0' }} />
+      </div>
     </div>
   )
 }

@@ -285,7 +285,7 @@ function logEq(L: string, R: string, v: string): Partial | null {
 
 const SQ2 = Math.SQRT2 / 2, SQ3 = Math.sqrt(3) / 2
 const near = (a: number, b: number) => Math.abs(a - b) < 1e-9
-function arcTex(f: 'sin' | 'cos' | 'tan', a: number): string {
+export function arcTex(f: 'sin' | 'cos' | 'tan', a: number): string {
   const sgn = a < 0 ? -1 : 1
   const x = Math.abs(a)
   if (f === 'sin') {
@@ -367,6 +367,56 @@ function trigEq(L: string, R: string, v: string): Partial | null {
     steps.push({ note: 'eq.trigSolveX', tex: answer })
   }
   const roots = numericRoots(fnOf(`(${L})-(${R})`, v), -2 * Math.PI, 2 * Math.PI, 4000)
+  // school form: (-1)^n · (−π/6) is written as (−1)^{n+1} π/6
+  const fix = (t: string) => t.replace(/\(-1\)\^n -/g, '(-1)^{n+1} ')
+  return { steps: steps.map((s) => ({ ...s, tex: fix(s.tex) })), roots, answer: fix(answer) }
+}
+
+/** a·sin²x + b·sin x + c = 0 (also cos, tg): t = sin x, solve for t, then each sin x = t. */
+function trigSubst(L: string, R: string, v: string): Partial | null {
+  const f = `(${L})-(${R})`
+  // the one trig call that depends on x: sin(x), cos(2x)…; calls without x (sin 30°) are just numbers
+  const calls = [...new Set([...f.matchAll(/(sin|cos|tan)\(([^()]+)\)/g)].filter((m) => hasX(m[2], v)).map((m) => m[0]))]
+  if (calls.length !== 1) return null
+  const call = calls[0]
+  const fn = call.slice(0, 3) as 'sin' | 'cos' | 'tan'
+  const arg = call.slice(4, -1)
+  const inT = f.split(call).join('(tt)')
+  if (hasX(inT, v)) return null
+  // a polynomial in t of degree 1…4, checked numerically (the 5th difference vanishes)
+  const g = fnOf(inT, 'tt')
+  const ys = [-2, -1, 0, 1, 2, 3].map(g)
+  if (!ys.every(Number.isFinite)) return null
+  let d = ys.slice()
+  const diffs: number[][] = []
+  for (let k = 0; k < 5; k++) { const prev = d; d = prev.slice(1).map((y, i) => y - prev[i]); diffs.push(d) }
+  if (Math.abs(diffs[4][0]) > 1e-7 * (1 + Math.max(...ys.map(Math.abs))) || diffs[0].every((y) => Math.abs(y) < 1e-12)) return null
+  const fT = fn === 'tan' ? '\\operatorname{tg}' : `\\${fn}`
+  const argT = arg.trim() === v ? v : `\\left(${texIn(arg)}\\right)`
+  const c = polyCoeffs(inT, 'tt')
+  const tPoly = c ? texIn(polyStr(c.map(snap).slice().reverse(), 't')) : texIn(inT.split('tt').join('t'))
+  const steps: Step[] = [
+    { note: 'eq.trigSubst', params: { f: `${fn === 'tan' ? 'tg' : fn} ${arg.trim() === v ? v : `(${arg})`}` }, tex: `t = ${fT}\\,${argT}:\\quad ${tPoly} = 0` },
+  ]
+  const ts = numericRoots(g, -50, 50, 20000).map(snap)
+  if (!ts.length) {
+    steps.push({ note: 'eq.trigNoRoots', tex: `${tPoly} = 0:\\ \\varnothing` })
+    return { steps, roots: [], answer: '\\varnothing' }
+  }
+  steps.push({ note: 'eq.trigSubstRoots', tex: ts.map((t, i) => `t_{${i + 1}} = ${numTex(t)}`).join(',\\quad ') })
+  const answers: string[] = []
+  for (const t of ts) {
+    if (fn !== 'tan' && Math.abs(t) > 1 + 1e-12) {
+      steps.push({ note: 'eq.trigSubstReject', tex: `${fT}\\,${argT} = ${numTex(t)}:\\quad |${numTex(t)}| > 1` })
+      continue
+    }
+    const sub = trigEq(call, String(t), v)
+    if (!sub || !sub.answer || sub.answer === '\\varnothing') continue
+    steps.push({ note: 'eq.trigSubstBack', tex: `${fT}\\,${argT} = ${numTex(t)} \\;\\Rightarrow\\; ${sub.answer}` })
+    answers.push(sub.answer.replace(/,\\ n \\in \\mathbb\{Z\}$/, ''))
+  }
+  const roots = numericRoots(fnOf(f, v), -2 * Math.PI, 2 * Math.PI, 4000)
+  const answer = answers.length ? `${answers.join(';\\quad ')},\\ n \\in \\mathbb{Z}` : '\\varnothing'
   return { steps, roots, answer }
 }
 
@@ -499,7 +549,7 @@ function solvePartial(L: string, R: string, v: string, inner = false): Partial |
     const sub = solvePartial(iso[0], iso[1], v, inner)
     if (sub) return { ...sub, steps: [start, { note: 'eq.isolate', tex: eqTex(iso[0], iso[1]) }, ...sub.steps.slice(1)] }
   }
-  const methods = [absEq, sqrtEq, expEq, logEq, trigEq, ...(inner ? [] : [rationalEq]), polyEq]
+  const methods = [absEq, sqrtEq, expEq, logEq, trigEq, trigSubst, ...(inner ? [] : [rationalEq]), polyEq]
   for (const m of methods) {
     try {
       const r = m(L, R, v)

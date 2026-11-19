@@ -737,7 +737,7 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
 .pres-note { margin: 0; padding: 6px 14px; font-size: 13px; color: var(--muted); background: var(--card); }
 /* files from the computer: PowerPoint, Word, YouTube card */
 .pres-office { align-self: stretch; width: 100%; overflow: auto; display: flex; flex-direction: column; align-items: center; padding: 16px; }
-.pres-pptx { background: #1b1b1b; justify-content: center; }
+.pres-pptx { background: #1b1b1b; justify-content: center; overflow: hidden; padding: 12px; }
 .pres-docx { background: #e7e7e7; }
 .pres-docx .docx-wrapper { background: transparent !important; padding: 0 !important; }
 .pres-loading { color: #ccc; font-weight: 600; }
@@ -746,4 +746,31 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
 .pres-yt-thumb { position: relative; display: block; width: 100%; max-width: 480px; aspect-ratio: 16 / 9; margin: 0 auto; border: 0; padding: 0; border-radius: 14px; overflow: hidden; background: #000; cursor: pointer; }
 .pres-yt-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .pres-yt-play { position: absolute; inset: 0; margin: auto; width: 72px; height: 50px; border-radius: 14px; background: #e62117; color: #fff; font-size: 24px; display: flex; align-items: center; justify-content: center; }
+/* whiteboard as a panel next to the presentation */
+.pres-body { flex: 1; min-height: 0; display: flex; }
+.pres-body > .pres-view { flex: 1 1 0; min-width: 0; }
+.pres-side { position: relative; flex: 0 0 42%; min-width: 0; overflow: hidden; border-left: 1px solid var(--line); }
+.pres-split { flex: 0 0 10px; cursor: col-resize; background: var(--card); border-left: 1px solid var(--line); touch-action: none; display: flex; align-items: center; justify-content: center; }
+.pres-split::after { content: ''; width: 3px; height: 44px; border-radius: 3px; background: var(--muted); opacity: .5; }
+.pres-split:hover::after { background: var(--accent); opacity: 1; }
+body.pres-dragging, body.pres-dragging * { user-select: none; cursor: col-resize; }
+body.pres-dragging iframe { pointer-events: none; }
+.wb-docked { position: absolute; z-index: 1; }
+.wb-docked .wb-label { display: none; }
+.wb-docked .wb-bar { top: 6px; gap: 6px; padding: 6px; max-width: calc(100% - 12px); border-radius: 12px; }
+.wb-docked .wb-btn { min-width: 34px; height: 34px; font-size: 16px; padding: 0 6px; }
+.wb-docked .wb-color { width: 24px; height: 24px; }
+.wb-docked .wb-select { height: 34px; }
+.wb-docked .wb-group + .wb-group { padding-left: 6px; }
+@media (max-width: 700px) {
+  .pres-body { flex-direction: column; }
+  .pres-side { border-left: 0; border-top: 1px solid var(--line); }
+  .pres-split { cursor: row-resize; border-left: 0; border-top: 1px solid var(--line); }
+  .pres-split::after { width: 44px; height: 3px; }
+}
 @media print { .wb, .pres { display: none !important; } }
+
+/* calculator: "Why?" explanations next to steps */
+.why-btn { margin-left: 8px; border: 1px solid var(--line); background: var(--card); color: var(--accent); border-radius: 999px; padding: 1px 9px; font-size: 12px; font-weight: 700; cursor: pointer; vertical-align: 1px; }
+.why-btn:hover { border-color: var(--accent); }
+.why-text { margin: 8px 0 0; padding: 8px 12px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 10%, var(--card)); font-size: 14px; line-height: 1.45; }

@@ -11,7 +11,7 @@ const R_ = '\\mathbb{R}'
 const fmtX = (x: number) => numTex(x)
 
 /** Conditions written from the formula: denominators ≠ 0, roots ≥ 0, logarithms > 0. */
-function domainConditions(expr: string): string[] {
+export function domainConditions(expr: string): string[] {
   const conds: string[] = []
   const scan = (name: string, op: string) => {
     const re = new RegExp(`${name}\\(`, 'g')

@@ -13,7 +13,13 @@ const KEY = 'whiteboard'
  * Pen, marker, straight line, typed text, eraser, undo, background, save as picture.
  * "clear" background makes it transparent — to write over a presentation or a lesson.
  */
-export function Whiteboard({ onClose, transparent = false }: { onClose: () => void; transparent?: boolean }) {
+export function Whiteboard({ onClose, transparent = false, docked = false, storageKey = KEY }: {
+  onClose: () => void
+  transparent?: boolean
+  /** shown as a panel next to a presentation instead of covering the whole screen */
+  docked?: boolean
+  storageKey?: string
+}) {
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
   const [tool, setTool] = useState<Tool>('pen')
@@ -29,7 +35,7 @@ export function Whiteboard({ onClose, transparent = false }: { onClose: () => vo
 
   const ctx = () => canvas.current!.getContext('2d')!
   const save = () => {
-    try { localStorage.setItem(KEY, canvas.current!.toDataURL('image/png')) } catch { /* storage full or blocked */ }
+    try { localStorage.setItem(storageKey, canvas.current!.toDataURL('image/png')) } catch { /* storage full or blocked */ }
   }
   const remember = () => {
     const c = canvas.current!
@@ -50,7 +56,7 @@ export function Whiteboard({ onClose, transparent = false }: { onClose: () => vo
     g.lineCap = 'round'
     g.lineJoin = 'round'
     try {
-      const saved = localStorage.getItem(KEY)
+      const saved = localStorage.getItem(storageKey)
       if (saved) {
         const img = new Image()
         img.onload = () => { g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.drawImage(img, 0, 0); g.restore() }
@@ -58,7 +64,8 @@ export function Whiteboard({ onClose, transparent = false }: { onClose: () => vo
       }
     } catch { /* no storage */ }
     const onKey = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement).tagName === 'TEXTAREA') return
+      const tag = (e.target as HTMLElement).tagName
+      if (tag === 'TEXTAREA' || tag === 'INPUT') return
       if (e.key === 'Escape') onClose()
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); doUndo() }
     }
@@ -112,8 +119,9 @@ export function Whiteboard({ onClose, transparent = false }: { onClose: () => vo
   const download = () => {
     const c = canvas.current!
     const out = document.createElement('canvas')
-    out.width = window.innerWidth * dpr
-    out.height = window.innerHeight * dpr
+    const box = c.parentElement!.getBoundingClientRect()
+    out.width = box.width * dpr
+    out.height = box.height * dpr
     const g = out.getContext('2d')!
     g.fillStyle = dark ? '#1f2a24' : '#ffffff'
     g.fillRect(0, 0, out.width, out.height)
@@ -125,7 +133,7 @@ export function Whiteboard({ onClose, transparent = false }: { onClose: () => vo
   }
 
   return (
-    <div className={`wb wb-${bg}`} role="dialog" aria-label={t('wb.title')}>
+    <div className={`wb wb-${bg} ${docked ? 'wb-docked' : ''}`} role={docked ? 'region' : 'dialog'} aria-label={t('wb.title')}>
       <canvas
         ref={canvas}
         className={`wb-canvas tool-${tool}`}
