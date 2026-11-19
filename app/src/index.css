@@ -91,22 +91,22 @@ h3 { font-size: 17px; }
   border-bottom: 1px dashed var(--line);
 }
 .topbar-inner {
-  max-width: 1080px; margin: 0 auto; padding: 10px 16px;
-  display: flex; align-items: center; gap: 16px;
+  max-width: 1440px; margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
 }
-.logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 18px; }
+.logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 18px; white-space: nowrap; flex: 0 0 auto; }
 .logo-mark {
   width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center;
   background: var(--space); color: var(--accent); font-size: 18px; font-weight: 700;
 }
-.nav { display: flex; gap: 2px; margin-left: 8px; }
+.nav { display: flex; align-items: center; gap: 2px; margin-left: 4px; min-width: 0; }
 .nav a {
-  display: flex; align-items: center; gap: 6px;
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
   padding: 7px 11px; border-radius: 9px; color: var(--muted); font-size: 15px;
 }
 .nav a:hover { background: var(--accent-soft); color: var(--ink); }
 .nav a.active { background: var(--space); color: var(--space-ink); }
-.top-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.top-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
 
 .xp-chip {
   display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px;
@@ -312,7 +312,8 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
 .truth-no { border-color: var(--bad); }
 
 /* ---------- menu "more" ---------- */
-.nav-more { border: 0; background: transparent; color: var(--muted); padding: 7px 11px; border-radius: 9px; font-size: 15px; position: relative; }
+.nav-more { border: 0; background: transparent; color: var(--muted); padding: 7px 11px; border-radius: 9px; font-size: 15px; position: relative; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; cursor: pointer; }
+.nav-more .dot-badge { margin-left: 2px; }
 .nav-more:hover, .nav-more.active { background: var(--accent-soft); color: var(--ink); }
 .more-menu {
   position: absolute; top: 40px; right: 0; z-index: 30; min-width: 210px; display: grid; gap: 2px; padding: 6px;
@@ -697,7 +698,10 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
 /* ---------- whiteboard & presentation window ---------- */
 .tool-btn { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-weight: 700; font-size: 14px; cursor: pointer; }
 .tool-btn:hover { border-color: var(--accent); }
-@media (max-width: 1100px) { .tool-label { display: none; } .tool-btn { padding: 0 9px; } }
+/* the top bar keeps one row: first the tool names hide (icons stay, names are in the tooltip), then the XP word and the site name */
+.tool-btn { white-space: nowrap; flex: 0 0 auto; }
+@media (max-width: 1500px) { .tool-label { display: none; } .tool-btn { padding: 0 10px; font-size: 16px; } }
+@media (max-width: 1180px) { .xp-label, .logo > span:last-child { display: none; } .nav a, .nav-more { padding: 7px 8px; } }
 .wb { position: fixed; inset: 0; z-index: 100; touch-action: none; }
 .wb-grid { background-color: #fff; background-image: linear-gradient(#e3e9f3 1px, transparent 1px), linear-gradient(90deg, #e3e9f3 1px, transparent 1px); background-size: 32px 32px; }
 .wb-white { background: #fff; }
@@ -818,3 +822,20 @@ body.pres-dragging iframe { pointer-events: none; }
 .calc-show-body .katex { font-size: 1.15em; }
 .calc-show-task { font-size: 1.3em; text-align: center; padding: 8px 0 4px; }
 .calc-show-body .btn { justify-self: start; font-size: 0.8em; }
+
+/* math keyboard floating over any page */
+.mkbd { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 130; width: min(620px, calc(100vw - 16px)); background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 14px 40px rgba(0,0,0,.22); padding: 8px 10px 10px; display: grid; gap: 8px; touch-action: none; user-select: none; }
+.mkbd-head { display: flex; align-items: center; gap: 10px; cursor: move; padding: 2px 4px; }
+.mkbd-hint { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mkbd-close { border: 0; background: transparent; font-size: 18px; cursor: pointer; color: var(--muted); padding: 2px 6px; border-radius: 8px; }
+.mkbd-close:hover { background: var(--accent-soft); color: var(--ink); }
+.mkbd-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+.mkbd-keys { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 5px; }
+.mkbd-keys .key { height: 42px; font-size: 19px; padding: 0 4px; }
+.mkbd-keys .key-word { font-size: 14px; grid-column: span 2; }
+.mkbd-keys .key-wide { grid-column: span 3; font-size: 14px; }
+.mkbd-keys .key:disabled { opacity: .45; cursor: not-allowed; }
+.tool-btn.on { background: var(--space); color: var(--space-ink); border-color: var(--space); }
+@media print { .mkbd { display: none !important; } }
+.mkbd .key-tab { color: var(--muted); }
+.mkbd .key-tab.on { background: var(--space); color: var(--accent); }

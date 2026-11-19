@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useStore } from '../lib/store'
 import { Icon } from './Icon'
+import { MathKeyboard } from './MathKeyboard'
 import { Presenter } from './Presenter'
 import { Whiteboard } from './Whiteboard'
 
@@ -36,6 +37,13 @@ export function Layout() {
   const [more, setMore] = useState(false)
   const [board, setBoard] = useState(false)
   const [pres, setPres] = useState(false)
+  const [kbd, setKbd] = useState(false)
+  // the whiteboard (and anything else) can ask for the keyboard
+  useEffect(() => {
+    const open = () => setKbd(true)
+    window.addEventListener('mathkbd:open', open)
+    return () => window.removeEventListener('mathkbd:open', open)
+  }, [])
   const loc = useLocation()
   useEffect(() => setMore(false), [loc.pathname])
   const extraActive = extra.some((e) => loc.pathname.startsWith(e.to))
@@ -73,6 +81,7 @@ export function Layout() {
           <div className="top-right">
             <button className="tool-btn" onClick={() => setBoard(true)} title={t('wb.title')} aria-label={t('wb.title')}>✏️<span className="tool-label">{t('wb.open')}</span></button>
             <button className="tool-btn" onClick={() => setPres(true)} title={t('pres.title')} aria-label={t('pres.title')}>📺<span className="tool-label">{t('pres.open')}</span></button>
+            <button className={`tool-btn ${kbd ? 'on' : ''}`} onClick={() => setKbd(!kbd)} title={t('kbd.title')} aria-label={t('kbd.title')} aria-pressed={kbd}>⌨<span className="tool-label">{t('kbd.open')}</span></button>
             <span className="xp-chip" title="XP"><Icon name="star" size={16} />{xp}<span className="xp-label">XP</span></span>
             <div className="seg" role="group" aria-label="Language">
               <button className={lang === 'ru' ? 'on' : ''} onClick={() => i18n.changeLanguage('ru')}>РУ</button>
@@ -96,6 +105,7 @@ export function Layout() {
 
       {board && <Whiteboard onClose={() => setBoard(false)} />}
       {pres && <Presenter onClose={() => setPres(false)} />}
+      {kbd && <MathKeyboard onClose={() => setKbd(false)} />}
 
       <nav className="bottom-nav no-print">
         {main.map((it) => (

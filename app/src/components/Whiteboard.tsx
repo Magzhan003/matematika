@@ -203,6 +203,15 @@ export function Whiteboard({ onClose, transparent = false, docked = false, stora
           <select className="wb-select" value={bg} onChange={(e) => { const v = e.target.value as Bg; setBg(v); setColor(0) }} aria-label={t('wb.background')}>
             {(['grid', 'white', 'dark', 'clear'] as Bg[]).map((b) => <option key={b} value={b}>{t(`wb.bg.${b}`)}</option>)}
           </select>
+          <button className="wb-btn" title={t('kbd.title')} onPointerDown={(e) => e.preventDefault()} onClick={() => {
+            // open a text block (if none) and the math keyboard that types into it
+            if (!text) {
+              const r = canvas.current!.parentElement!.getBoundingClientRect()
+              setTool('text')
+              setText({ x: Math.max(20, r.width / 2 - 140), y: Math.max(90, r.height / 3), value: '' })
+            }
+            window.dispatchEvent(new Event('mathkbd:open'))
+          }}>⌨<span className="wb-label">{t('kbd.short')}</span></button>
           <button className="wb-btn" onClick={doUndo} title={t('wb.undo')}>↶<span className="wb-label">{t('wb.undo')}</span></button>
           <button className="wb-btn" onClick={clear} title={t('wb.clear')}>🗑<span className="wb-label">{t('wb.clear')}</span></button>
           <button className="wb-btn" onClick={download} title={t('wb.save')}>💾<span className="wb-label">{t('wb.save')}</span></button>

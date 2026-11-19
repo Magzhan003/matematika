@@ -26,7 +26,8 @@ export type SolveResult = { steps: Step[]; answer: string; approx?: string } | {
 /** Turn school notation into something nerdamer understands. */
 export function normalize(s: string): string {
   return s
-    .replace(/²/g, '^2').replace(/³/g, '^3')
+    .replace(/⁻?[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (m) => `^(${[...m].map((c) => (c === '⁻' ? '-' : String('⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)))).join('')})`)
+    .replace(/∛\s*(\d+(?:[.,]\d+)?|[a-z])/g, 'cbrt($1)').replace(/∛/g, 'cbrt')
     .replace(/√/g, 'sqrt').replace(/π/g, 'pi')
     .replace(/[×·]/g, '*').replace(/[÷:]/g, '/')
     .replace(/[−–]/g, '-')
