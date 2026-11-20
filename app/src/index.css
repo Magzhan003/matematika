@@ -883,3 +883,26 @@ body.pres-dragging iframe { pointer-events: none; }
 .sol-net { width: 100%; max-height: 320px; }
 .sol-net-part { fill: color-mix(in srgb, var(--accent) 16%, transparent); stroke: var(--ink); stroke-width: 1.4; }
 @media print { .cls-stage { display: none; } }
+
+/* olympiad */
+.oly-filters { display: grid; gap: 8px; margin-bottom: 14px; }
+.oly-filters label.chip { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.oly-list { display: grid; gap: 12px; }
+.oly-card { display: grid; gap: 10px; }
+.oly-card.done { border-color: color-mix(in srgb, #22c55e 55%, var(--line)); }
+.oly-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.oly-stars { color: #f59e0b; letter-spacing: 2px; }
+.oly-done { color: #16a34a; font-weight: 700; margin-left: auto; }
+.oly-text { margin: 0; font-size: 17px; line-height: 1.5; }
+.oly-answer { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.oly-answer input { flex: 1 1 160px; max-width: 260px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; font: inherit; background: var(--card); color: var(--ink); }
+.oly-verdict.ok { color: #16a34a; font-weight: 700; } .oly-verdict.no { color: #dc2626; font-weight: 700; } .oly-verdict.nan { color: var(--muted); }
+.oly-hint { background: color-mix(in srgb, #f59e0b 10%, var(--card)); border-left: 4px solid #f59e0b; padding: 8px 12px; border-radius: 8px; }
+.oly-solution { background: color-mix(in srgb, var(--accent) 8%, var(--card)); border-left: 4px solid var(--accent); padding: 8px 12px; border-radius: 8px; display: grid; gap: 4px; }
+/* phone: keep the top bar inside the screen */
+@media (max-width: 480px) {
+  .top-right { gap: 4px; }
+  .tool-btn { height: 34px; padding: 0 7px; font-size: 15px; }
+  .top-right .icon-btn { width: 34px; height: 34px; }
+  .xp-chip { padding-left: 6px; padding-right: 6px; }
+}

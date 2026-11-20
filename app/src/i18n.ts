@@ -7,7 +7,7 @@ export type Lang = 'ru' | 'kz'
 
 const ru = {
   app: { name: 'Математика' },
-  nav: { home: 'Главная', formulas: 'Формулы', calculator: 'Калькулятор', lessons: 'Уроки', progress: 'Прогресс', games: 'Игры', ent: 'ЕНТ', review: 'Повторение', teacher: 'Учителю', more: 'Ещё', work: 'Работа по коду', cheat: 'Шпаргалки', geometry: 'Живая геометрия', word: 'Текстовые задачи', map: 'Карта знаний', diagnostic: 'Диагностика', program: 'По четвертям', journal: 'Журнал результатов', classroom: 'Инструменты урока', solids: '3D-тела' },
+  nav: { home: 'Главная', formulas: 'Формулы', calculator: 'Калькулятор', lessons: 'Уроки', progress: 'Прогресс', games: 'Игры', ent: 'ЕНТ', review: 'Повторение', teacher: 'Учителю', more: 'Ещё', work: 'Работа по коду', cheat: 'Шпаргалки', geometry: 'Живая геометрия', word: 'Текстовые задачи', map: 'Карта знаний', diagnostic: 'Диагностика', program: 'По четвертям', journal: 'Журнал результатов', classroom: 'Инструменты урока', solids: '3D-тела', olympiad: 'Олимпиадные задачи' },
   theme: { paper: 'Тетрадь', cosmos: 'Космос', toggle: 'Сменить оформление' },
   level: { easy: 'Лёгкий', medium: 'Средний', hard: 'Сложный', all: 'Все уровни' },
   branch: { algebra: 'Алгебра', geometry: 'Геометрия', all: 'Всё' },
@@ -96,7 +96,7 @@ const ru = {
 
 const kz: typeof ru = {
   app: { name: 'Математика' },
-  nav: { home: 'Басты бет', formulas: 'Формулалар', calculator: 'Калькулятор', lessons: 'Сабақтар', progress: 'Үлгерім', games: 'Ойындар', ent: 'ҰБТ', review: 'Қайталау', teacher: 'Мұғалімге', more: 'Тағы', work: 'Код бойынша жұмыс', cheat: 'Шпаргалкалар', geometry: 'Тірі геометрия', word: 'Мәтінді есептер', map: 'Білім картасы', diagnostic: 'Диагностика', program: 'Тоқсандар бойынша', journal: 'Нәтижелер журналы', classroom: 'Сабақ құралдары', solids: '3D денелер' },
+  nav: { home: 'Басты бет', formulas: 'Формулалар', calculator: 'Калькулятор', lessons: 'Сабақтар', progress: 'Үлгерім', games: 'Ойындар', ent: 'ҰБТ', review: 'Қайталау', teacher: 'Мұғалімге', more: 'Тағы', work: 'Код бойынша жұмыс', cheat: 'Шпаргалкалар', geometry: 'Тірі геометрия', word: 'Мәтінді есептер', map: 'Білім картасы', diagnostic: 'Диагностика', program: 'Тоқсандар бойынша', journal: 'Нәтижелер журналы', classroom: 'Сабақ құралдары', solids: '3D денелер', olympiad: 'Олимпиада есептері' },
   theme: { paper: 'Дәптер', cosmos: 'Ғарыш', toggle: 'Безендіруді ауыстыру' },
   level: { easy: 'Жеңіл', medium: 'Орташа', hard: 'Күрделі', all: 'Барлық деңгей' },
   branch: { algebra: 'Алгебра', geometry: 'Геометрия', all: 'Барлығы' },

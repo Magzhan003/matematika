@@ -1,6 +1,7 @@
 // HashRouter (#/formulas) so the app also works when opened as a local .html file.
 import { ClassTools } from './pages/ClassTools'
 import { Solids } from './pages/Solids'
+import { Olympiad } from './pages/Olympiad'
 import { Cheatsheet } from './pages/Cheatsheet'
 import { Geometry } from './pages/Geometry'
 import { Diagnostic } from './pages/Diagnostic'
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="journal" element={<Journal />} />
             <Route path="classroom" element={<ClassTools />} />
             <Route path="solids" element={<Solids />} />
+            <Route path="olympiad" element={<Olympiad />} />
             <Route path="work" element={<Work />} />
             <Route path="cheatsheet" element={<Cheatsheet />} />
             <Route path="geometry" element={<Geometry />} />
