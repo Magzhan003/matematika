@@ -906,3 +906,42 @@ body.pres-dragging iframe { pointer-events: none; }
   .top-right .icon-btn { width: 34px; height: 34px; }
   .xp-chip { padding-left: 6px; padding-right: 6px; }
 }
+
+/* worksheets */
+.ws-kinds { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 10px; }
+.ws-kind { display: grid; gap: 4px; text-align: left; cursor: pointer; font: inherit; color: var(--ink); }
+.ws-kind.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.ws-kind-icon { font-size: 26px; }
+.ws-area { display: grid; gap: 16px; margin-top: 14px; }
+.ws-drill { columns: 2; column-gap: 28px; padding-left: 26px; margin: 0; font-size: 15px; }
+.ws-drill li { break-inside: avoid; padding: 6px 0 10px; border-bottom: 1px dashed #ccc; }
+.ws-blank { display: block; margin-top: 6px; color: #444; }
+.ws-rule { font-size: 14px; margin: 0 0 10px; font-style: italic; }
+.ws-table { display: flex; flex-wrap: wrap; gap: 0; margin: 14px 0; border: 1.5px solid #111; }
+.ws-cell { flex: 1 1 90px; display: grid; justify-items: center; gap: 2px; padding: 6px 4px; border: 1px solid #999; }
+.ws-cell b { font-size: 18px; }
+.ws-boxes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.ws-box { display: grid; justify-items: center; gap: 2px; }
+.ws-box-letter { width: 38px; height: 42px; border: 2px solid #111; border-radius: 4px; }
+.ws-box small { font-size: 11px; color: #555; }
+.ws-gap { width: 22px; }
+.ws-mist { display: grid; gap: 12px; padding-left: 24px; margin: 0; font-size: 15px; }
+.ws-mist li { padding-bottom: 10px; border-bottom: 1px dashed #ccc; }
+.ws-student { margin-top: 6px; padding: 4px 10px; background: #f6f2e6; border-left: 3px solid #b06a00; border-radius: 4px; font-family: 'Comic Sans MS', 'Segoe Print', cursive; }
+.ws-mark { margin-top: 6px; font-size: 14px; }
+.ws-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.ws-card { border: 1.5px dashed #888; padding: 10px 12px; font-size: 14px; break-inside: avoid; }
+.ws-card-head { display: flex; justify-content: space-between; border-bottom: 1px solid #111; padding-bottom: 4px; margin-bottom: 4px; }
+.ws-card-name { font-size: 12px; margin-bottom: 4px; }
+.ws-card ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.ws-key { columns: 3; padding-left: 26px; margin: 0; font-size: 14px; }
+.ws-key li { break-inside: avoid; padding: 2px 0; }
+.ws-key-word { font-size: 18px; }
+.ws-key-cards { display: grid; gap: 6px; font-size: 14px; }
+@media (max-width: 640px) { .ws-drill, .ws-key { columns: 1; } .ws-cards { grid-template-columns: 1fr; } }
+@media print {
+  .ws-area { margin: 0; gap: 0; display: block; }
+  .ws-drill { columns: 2; } .ws-key { columns: 3; } .ws-cards { grid-template-columns: 1fr 1fr; }
+  .ws-card { break-inside: avoid; page-break-inside: avoid; }
+  .ws-student { background: #f3f3f3; }
+}
