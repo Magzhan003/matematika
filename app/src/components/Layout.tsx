@@ -19,7 +19,7 @@ const extra = [
   { to: '/classroom', key: 'classroom', emoji: '🧰' },
   { to: '/solids', key: 'solids', emoji: '📦' },
   { to: '/olympiad', key: 'olympiad', emoji: '🏆' },
-  { to: '/worksheets', key: 'worksheets', emoji: '🗒' },
+  { to: '/worksheets', key: 'worksheets', emoji: '📑' },
   { to: '/program', key: 'program', emoji: '📅' },
   { to: '/map', key: 'map', emoji: '🗺' },
   { to: '/diagnostic', key: 'diagnostic', emoji: '🧭' },
