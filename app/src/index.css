@@ -839,3 +839,47 @@ body.pres-dragging iframe { pointer-events: none; }
 @media print { .mkbd { display: none !important; } }
 .mkbd .key-tab { color: var(--muted); }
 .mkbd .key-tab.on { background: var(--space); color: var(--accent); }
+
+/* classroom tools */
+.cls-stage { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: grid; gap: 14px; justify-items: center; }
+.cls-stage:fullscreen { border-radius: 0; align-content: center; background: var(--bg, #f5f1e8); }
+.cls-ring { width: min(340px, 80vw); height: auto; }
+.cls-stage:fullscreen .cls-ring { width: min(70vh, 90vw); }
+.cls-ring-bg { fill: none; stroke: var(--line); stroke-width: 18; }
+.cls-time { font-size: 64px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.cls-name { font-size: clamp(36px, 7vw, 72px); font-weight: 800; min-height: 1.3em; text-align: center; color: var(--ink); }
+.cls-stage:fullscreen .cls-name { font-size: 12vw; }
+.cls-name.spin { color: var(--muted); }
+.cls-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+.cls-group { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: color-mix(in srgb, var(--accent) 6%, var(--card)); }
+.cls-group ol { margin: 6px 0 0; padding-left: 20px; }
+.cls-light { display: grid; gap: 14px; background: #1f2937; padding: 18px; border-radius: 28px; }
+.cls-light .lamp { width: 90px; height: 90px; border-radius: 50%; opacity: .18; }
+.cls-stage:fullscreen .cls-light .lamp { width: 22vh; height: 22vh; }
+.lamp.red { background: #ef4444; } .lamp.yellow { background: #f59e0b; } .lamp.green { background: #22c55e; }
+.lamp.lit { opacity: 1; box-shadow: 0 0 40px currentColor; }
+.cls-light-text { font-size: 26px; font-weight: 800; margin: 0; }
+.cls-meter { position: relative; width: min(420px, 90%); height: 12px; border-radius: 6px; background: var(--line); overflow: visible; }
+.cls-meter i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; transition: width .1s; }
+.cls-meter b { position: absolute; top: -4px; bottom: -4px; width: 3px; background: var(--ink); }
+.cls-dict { justify-items: stretch; min-height: 420px; }
+.cls-dict-bar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.cls-dict-bar i { display: block; height: 100%; background: var(--accent); transition: width 1s linear; }
+.cls-dict-task { text-align: center; font-size: clamp(22px, 3.2vw, 34px); display: grid; gap: 10px; justify-items: center; align-content: center; min-height: 240px; }
+.cls-dict-task p { margin: 0; max-width: 900px; }
+.cls-dict-task .katex { font-size: 1.3em; }
+.cls-stage:fullscreen .cls-dict-task { font-size: 4.2vw; min-height: 60vh; }
+.cls-dict-num { width: 56px; height: 56px; border-radius: 50%; background: var(--space); color: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 26px; }
+.cls-dict-left { font-weight: 800; font-size: 22px; font-variant-numeric: tabular-nums; align-self: center; }
+.cls-dict-answers { display: grid; gap: 8px; font-size: 18px; margin: 0; }
+.cls-stage:fullscreen .cls-dict-answers { font-size: 2.4vw; padding: 0 4vw; }
+/* 3D solids */
+.sol-view svg { width: 100%; height: auto; display: block; }
+.sol-face { fill: color-mix(in srgb, var(--accent) 22%, transparent); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
+.sol-face.base { fill: color-mix(in srgb, #1d70b8 22%, transparent); }
+.sol-face.smooth { stroke: color-mix(in srgb, var(--accent) 40%, transparent); stroke-width: .6; }
+.sol-hidden { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.sol-formula { display: grid; gap: 2px; }
+.sol-net { width: 100%; max-height: 320px; }
+.sol-net-part { fill: color-mix(in srgb, var(--accent) 16%, transparent); stroke: var(--ink); stroke-width: 1.4; }
+@media print { .cls-stage { display: none; } }
