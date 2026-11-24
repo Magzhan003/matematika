@@ -22,6 +22,7 @@ const extra = [
   { to: '/worksheets', key: 'worksheets', emoji: '📑' },
   { to: '/summative', key: 'summative', emoji: '🎯' },
   { to: '/scenario', key: 'scenario', emoji: '🗓' },
+  { to: '/textbook', key: 'textbook', emoji: '📘' },
   { to: '/program', key: 'program', emoji: '📅' },
   { to: '/map', key: 'map', emoji: '🗺' },
   { to: '/diagnostic', key: 'diagnostic', emoji: '🧭' },

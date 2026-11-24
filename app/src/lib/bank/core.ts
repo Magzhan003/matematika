@@ -31,6 +31,8 @@ export type Problem = {
   mistakes?: Mistake[]
   /** A table or a bar chart that belongs to the statement (math literacy tasks). */
   visual?: Visual
+  /** For checks only: two mathjs expressions (statement, answer) equal for any values of the letters. */
+  verify?: [string, string]
 }
 
 type Cell = string | number | L

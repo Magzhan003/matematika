@@ -5,7 +5,7 @@ import { gens } from './bank'
 /** What a student should know before a topic (school order). */
 export const prereqs: Record<string, string[]> = {
   fractions: [], percents: ['fractions'], proportions: ['fractions'], divisibility: [], 'word-problems': ['proportions', 'linear-eq'], literacy: ['percents', 'proportions'],
-  powers: [], roots: ['powers'], 'short-mult': ['powers'], 'linear-eq': ['fractions'], quadratic: ['short-mult', 'roots', 'linear-eq'],
+  powers: [], roots: ['powers'], polynomials: ['powers'], 'short-mult': ['polynomials'], 'alg-fractions': ['short-mult', 'fractions'], 'linear-eq': ['fractions'], quadratic: ['short-mult', 'roots', 'linear-eq'],
   inequalities: ['linear-eq'], 'linear-fn': ['linear-eq', 'coord-plane'], 'quadratic-fn': ['quadratic', 'linear-fn'], 'other-fn': ['linear-fn'],
   'arith-prog': ['linear-eq'], 'geom-prog': ['powers'],
   'trig-basics': ['right-triangle'], 'trig-identities': ['trig-basics'], 'trig-reduction': ['trig-identities'], 'trig-addition': ['trig-identities'],

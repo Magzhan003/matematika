@@ -6,6 +6,7 @@ import { Worksheets } from './pages/Worksheets'
 import { Summative } from './pages/Summative'
 import { Scenario } from './pages/Scenario'
 import { EntPlan } from './pages/EntPlan'
+import { Textbook } from './pages/Textbook'
 import { Cheatsheet } from './pages/Cheatsheet'
 import { Geometry } from './pages/Geometry'
 import { Diagnostic } from './pages/Diagnostic'
@@ -49,6 +50,7 @@ export default function App() {
             <Route path="games" element={<Games />} />
             <Route path="ent" element={<Ent />} />
             <Route path="ent-plan" element={<EntPlan />} />
+            <Route path="textbook" element={<Textbook />} />
             <Route path="review" element={<Review />} />
             <Route path="teacher" element={<Teacher />} />
             <Route path="journal" element={<Journal />} />

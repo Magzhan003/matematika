@@ -179,7 +179,9 @@ export const algGens: Gen[] = [
     return { text: T.expand, tex: `(x ${a < 0 ? '-' : '+'} ${Math.abs(a)})^2`, answer: poly([1, 2 * a, a * a]), solve: `(x + (${a}))^2`, solveAction: 'expand', wrong: [poly([1, 0, a * a]), poly([1, a, a * a]), poly([1, -2 * a, a * a])], mistakes: [mkT(poly([1, 0, a * a]), 'square2ab')] }
   }),
   G('factor-diff', 'short-mult', 'easy', 7, (r) => {
-    const k = ri(r, 1, 4), a = ri(r, 1, 9)
+    // k and a without a common factor, so (kx − a)(kx + a) is the complete factorisation (not 4x² − 16 = (2x − 4)(2x + 4))
+    const k = ri(r, 1, 4)
+    let a = ri(r, 1, 9); while (gcd(k, a) !== 1) a = ri(r, 1, 9)
     const kx = k === 1 ? 'x' : `${k}x`
     return { text: T.factor, tex: `${k * k === 1 ? '' : k * k}x^{2} - ${a * a}`, answer: `(${kx} - ${a})(${kx} + ${a})`, solve: `${k * k}x^2 - ${a * a}`, solveAction: 'factor', wrong: [`(${kx} - ${a})^2`, `(${kx} + ${a})^2`, `(${kx} - ${a * a})(${kx} + 1)`, `(${kx} - ${a + 1})(${kx} + ${a + 1})`, `(${a} - ${kx})^2`], mistakes: [mkT(`(${kx} - ${a})^2`, 'diffSquares')] }
   }),

@@ -1043,3 +1043,29 @@ body.pres-dragging iframe { pointer-events: none; }
 .ep-pop { position: absolute; z-index: 20; top: 100%; left: 0; width: min(320px, 86vw); background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); padding: 10px; display: grid; gap: 8px; }
 .ep-cal .ep-cell:nth-child(7n) .ep-pop, .ep-cal .ep-cell:nth-child(7n-1) .ep-pop, .ep-cal .ep-cell:nth-child(7n-2) .ep-pop { left: auto; right: 0; }
 @media (max-width: 520px) { .ep-cal { grid-template-columns: repeat(4, minmax(0, 1fr)); } .ep-pop { position: fixed; left: 8px !important; right: 8px !important; top: auto; bottom: 70px; width: auto; } }
+
+/* textbook */
+.tb-book { display: flex; gap: 14px; align-items: center; }
+.tb-cover { width: 54px; height: 70px; border-radius: 6px; background: linear-gradient(135deg, #f97316, #f59e0b); color: #fff; font-size: 34px; font-weight: 900; display: grid; place-items: center; flex: none; box-shadow: 2px 3px 0 rgba(0,0,0,.15); }
+.tb-sec h2 { font-size: 18px; margin: 6px 0 8px; }
+.tb-list { display: grid; gap: 6px; }
+.tb-par { border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.tb-par.open { border-color: var(--accent); }
+.tb-row { width: 100%; display: grid; grid-template-columns: 56px 1fr auto; gap: 10px; align-items: baseline; text-align: left; padding: 10px 12px; background: none; border: 0; color: var(--ink); font: inherit; cursor: pointer; }
+.tb-n { font-weight: 800; color: var(--accent); }
+.tb-body { display: grid; gap: 12px; padding: 0 12px 12px; }
+.tb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px; }
+.tb-box { border: 1px dashed var(--line); border-radius: 10px; padding: 8px 10px; display: grid; gap: 4px; }
+.tb-levels { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.lvl { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; font-weight: 800; font-size: 12px; color: #fff; }
+.lvl.a { background: #22c55e; } .lvl.b { background: #f59e0b; } .lvl.c { background: #ef4444; }
+.tb-tasks-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tb-tasks { display: grid; gap: 8px; padding-left: 24px; margin: 0; }
+.tb-sheet { display: none; }
+.tb-key { margin-top: 12px; font-size: 12px; border-top: 1px dashed #999; padding-top: 6px; }
+@media print { .tb-key { break-before: page; page-break-before: always; border: 0; font-size: 14px; } }
+@media print { .tb-sheet { display: block; } }
+@media (max-width: 520px) { .tb-row { grid-template-columns: 48px 1fr; } .tb-row .small { grid-column: 2; } }
+.tb-page { display: grid; gap: 14px; }
+/* page breaks do not work inside a grid: print as normal blocks */
+@media print { .tb-page { display: block; } }

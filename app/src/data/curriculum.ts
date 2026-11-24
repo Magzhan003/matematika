@@ -6,7 +6,8 @@
 export const curriculum: Record<number, [string[], string[], string[], string[]]> = {
   5: [['divisibility', 'word-problems'], ['fractions'], ['fractions', 'percents'], ['quadrilaterals', 'prisms', 'literacy']],
   6: [['proportions'], ['percents', 'fractions'], ['inequalities', 'word-problems'], ['circle', 'literacy']],
-  7: [['powers', 'angles-lines'], ['short-mult', 'triangles'], ['linear-fn', 'linear-eq'], ['linear-eq', 'statistics', 'word-problems']],
+  // algebra as in the textbook (Әбілқасымова и др., 2025): I–II sections — 1st quarter, III–IV — 2nd, V — 3rd, VI — 4th
+  7: [['powers', 'polynomials', 'angles-lines'], ['linear-fn', 'other-fn', 'statistics', 'triangles'], ['short-mult', 'word-problems', 'triangles'], ['alg-fractions', 'circle']],
   8: [['roots', 'quadrilaterals', 'polygons'], ['quadratic', 'right-triangle'], ['quadratic-fn', 'other-fn', 'trig-basics', 'triangle-area'], ['inequalities', 'circle']],
   9: [['inequalities', 'triangles', 'vectors'], ['arith-prog', 'geom-prog', 'coord-plane'], ['trig-basics', 'trig-identities', 'triangle-area', 'polygons'], ['combinatorics', 'probability', 'circle']],
   10: [['other-fn', 'powers', 'roots'], ['trig-reduction', 'trig-addition', 'trig-double', 'trig-sum-product'], ['inverse-trig', 'trig-equations', 'trig-inequalities', 'derivative-table', 'derivative-rules'], ['derivative-apply', 'combinatorics', 'probability', 'prisms']],

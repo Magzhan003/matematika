@@ -4,6 +4,7 @@ import { normalize, num } from '../mathcore'
 import { prepare } from '../calc/tools'
 import { algGens } from './alg'
 import { numericWrong, seeded, type Gen, type Mistake, type Problem, type Rng } from './core'
+import { alg7Gens } from './alg7'
 import { extraGens } from './extra'
 import { geoGens } from './geo'
 import { literacyGens } from './literacy'
@@ -11,7 +12,7 @@ import { literacyGens } from './literacy'
 export type { Gen, Mistake, Problem, Rng } from './core'
 export { seeded } from './core'
 
-export const gens: Gen[] = [...algGens, ...geoGens, ...literacyGens, ...extraGens]
+export const gens: Gen[] = [...algGens, ...geoGens, ...literacyGens, ...extraGens, ...alg7Gens]
 export const genById = (id: string) => gens.find((g) => g.id === id)
 
 const rank: Record<Level, number> = { easy: 0, medium: 1, hard: 2 }
