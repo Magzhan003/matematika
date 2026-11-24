@@ -21,6 +21,7 @@ const extra = [
   { to: '/olympiad', key: 'olympiad', emoji: '🏆' },
   { to: '/worksheets', key: 'worksheets', emoji: '📑' },
   { to: '/summative', key: 'summative', emoji: '🎯' },
+  { to: '/scenario', key: 'scenario', emoji: '🗓' },
   { to: '/program', key: 'program', emoji: '📅' },
   { to: '/map', key: 'map', emoji: '🗺' },
   { to: '/diagnostic', key: 'diagnostic', emoji: '🧭' },

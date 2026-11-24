@@ -967,3 +967,39 @@ body.pres-dragging iframe { pointer-events: none; }
 @media print { .sum-table th { background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 .sum-task { break-inside: avoid; page-break-inside: avoid; }
 @media print { .sum-table { font-size: 11.5px; } .sum-table th, .sum-table td { padding: 3px 5px; } }
+
+/* lesson scenario */
+.scn-plan { margin-top: 14px; display: grid; gap: 4px; }
+.scn-plan-stage { break-inside: avoid; padding: 8px 0 10px; border-bottom: 1px dashed #bbb; }
+.scn-plan-head { display: flex; justify-content: space-between; font-size: 16px; }
+.scn-plan-stage p.muted { margin: 2px 0 6px; }
+.scn-tasks { display: grid; gap: 6px; padding-left: 24px; margin: 4px 0; }
+.scn-ans { color: #15803d; font-weight: 700; margin-top: 2px; }
+.scn-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+.scn-formula { border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; background: var(--card); }
+.sheet .scn-formula { background: #fff; border-color: #ccc; }
+.scn-formula-title { font-weight: 700; }
+.scn-explain { margin: 6px 0; }
+.scn-example { display: grid; gap: 4px; }
+.scn-org { text-align: center; }
+.scn-topic { font-size: 28px; font-weight: 800; }
+.scn-reflect { margin: 6px 0; padding-left: 20px; }
+.scn-smile { font-size: 32px; letter-spacing: 10px; }
+.scn-stage { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 20px; display: grid; gap: 12px; min-height: 70vh; align-content: start; }
+.scn-stage:fullscreen { border-radius: 0; padding: 3vh 4vw; background: var(--bg, #f5f1e8); overflow: auto; }
+.scn-bar { display: flex; gap: 6px; flex-wrap: wrap; }
+.scn-dot { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--line); background: var(--card); font-size: 18px; cursor: pointer; opacity: .55; }
+.scn-dot.done { opacity: .85; border-color: #22c55e; }
+.scn-dot.on { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
+.scn-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.scn-top h2 { margin: 0; }
+.scn-clock { font-size: 40px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.scn-clock.soon { color: #d97706; } .scn-clock.over { color: #dc2626; }
+.scn-body { font-size: 20px; line-height: 1.5; }
+.scn-body .scn-topic { font-size: clamp(30px, 5vw, 56px); margin-top: 6vh; }
+.scn-stage:fullscreen .scn-body { font-size: 2.2vw; }
+.scn-body .katex { font-size: 1.15em; }
+.scn-controls { justify-content: flex-end; margin-top: auto; }
+@media print { .scn-plan { margin: 0; } .scn-plan .katex-display { margin: 4px 0; } }
+.scn-formula .katex-display { overflow-x: auto; overflow-y: hidden; }
+.scn-plan .scn-grid:has(.scn-formula) { grid-template-columns: 1fr; }

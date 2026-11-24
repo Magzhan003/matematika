@@ -4,6 +4,7 @@ import { Solids } from './pages/Solids'
 import { Olympiad } from './pages/Olympiad'
 import { Worksheets } from './pages/Worksheets'
 import { Summative } from './pages/Summative'
+import { Scenario } from './pages/Scenario'
 import { Cheatsheet } from './pages/Cheatsheet'
 import { Geometry } from './pages/Geometry'
 import { Diagnostic } from './pages/Diagnostic'
@@ -54,6 +55,7 @@ export default function App() {
             <Route path="olympiad" element={<Olympiad />} />
             <Route path="worksheets" element={<Worksheets />} />
             <Route path="summative" element={<Summative />} />
+            <Route path="scenario" element={<Scenario />} />
             <Route path="work" element={<Work />} />
             <Route path="cheatsheet" element={<Cheatsheet />} />
             <Route path="geometry" element={<Geometry />} />
