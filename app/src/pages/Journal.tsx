@@ -6,52 +6,8 @@ import { Solution } from '../components/ProblemCard'
 import { Tex } from '../components/Tex'
 import { topicById } from '../data/topics'
 import type { Lang } from '../i18n'
-import { decodeResult, decodeWork, variantProblems, type Result, type Work } from '../lib/workcode'
-
-type Row = { name: string; code: string }
-/** One saved class work: its code (to rebuild the tasks), title, date and the students' results. */
-type Entry = { code: string; title: string; created: string; rows: Row[] }
-
-const CODE = /r[0-9a-z]{3}-?[0-9a-z]{4}-?[0-9a-z]{4}-?[0-9a-z]{4}/i
-const keyOf = (seed: number) => `journal:${seed}`
-const today = () => new Date().toISOString().slice(0, 10)
-
-function load(seed: number): Entry | null {
-  try {
-    const raw = localStorage.getItem(keyOf(seed))
-    if (!raw) return null
-    const v = JSON.parse(raw)
-    // the first version kept only the list of results
-    return Array.isArray(v) ? { code: '', title: '', created: '', rows: v } : v
-  } catch {
-    return null
-  }
-}
-function store(seed: number, e: Entry) {
-  try { localStorage.setItem(keyOf(seed), JSON.stringify(e)) } catch { /* storage unavailable */ }
-}
-function allWorks(): { seed: number; e: Entry }[] {
-  const out: { seed: number; e: Entry }[] = []
-  try {
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i)!
-      if (!k.startsWith('journal:')) continue
-      const seed = Number(k.slice(8))
-      const e = load(seed)
-      if (e) out.push({ seed, e })
-    }
-  } catch { /* storage unavailable */ }
-  return out.sort((a, b) => (b.e.created || '').localeCompare(a.e.created || ''))
-}
-
-/** 5-point school mark from the percentage (85 / 65 / 40). */
-const mark = (p: number) => (p >= 85 ? 5 : p >= 65 ? 4 : p >= 40 ? 3 : 2)
-const results = (rows: Row[]) => rows.map((r) => ({ ...r, res: decodeResult(r.code) as Result })).filter((r) => r.res)
-const avgPercent = (e: Entry) => {
-  const rs = results(e.rows)
-  if (!rs.length) return null
-  return Math.round(rs.reduce((s, r) => s + r.res.ok.filter(Boolean).length / r.res.ok.length, 0) / rs.length * 100)
-}
+import { decodeResult, decodeWork, variantProblems, type Work } from '../lib/workcode'
+import { allWorks, avgPercent, CODE, keyOf, load, mark, results, store, today, type Entry } from '../lib/journal'
 
 /** Teacher's journal: all class works, results by student and task, and the tasks with answers. */
 export function Journal() {

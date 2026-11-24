@@ -1069,3 +1069,27 @@ body.pres-dragging iframe { pointer-events: none; }
 .tb-page { display: grid; gap: 14px; }
 /* page breaks do not work inside a grid: print as normal blocks */
 @media print { .tb-page { display: block; } }
+
+/* portfolio */
+.pf-list { display: grid; gap: 16px; margin-top: 14px; }
+.pf-sheet h3 { font-size: 15px; margin: 12px 0 6px; }
+.pf-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.pf-stats div { border: 1px solid #ccc; border-radius: 8px; padding: 6px 8px; display: grid; }
+.pf-stats b { font-size: 20px; } .pf-stats span { font-size: 11px; color: #555; }
+.pf-topics { display: grid; gap: 4px; }
+.pf-topic { display: grid; grid-template-columns: minmax(0, 1fr) 140px 50px; gap: 8px; align-items: center; font-size: 13px; }
+.pf-bar { height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
+.pf-bar i { display: block; height: 100%; background: #22c55e; }
+.pf-topic.mid .pf-bar i { background: #f59e0b; } .pf-topic.weak .pf-bar i { background: #ef4444; }
+.pf-review { display: grid; gap: 6px; padding-left: 22px; margin: 0; font-size: 14px; }
+.pf-key { margin-top: 8px; color: #555; transform: rotate(180deg); text-align: right; }
+.pf-sign { margin-top: 16px; }
+@media (max-width: 560px) { .pf-stats { grid-template-columns: 1fr 1fr; } .pf-topic { grid-template-columns: 1fr 80px 40px; } }
+@media print { .pf-list { display: block; margin: 0; } .pf-sheet { break-after: page; page-break-after: always; } .pf-sheet:last-child { break-after: auto; } }
+@media print { .pf-bar, .pf-bar i, .lvl, .ep-bar i { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+/* bars drawn with borders in print: borders are printed even when «background graphics» is off */
+@media print {
+  .pf-bar { border: 1px solid #888; background: none; height: 10px; box-sizing: border-box; }
+  .pf-bar i { height: 0; border-top: 8px solid #22c55e; background: none; }
+  .pf-topic.mid .pf-bar i { border-top-color: #f59e0b; } .pf-topic.weak .pf-bar i { border-top-color: #ef4444; }
+}

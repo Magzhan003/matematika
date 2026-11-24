@@ -35,6 +35,7 @@ const extra = [
   { to: '/cheatsheet', key: 'cheat', emoji: '📄' },
   { to: '/teacher', key: 'teacher', emoji: '🖨' },
   { to: '/journal', key: 'journal', emoji: '📋' },
+  { to: '/portfolio', key: 'portfolio', emoji: '🗂' },
 ] as const
 
 export function Layout() {
