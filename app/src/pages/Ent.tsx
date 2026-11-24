@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { MistakeHint } from '../components/MistakeHint'
 import { ProblemVisual } from '../components/ProblemVisual'
 import { Solution } from '../components/ProblemCard'
@@ -87,6 +88,7 @@ export function Ent() {
     return (
       <div className="page" style={{ display: 'grid', gap: 16 }}>
         <h1 style={{ margin: 0 }}>{t('ent.title')}</h1>
+        <Link className="card ep-link" to="/ent-plan">📅 <b>{t('ep.title')}</b> <span className="muted small">— {t('ep.linkHint')}</span></Link>
         <p className="muted" style={{ margin: 0 }}>{t('ent.intro')}</p>
         <div className="grid">
           {presets.map((p, i) => (
