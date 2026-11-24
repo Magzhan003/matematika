@@ -3,6 +3,7 @@ import { ClassTools } from './pages/ClassTools'
 import { Solids } from './pages/Solids'
 import { Olympiad } from './pages/Olympiad'
 import { Worksheets } from './pages/Worksheets'
+import { Summative } from './pages/Summative'
 import { Cheatsheet } from './pages/Cheatsheet'
 import { Geometry } from './pages/Geometry'
 import { Diagnostic } from './pages/Diagnostic'
@@ -52,6 +53,7 @@ export default function App() {
             <Route path="solids" element={<Solids />} />
             <Route path="olympiad" element={<Olympiad />} />
             <Route path="worksheets" element={<Worksheets />} />
+            <Route path="summative" element={<Summative />} />
             <Route path="work" element={<Work />} />
             <Route path="cheatsheet" element={<Cheatsheet />} />
             <Route path="geometry" element={<Geometry />} />

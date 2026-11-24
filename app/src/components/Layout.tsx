@@ -20,6 +20,7 @@ const extra = [
   { to: '/solids', key: 'solids', emoji: '📦' },
   { to: '/olympiad', key: 'olympiad', emoji: '🏆' },
   { to: '/worksheets', key: 'worksheets', emoji: '📑' },
+  { to: '/summative', key: 'summative', emoji: '🎯' },
   { to: '/program', key: 'program', emoji: '📅' },
   { to: '/map', key: 'map', emoji: '🗺' },
   { to: '/diagnostic', key: 'diagnostic', emoji: '🧭' },
