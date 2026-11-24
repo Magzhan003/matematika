@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { SpeakButton } from '../components/SpeakButton'
 import { useTranslation } from 'react-i18next'
 import { olympiad, type Band, type OTask, type OTopic } from '../data/olympiad'
 import { useStore } from '../lib/store'
@@ -41,6 +42,7 @@ function TaskCard({ task, solved, onSolved }: { task: OTask; solved: boolean; on
         <span className="chip">{t(`oly.topics.${task.topic}`)}</span>
         <span className="oly-stars" title={t('oly.difficulty')}>{'★'.repeat(task.stars)}{'☆'.repeat(3 - task.stars)}</span>
         {solved && <span className="oly-done">✓ {t('oly.solved')}</span>}
+        <SpeakButton parts={[task.text[lang]]} className={solved ? '' : 'push'} />
       </div>
       <p className="oly-text">{task.text[lang]}</p>
       {task.value !== undefined ? (

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { SpeakButton } from '../components/SpeakButton'
 import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
 import { LevelBadge } from '../components/FormulaCard'
@@ -384,7 +385,9 @@ function LessonView({ id }: { id: string }) {
         </>
       ) : (
         <div className="card lesson-stage" key={slide}>
-          <span className="lesson-kind">{label(s.kind)}</span>
+          <span className="lesson-kind speak-row">{label(s.kind)}
+            {(s.text || lines.length > 0) && <SpeakButton key={`${slide}-${shown}`} parts={[s.text?.[lang] ?? '', ...lines.slice(0, shown).map((tex) => ({ tex }))]} />}
+          </span>
           {s.kind === 'goal' && <GoalSlide f={f} kinds={slides.map((x) => x.kind)} />}
           {s.kind === 'try' && (
             <>

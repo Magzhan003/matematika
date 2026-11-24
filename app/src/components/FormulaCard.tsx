@@ -1,3 +1,4 @@
+import { SpeakButton } from './SpeakButton'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import type { Formula } from '../data/formulas'
@@ -38,7 +39,9 @@ export function FormulaCard({ f, open, onToggle }: { f: Formula; open: boolean; 
 
       {open && (
         <div className="f-body">
-          <h4>{t('formulas.explain')}</h4>
+          <h4 className="speak-row">{t('formulas.explain')}
+            <SpeakButton parts={[f.title[lang], { tex: f.tex }, f.explain[lang], f.example.task[lang], ...f.example.steps.map((tex) => ({ tex })), { tex: f.example.answer }]} />
+          </h4>
           <p style={{ margin: 0 }}>{f.explain[lang]}</p>
 
           <h4>{t('formulas.example')}</h4>

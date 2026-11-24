@@ -1003,3 +1003,14 @@ body.pres-dragging iframe { pointer-events: none; }
 @media print { .scn-plan { margin: 0; } .scn-plan .katex-display { margin: 4px 0; } }
 .scn-formula .katex-display { overflow-x: auto; overflow-y: hidden; }
 .scn-plan .scn-grid:has(.scn-formula) { grid-template-columns: 1fr; }
+
+/* read aloud */
+.speak-row { display: flex; align-items: center; gap: 8px; }
+.speak-btn { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; min-width: 34px; height: 30px; padding: 0 8px; font-size: 15px; cursor: pointer; line-height: 1; }
+.speak-btn:hover { border-color: var(--accent); }
+.speak-btn.on { background: var(--space); color: var(--space-ink); border-color: var(--space); animation: speak-pulse 1.2s ease-in-out infinite; }
+.speak-btn sup { font-size: 9px; margin-left: 1px; color: var(--muted); }
+.speak-btn.push { margin-left: auto; }
+.oly-done + .speak-btn { margin-left: 6px; }
+@keyframes speak-pulse { 50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 25%, transparent); } }
+@media print { .speak-btn { display: none !important; } }
