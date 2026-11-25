@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { isTeacherPath, useRole } from '../lib/role'
 import { useStore } from '../lib/store'
+import { Login } from '../pages/Login'
 import { Icon } from './Icon'
 import { MathKeyboard } from './MathKeyboard'
 import { Presenter } from './Presenter'
@@ -55,10 +57,13 @@ export function Layout() {
   const loc = useLocation()
   useEffect(() => setMore(false), [loc.pathname])
   const extraActive = extra.some((e) => loc.pathname.startsWith(e.to))
+  const { role, logout } = useRole()
+  // a student does not see the teacher's tools
+  const items = extra.filter((e) => role === 'teacher' || !isTeacherPath(e.to))
 
   const moreMenu = more && (
     <div className="more-menu" role="menu">
-      {extra.map((e) => (
+      {items.map((e) => (
         <NavLink key={e.to} to={e.to} role="menuitem">
           <span aria-hidden="true">{e.emoji}</span> {t(`nav.${e.key}`)}
           {e.key === 'review' && dueKeys.length > 0 && <span className="dot-badge">{dueKeys.length}</span>}
@@ -66,6 +71,8 @@ export function Layout() {
       ))}
     </div>
   )
+
+  if (!role) return <Login />
 
   return (
     <>
@@ -88,9 +95,13 @@ export function Layout() {
           </nav>
           <div className="top-right">
             <button className="tool-btn" onClick={() => setBoard(true)} title={t('wb.title')} aria-label={t('wb.title')}>✏️<span className="tool-label">{t('wb.open')}</span></button>
-            <button className="tool-btn" onClick={() => setPres(true)} title={t('pres.title')} aria-label={t('pres.title')}>📺<span className="tool-label">{t('pres.open')}</span></button>
+            {role === 'teacher' && <button className="tool-btn" onClick={() => setPres(true)} title={t('pres.title')} aria-label={t('pres.title')}>📺<span className="tool-label">{t('pres.open')}</span></button>}
             <button className={`tool-btn ${kbd ? 'on' : ''}`} onClick={() => setKbd(!kbd)} title={t('kbd.title')} aria-label={t('kbd.title')} aria-pressed={kbd}>⌨<span className="tool-label">{t('kbd.open')}</span></button>
-            <span className="xp-chip" title="XP"><Icon name="star" size={16} />{xp}<span className="xp-label">XP</span></span>
+            {role === 'student' && <span className="xp-chip" title="XP"><Icon name="star" size={16} />{xp}<span className="xp-label">XP</span></span>}
+            <button className="icon-btn role-btn" title={`${role === 'teacher' ? t('login.teacher') : t('login.student')} — ${t('login.logout')}`} aria-label={t('login.logout')}
+              onClick={() => { if (window.confirm(t('login.logoutAsk'))) logout() }}>
+              {role === 'teacher' ? '👩‍🏫' : '🎓'}
+            </button>
             <div className="seg" role="group" aria-label="Language">
               <button className={lang === 'ru' ? 'on' : ''} onClick={() => i18n.changeLanguage('ru')}>РУ</button>
               <button className={lang === 'kz' ? 'on' : ''} onClick={() => i18n.changeLanguage('kz')}>ҚАЗ</button>
@@ -108,7 +119,7 @@ export function Layout() {
       </header>
 
       <main className="shell">
-        <Outlet />
+        {role === 'student' && isTeacherPath(loc.pathname) ? <Navigate to="/" replace /> : <Outlet />}
       </main>
 
       {board && <Whiteboard onClose={() => setBoard(false)} />}

@@ -8,6 +8,7 @@ import { topicById } from '../data/topics'
 import type { Lang } from '../i18n'
 import { gens } from '../lib/bank'
 import { masteryOf } from '../lib/mastery'
+import { useRole } from '../lib/role'
 import { useStore } from '../lib/store'
 
 /** School program by grade and quarter: today's lessons for a student or a teacher. */
@@ -15,6 +16,7 @@ export function Program() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language as Lang
   const store = useStore()
+  const { role } = useRole()
   const [grade, setGrade] = useState(store.diag?.grade ?? 7)
   const [q, setQ] = useState<number>(currentQuarter())
   const ids = curriculum[grade][q - 1]
@@ -65,12 +67,12 @@ export function Program() {
             )}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {hasTasks && <Link className="btn btn-sm btn-primary" to={`/practice/${id}`}>💪 {t('map.train')}</Link>}
-              {hasTasks && <Link className="btn btn-sm" to={`/teacher?topics=${id}`}>🖨 {t('prog.makeTest')}</Link>}
+              {hasTasks && role === 'teacher' && <Link className="btn btn-sm" to={`/teacher?topics=${id}`}>🖨 {t('prog.makeTest')}</Link>}
             </div>
           </section>
         )
       })}
-      {ids.some((id) => gens.some((g) => g.topic === id)) && (
+      {role === 'teacher' && ids.some((id) => gens.some((g) => g.topic === id)) && (
         <div><Link className="btn" to={`/teacher?topics=${ids.filter((id) => gens.some((g) => g.topic === id)).join(',')}`}>🖨 {t('prog.quarterTest')}</Link></div>
       )}
       <p className="muted small" style={{ margin: 0 }}>{t('prog.note')}</p>

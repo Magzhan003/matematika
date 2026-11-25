@@ -20,6 +20,7 @@ import { Work } from './pages/Work'
 import { WordProblems } from './pages/WordProblems'
 import { HashRouter as BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
+import { RoleProvider } from './lib/role'
 import { StoreProvider } from './lib/store'
 import { Calculator } from './pages/Calculator'
 import { Formulas } from './pages/Formulas'
@@ -38,6 +39,7 @@ import { Teacher } from './pages/Teacher'
 export default function App() {
   return (
     <StoreProvider>
+      <RoleProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
@@ -76,6 +78,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      </RoleProvider>
     </StoreProvider>
   )
 }

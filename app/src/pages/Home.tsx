@@ -7,6 +7,7 @@ import { Icon } from '../components/Icon'
 import { Tex } from '../components/Tex'
 import { formulas, type Branch } from '../data/formulas'
 import type { Lang } from '../i18n'
+import { useRole } from '../lib/role'
 import { useStore, XP_PER_LEVEL } from '../lib/store'
 
 function branchStats(branch: Branch, viewed: string[]) {
@@ -19,6 +20,7 @@ export function Home() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language as Lang
   const { level, levelXp, streak, viewed, dueKeys } = useStore()
+  const { role } = useRole()
   const day = Math.floor(Date.now() / 86400000)
   const fod = formulas[day % formulas.length]
 
@@ -49,7 +51,9 @@ export function Home() {
       <div className="grid">
         <Link to="/ent" className="tile dark"><span className="tile-icon">🎓</span><strong style={{ fontSize: 18 }}>{t('nav.ent')}</strong><span className="muted small">{t('home.entDesc')}</span></Link>
         <Link to="/review" className="tile"><span className="tile-icon">🔁</span><strong style={{ fontSize: 18 }}>{t('nav.review')}</strong><span className="muted small">{t('home.reviewDesc', { n: dueKeys.length })}</span></Link>
-        <Link to="/teacher" className="tile"><span className="tile-icon">🖨</span><strong style={{ fontSize: 18 }}>{t('nav.teacher')}</strong><span className="muted small">{t('home.teacherDesc')}</span></Link>
+        {role === 'teacher'
+          ? <Link to="/teacher" className="tile"><span className="tile-icon">🖨</span><strong style={{ fontSize: 18 }}>{t('nav.teacher')}</strong><span className="muted small">{t('home.teacherDesc')}</span></Link>
+          : <Link to="/work" className="tile"><span className="tile-icon">📝</span><strong style={{ fontSize: 18 }}>{t('nav.work')}</strong><span className="muted small">{t('home.workDesc')}</span></Link>}
       </div>
 
       <div id="daily"><DailyTask /></div>
