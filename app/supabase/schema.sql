@@ -183,6 +183,10 @@ grant execute on function public.reset_student_password(uuid, text) to authentic
 grant execute on function public.delete_student(uuid) to authenticated;
 
 -- ---------- права и правила доступа ----------
+-- (в новых проектах Supabase доступ к таблицам и функциям не выдаётся автоматически — выдаём явно)
+grant usage on schema public to authenticated;
+grant execute on function public.my_role(), public.my_class(), public.is_teacher_of_class(uuid),
+  public.is_my_student(uuid), public.is_my_work(uuid), public.can_answer(uuid) to authenticated;
 revoke all on public.profiles, public.classes, public.progress, public.works, public.submissions from anon;
 grant select, insert, update, delete on public.classes, public.progress, public.works, public.submissions to authenticated;
 grant select on public.profiles to authenticated;
