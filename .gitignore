@@ -20,3 +20,7 @@ Thumbs.db
 
 # finished videos (large files)
 Видеоуроки/
+
+# teacher logins and passwords for sale: never publish
+ЛОГИНЫ*/
+*.secret.*

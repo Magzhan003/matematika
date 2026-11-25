@@ -95,6 +95,23 @@ const check = (r: { data: any; error: unknown }): any => { if (r.error) throw r.
 
 // ---------- auth ----------
 export async function signInStudent(login: string, password: string) { check(await need().auth.signInWithPassword({ email: loginToEmail(login), password })) }
+export const TEACHER_DOMAIN = '@teachers.invalid'
+/**
+ * One form for everybody: the login of a teacher (issued by the site owner) or of a student (issued by the teacher).
+ * Teacher logins start with «u-»; anything with «@» is an e-mail. Otherwise the other kind is tried too.
+ */
+export async function signIn(login: string, password: string) {
+  const l = login.trim().toLowerCase()
+  const tries = l.includes('@') ? [l] : l.startsWith('u-') ? [l + TEACHER_DOMAIN, l + STUDENT_DOMAIN] : [l + STUDENT_DOMAIN, l + TEACHER_DOMAIN]
+  let last: unknown = null
+  for (const email of tries) {
+    const r = await need().auth.signInWithPassword({ email, password })
+    if (!r.error) return
+    last = r.error
+    if (errKey(r.error) !== 'cl.err.credentials') break
+  }
+  throw last
+}
 export async function signInTeacher(email: string, password: string) { check(await need().auth.signInWithPassword({ email: email.trim(), password })) }
 export async function signUpTeacher(name: string, email: string, password: string) {
   const r = check(await need().auth.signUp({ email: email.trim(), password, options: { data: { full_name: name.trim() }, emailRedirectTo: location.origin + location.pathname } }))
