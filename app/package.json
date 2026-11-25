@@ -12,6 +12,7 @@
     "audit": "npx tsx scripts/audit.ts && npx tsx scripts/verify-extra.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.119.2",
     "docx-preview": "^0.4.1",
     "i18next": "^27.1.3",
     "katex": "^0.19.1",
@@ -24,12 +25,14 @@
     "react-router-dom": "^7.18.5"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.6.0",
     "@types/katex": "^0.16.8",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "oxlint": "^1.90.0",
+    "tsx": "^4.23.15",
     "typescript": "~7.0.2",
     "vite": "^8.3.6"
   }

@@ -8,6 +8,7 @@ import { Tex } from '../components/Tex'
 import { formulas, type Branch } from '../data/formulas'
 import type { Lang } from '../i18n'
 import { useRole } from '../lib/role'
+import { cloud } from '../lib/cloud'
 import { useStore, XP_PER_LEVEL } from '../lib/store'
 
 function branchStats(branch: Branch, viewed: string[]) {
@@ -53,7 +54,9 @@ export function Home() {
         <Link to="/review" className="tile"><span className="tile-icon">🔁</span><strong style={{ fontSize: 18 }}>{t('nav.review')}</strong><span className="muted small">{t('home.reviewDesc', { n: dueKeys.length })}</span></Link>
         {role === 'teacher'
           ? <Link to="/teacher" className="tile"><span className="tile-icon">🖨</span><strong style={{ fontSize: 18 }}>{t('nav.teacher')}</strong><span className="muted small">{t('home.teacherDesc')}</span></Link>
-          : <Link to="/work" className="tile"><span className="tile-icon">📝</span><strong style={{ fontSize: 18 }}>{t('nav.work')}</strong><span className="muted small">{t('home.workDesc')}</span></Link>}
+          : cloud
+            ? <Link to="/tasks" className="tile"><span className="tile-icon">📬</span><strong style={{ fontSize: 18 }}>{t('nav.tasks')}</strong><span className="muted small">{t('home.tasksDesc')}</span></Link>
+            : <Link to="/work" className="tile"><span className="tile-icon">📝</span><strong style={{ fontSize: 18 }}>{t('nav.work')}</strong><span className="muted small">{t('home.workDesc')}</span></Link>}
       </div>
 
       <div id="daily"><DailyTask /></div>

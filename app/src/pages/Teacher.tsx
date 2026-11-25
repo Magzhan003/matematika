@@ -9,6 +9,8 @@ import type { Lang } from '../i18n'
 import { Link, useSearchParams } from 'react-router-dom'
 import { gens, gensFor, pickGens, seeded, type Problem } from '../lib/bank'
 import { encodeWork } from '../lib/workcode'
+import { cloud } from '../lib/cloud'
+import { GiveWork } from '../components/GiveWork'
 
 const levels: Level[] = ['easy', 'medium', 'hard']
 
@@ -137,6 +139,7 @@ export function Teacher() {
             <div className="result-code">{online}</div>
             <p className="muted small" style={{ margin: 0 }}>{t('teach.onlineHint')}</p>
             <div><Link className="btn btn-sm" to={`/journal?c=${online}&t=${encodeURIComponent(heading)}`}>📋 {t('teach.journal')}</Link></div>
+            {cloud && <GiveWork code={online} title={heading} variants={variants} />}
           </div>
         )}
       </div>

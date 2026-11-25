@@ -1117,3 +1117,16 @@ body.pres-dragging iframe { pointer-events: none; }
 @media (max-width: 420px) { .login-roles { grid-template-columns: 1fr; } .login-role { padding: 16px 10px; } }
 .login-head > div:nth-child(2) { flex: 1; min-width: 0; }
 .login-lang { flex: none; }
+
+/* online */
+.cloud-badge { position: fixed; left: 12px; bottom: 76px; z-index: 60; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 13px; box-shadow: 0 6px 20px rgba(0,0,0,.12); }
+.cloud-badge.error { border-color: #f59e0b; }
+@media (min-width: 900px) { .cloud-badge { bottom: 16px; } }
+.cl-msg { font-size: 16px; line-height: 1.5; margin: 0; }
+.cl-table code, .cl-card code { font-family: ui-monospace, Consolas, monospace; font-size: 15px; font-weight: 700; }
+.cl-actions { white-space: nowrap; display: flex; gap: 4px; justify-content: flex-end; }
+.cl-cards-note { display: grid; gap: 8px; border: 2px solid #f59e0b; }
+.cl-cards { display: none; }
+.cl-card { border: 1.5px dashed #888; padding: 12px 14px; display: grid; gap: 4px; break-inside: avoid; }
+.jr-closed { opacity: .7; }
+@media print { .cl-cards { display: grid !important; grid-template-columns: 1fr 1fr; gap: 0; } }

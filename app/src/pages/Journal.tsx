@@ -8,6 +8,7 @@ import { topicById } from '../data/topics'
 import type { Lang } from '../i18n'
 import { decodeResult, decodeWork, variantProblems, type Work } from '../lib/workcode'
 import { allWorks, avgPercent, CODE, keyOf, load, mark, results, store, today, type Entry } from '../lib/journal'
+import { setWorkOpen, useCloudJournal } from '../lib/cloud'
 
 /** Teacher's journal: all class works, results by student and task, and the tasks with answers. */
 export function Journal() {
@@ -17,6 +18,8 @@ export function Journal() {
   const work = useMemo(() => decodeWork(code), [code])
   const [codeInput, setCodeInput] = useState('')
   const [, refresh] = useState(0)
+  // online: answers come from the database; works given to a class can be closed
+  const cj = useCloudJournal()
 
   if (work) return <WorkView key={work.seed} work={work} code={code} title={params.get('t') ?? ''} onBack={() => setParams({})} />
 
@@ -51,6 +54,10 @@ export function Journal() {
                 <span className="small">{t('jr.students', { n })}{avg !== null ? ` · ${t('jr.avg', { p: avg })}` : ''}</span>
               </div>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                {cj.works.filter((w) => w.code === e.code).map((w) => (
+                  <button key={w.id} className={`btn btn-sm ${w.open ? '' : 'jr-closed'}`} title={t('cl.toggleOpen')}
+                    onClick={async () => { await setWorkOpen(w.id, !w.open); cj.reload() }}>{w.open ? `🟢 ${t('cl.accepting')}` : `🔒 ${t('cl.closed')}`}</button>
+                ))}
                 {e.code ? <button className="btn btn-sm btn-primary" onClick={() => open(e.code)}>{t('jr.open')}</button>
                   : <span className="muted small">{t('jr.needCode')}</span>}
                 <button className="btn btn-sm" aria-label={t('jr.deleteWork')} title={t('jr.deleteWork')}

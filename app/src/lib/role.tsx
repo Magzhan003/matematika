@@ -7,6 +7,7 @@
  * someone who edits the browser storage, since everything lives on this computer.
  */
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
+import { cloud, useCloud } from './cloud'
 
 export type Role = 'student' | 'teacher'
 type Hashed = { salt: string; hash: string }
@@ -14,7 +15,9 @@ type Hashed = { salt: string; hash: string }
 const ROLE = 'role', PIN = 'teacher-pin', RECOVERY = 'teacher-recovery', FAILS = 'teacher-pin-fails'
 
 /** Pages only the teacher sees (tests and answers, the journal with marks, printing for the class). */
-export const teacherOnly = ['/teacher', '/journal', '/portfolio', '/summative', '/scenario', '/worksheets', '/classroom']
+export const teacherOnly = ['/teacher', '/journal', '/portfolio', '/summative', '/scenario', '/worksheets', '/classroom', '/classes']
+/** Pages only for an online student account. */
+export const studentOnly = ['/tasks']
 export const isTeacherPath = (path: string) => teacherOnly.some((p) => path === p || path.startsWith(`${p}/`) || path.startsWith(`${p}?`))
 
 const get = (s: Storage, k: string) => { try { return s.getItem(k) } catch { return null } }
@@ -112,6 +115,12 @@ export function RoleProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => { set(sessionStorage, ROLE, null); set(localStorage, ROLE, null); setRole(null) }, [])
 
+  // online mode: the role comes from the account's profile, signing out ends the session
+  const c = useCloud()
+  if (cloud) {
+    const onlineRole = c.profile?.role ?? null
+    return <RoleCtx.Provider value={{ role: onlineRole, hasPin, enterStudent, createPin, enterTeacher, resetPin, logout: () => { c.signOut() }, waitSeconds }}>{children}</RoleCtx.Provider>
+  }
   return <RoleCtx.Provider value={{ role, hasPin, enterStudent, createPin, enterTeacher, resetPin, logout, waitSeconds }}>{children}</RoleCtx.Provider>
 }
 

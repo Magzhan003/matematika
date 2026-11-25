@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Navigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { isTeacherPath, useRole } from '../lib/role'
+import { isTeacherPath, studentOnly, useRole } from '../lib/role'
 import { useStore } from '../lib/store'
 import { Login } from '../pages/Login'
+import { CloudLogin } from '../pages/CloudLogin'
+import { cloud } from '../lib/cloud'
+import { CloudSync } from './CloudSync'
 import { Icon } from './Icon'
 import { MathKeyboard } from './MathKeyboard'
 import { Presenter } from './Presenter'
@@ -18,6 +21,8 @@ const main = [
 ] as const
 
 const extra = [
+  { to: '/classes', key: 'classes', emoji: '👥', online: true },
+  { to: '/tasks', key: 'tasks', emoji: '📬', online: true },
   { to: '/classroom', key: 'classroom', emoji: '🧰' },
   { to: '/solids', key: 'solids', emoji: '📦' },
   { to: '/olympiad', key: 'olympiad', emoji: '🏆' },
@@ -38,7 +43,7 @@ const extra = [
   { to: '/teacher', key: 'teacher', emoji: '🖨' },
   { to: '/journal', key: 'journal', emoji: '📋' },
   { to: '/portfolio', key: 'portfolio', emoji: '🗂' },
-] as const
+] as { to: string; key: string; emoji: string; online?: boolean }[]
 
 export function Layout() {
   const { t, i18n } = useTranslation()
@@ -59,7 +64,7 @@ export function Layout() {
   const extraActive = extra.some((e) => loc.pathname.startsWith(e.to))
   const { role, logout } = useRole()
   // a student does not see the teacher's tools
-  const items = extra.filter((e) => role === 'teacher' || !isTeacherPath(e.to))
+  const items = extra.filter((e) => (role === 'teacher' ? !studentOnly.includes(e.to) : !isTeacherPath(e.to)) && (!e.online || !!cloud))
 
   const moreMenu = more && (
     <div className="more-menu" role="menu">
@@ -72,7 +77,7 @@ export function Layout() {
     </div>
   )
 
-  if (!role) return <Login />
+  if (!role) return cloud ? <CloudLogin /> : <Login />
 
   return (
     <>
@@ -125,6 +130,7 @@ export function Layout() {
       {board && <Whiteboard onClose={() => setBoard(false)} />}
       {pres && <Presenter onClose={() => setPres(false)} />}
       {kbd && <MathKeyboard onClose={() => setKbd(false)} />}
+      {cloud && <CloudSync />}
 
       <nav className="bottom-nav no-print">
         {main.map((it) => (

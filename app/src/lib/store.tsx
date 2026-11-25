@@ -71,6 +71,10 @@ type Ctx = Progress & {
   setName: (name: string) => void
   /** Replace all progress with a saved copy; false if the data does not look like progress. */
   importProgress: (data: unknown) => boolean
+  /** The whole progress object (for saving it to the account). */
+  snapshot: Progress
+  /** Replace progress with the one from the account (or a clean one for a new account). */
+  replaceProgress: (data: Partial<Progress> | null) => void
 }
 
 /** Everything that is saved to a backup file. */
@@ -154,6 +158,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setP((s) => ({ ...s, xp: s.xp + 30, diag: { date: today(), grade, topics } }))
   }, [])
   const setName = useCallback((name: string) => setP((s) => ({ ...s, name: name.slice(0, 60) })), [])
+  const replaceProgress = useCallback((data: Partial<Progress> | null) => {
+    const d = today(), saved = { ...EMPTY, ...(data ?? {}) }
+    // the streak continues if the last visit (on any device) was yesterday
+    const streak = saved.lastDay === d ? saved.streak : saved.lastDay === yesterday() ? saved.streak + 1 : 1
+    setP({ ...saved, streak, lastDay: d })
+  }, [])
   const importProgress = useCallback((data: unknown) => {
     const d = data as { app?: string; progress?: Partial<Progress>; journals?: Record<string, unknown> }
     if (!d || d.app !== 'matematika' || typeof d.progress !== 'object' || typeof d.progress?.xp !== 'number') return false
@@ -183,6 +193,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     saveDiag,
     setName,
     importProgress,
+    snapshot: p,
+    replaceProgress,
   }
   return <StoreCtx.Provider value={value}>{children}</StoreCtx.Provider>
 }

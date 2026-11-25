@@ -8,6 +8,8 @@ import { Scenario } from './pages/Scenario'
 import { EntPlan } from './pages/EntPlan'
 import { Textbook } from './pages/Textbook'
 import { Portfolio } from './pages/Portfolio'
+import { Classes } from './pages/Classes'
+import { MyTasks } from './pages/MyTasks'
 import { Cheatsheet } from './pages/Cheatsheet'
 import { Geometry } from './pages/Geometry'
 import { Diagnostic } from './pages/Diagnostic'
@@ -21,6 +23,7 @@ import { WordProblems } from './pages/WordProblems'
 import { HashRouter as BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { RoleProvider } from './lib/role'
+import { CloudProvider } from './lib/cloud'
 import { StoreProvider } from './lib/store'
 import { Calculator } from './pages/Calculator'
 import { Formulas } from './pages/Formulas'
@@ -39,6 +42,7 @@ import { Teacher } from './pages/Teacher'
 export default function App() {
   return (
     <StoreProvider>
+      <CloudProvider>
       <RoleProvider>
       <BrowserRouter>
         <Routes>
@@ -55,6 +59,8 @@ export default function App() {
             <Route path="ent-plan" element={<EntPlan />} />
             <Route path="textbook" element={<Textbook />} />
             <Route path="portfolio" element={<Portfolio />} />
+            <Route path="classes" element={<Classes />} />
+            <Route path="tasks" element={<MyTasks />} />
             <Route path="review" element={<Review />} />
             <Route path="teacher" element={<Teacher />} />
             <Route path="journal" element={<Journal />} />
@@ -79,6 +85,7 @@ export default function App() {
         </Routes>
       </BrowserRouter>
       </RoleProvider>
+      </CloudProvider>
     </StoreProvider>
   )
 }

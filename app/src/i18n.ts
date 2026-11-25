@@ -7,7 +7,7 @@ export type Lang = 'ru' | 'kz'
 
 const ru = {
   app: { name: 'Математика' },
-  nav: { home: 'Главная', formulas: 'Формулы', calculator: 'Калькулятор', lessons: 'Уроки', progress: 'Прогресс', games: 'Игры', ent: 'ЕНТ', review: 'Повторение', teacher: 'Учителю', more: 'Ещё', work: 'Работа по коду', cheat: 'Шпаргалки', geometry: 'Живая геометрия', word: 'Текстовые задачи', map: 'Карта знаний', diagnostic: 'Диагностика', program: 'По четвертям', journal: 'Журнал результатов', classroom: 'Инструменты урока', solids: '3D-тела', olympiad: 'Олимпиадные задачи', worksheets: 'Рабочие листы', summative: 'СОР и СОЧ', scenario: 'Сценарий урока', textbook: 'Задачи по учебнику', portfolio: 'Портфолио ученика' },
+  nav: { home: 'Главная', formulas: 'Формулы', calculator: 'Калькулятор', lessons: 'Уроки', progress: 'Прогресс', games: 'Игры', ent: 'ЕНТ', review: 'Повторение', teacher: 'Учителю', more: 'Ещё', work: 'Работа по коду', cheat: 'Шпаргалки', geometry: 'Живая геометрия', word: 'Текстовые задачи', map: 'Карта знаний', diagnostic: 'Диагностика', program: 'По четвертям', journal: 'Журнал результатов', classroom: 'Инструменты урока', solids: '3D-тела', olympiad: 'Олимпиадные задачи', worksheets: 'Рабочие листы', summative: 'СОР и СОЧ', scenario: 'Сценарий урока', textbook: 'Задачи по учебнику', portfolio: 'Портфолио ученика', classes: 'Классы и ученики', tasks: 'Мои задания' },
   theme: { paper: 'Тетрадь', cosmos: 'Космос', toggle: 'Сменить оформление' },
   level: { easy: 'Лёгкий', medium: 'Средний', hard: 'Сложный', all: 'Все уровни' },
   branch: { algebra: 'Алгебра', geometry: 'Геометрия', all: 'Всё' },
@@ -22,7 +22,7 @@ const ru = {
     streak: 'Серия: {{count}} дн.', formulaOfDay: 'Формула дня', studied: 'изучено {{done}} из {{total}}',
     formulasDesc: 'Все формулы с примерами', calcDesc: 'Решение по шагам', lessonsDesc: 'Уроки по уровням',
     gamesDesc: 'Скоро', open: 'Открыть',
-    entDesc: 'Пробный тест с таймером и разбором ошибок', reviewDesc: 'На сегодня: {{n}}', teacherDesc: 'Контрольные с вариантами и ответами', workDesc: 'Работа от учителя: введи код и решай',
+    entDesc: 'Пробный тест с таймером и разбором ошибок', reviewDesc: 'На сегодня: {{n}}', teacherDesc: 'Контрольные с вариантами и ответами', workDesc: 'Работа от учителя: введи код и решай', tasksDesc: 'Работы от учителя — решай, результат придёт ему сам',
   },
   formulas: {
     title: 'Формулы', search: 'Поиск: дискриминант, площадь круга…', found: 'Найдено: {{n}}',
@@ -96,7 +96,7 @@ const ru = {
 
 const kz: typeof ru = {
   app: { name: 'Математика' },
-  nav: { home: 'Басты бет', formulas: 'Формулалар', calculator: 'Калькулятор', lessons: 'Сабақтар', progress: 'Үлгерім', games: 'Ойындар', ent: 'ҰБТ', review: 'Қайталау', teacher: 'Мұғалімге', more: 'Тағы', work: 'Код бойынша жұмыс', cheat: 'Шпаргалкалар', geometry: 'Тірі геометрия', word: 'Мәтінді есептер', map: 'Білім картасы', diagnostic: 'Диагностика', program: 'Тоқсандар бойынша', journal: 'Нәтижелер журналы', classroom: 'Сабақ құралдары', solids: '3D денелер', olympiad: 'Олимпиада есептері', worksheets: 'Жұмыс парақтары', summative: 'БЖБ және ТЖБ', scenario: 'Сабақ сценарийі', textbook: 'Оқулық бойынша есептер', portfolio: 'Оқушы портфолиосы' },
+  nav: { home: 'Басты бет', formulas: 'Формулалар', calculator: 'Калькулятор', lessons: 'Сабақтар', progress: 'Үлгерім', games: 'Ойындар', ent: 'ҰБТ', review: 'Қайталау', teacher: 'Мұғалімге', more: 'Тағы', work: 'Код бойынша жұмыс', cheat: 'Шпаргалкалар', geometry: 'Тірі геометрия', word: 'Мәтінді есептер', map: 'Білім картасы', diagnostic: 'Диагностика', program: 'Тоқсандар бойынша', journal: 'Нәтижелер журналы', classroom: 'Сабақ құралдары', solids: '3D денелер', olympiad: 'Олимпиада есептері', worksheets: 'Жұмыс парақтары', summative: 'БЖБ және ТЖБ', scenario: 'Сабақ сценарийі', textbook: 'Оқулық бойынша есептер', portfolio: 'Оқушы портфолиосы', classes: 'Сыныптар мен оқушылар', tasks: 'Менің тапсырмаларым' },
   theme: { paper: 'Дәптер', cosmos: 'Ғарыш', toggle: 'Безендіруді ауыстыру' },
   level: { easy: 'Жеңіл', medium: 'Орташа', hard: 'Күрделі', all: 'Барлық деңгей' },
   branch: { algebra: 'Алгебра', geometry: 'Геометрия', all: 'Барлығы' },
@@ -111,7 +111,7 @@ const kz: typeof ru = {
     streak: 'Қатарынан {{count}} күн', formulaOfDay: 'Күн формуласы', studied: '{{total}} формуланың {{done}} меңгерілді',
     formulasDesc: 'Барлық формулалар мысалдармен', calcDesc: 'Қадамдап шешу', lessonsDesc: 'Деңгейлер бойынша сабақтар',
     gamesDesc: 'Жақында', open: 'Ашу',
-    entDesc: 'Таймері бар сынақ тест және қателерді талдау', reviewDesc: 'Бүгінге: {{n}}', teacherDesc: 'Нұсқалары мен жауаптары бар бақылау жұмыстары', workDesc: 'Мұғалімнен жұмыс: кодты енгізіп, шығар',
+    entDesc: 'Таймері бар сынақ тест және қателерді талдау', reviewDesc: 'Бүгінге: {{n}}', teacherDesc: 'Нұсқалары мен жауаптары бар бақылау жұмыстары', workDesc: 'Мұғалімнен жұмыс: кодты енгізіп, шығар', tasksDesc: 'Мұғалімнен жұмыстар — шығар, нәтиже оған өзі барады',
   },
   formulas: {
     title: 'Формулалар', search: 'Іздеу: дискриминант, дөңгелектің ауданы…', found: 'Табылды: {{n}}',

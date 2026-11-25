@@ -6,6 +6,7 @@ import { topicById } from '../data/topics'
 import type { Lang } from '../i18n'
 import { gens, seeded, type Problem } from '../lib/bank'
 import { allWorks, portfolioOf, studentNames, type Portfolio as P } from '../lib/journal'
+import { useCloudJournal } from '../lib/cloud'
 
 const level = (s: { ok: number; n: number }) => { const p = s.ok / s.n; return p >= 0.8 ? 'good' : p >= 0.5 ? 'mid' : 'weak' }
 
@@ -69,7 +70,9 @@ function Sheet({ p, lang, cls }: { p: P; lang: Lang; cls: string }) {
 export function Portfolio() {
   const { t, i18n } = useTranslation()
   const lang = (i18n.language === 'kz' ? 'kz' : 'ru') as Lang
-  const works = useMemo(() => allWorks(), [])
+  // online: answers are loaded from the database first (version changes after loading)
+  const { version } = useCloudJournal()
+  const works = useMemo(() => allWorks(), [version]) // eslint-disable-line react-hooks/exhaustive-deps
   const names = useMemo(() => studentNames(works), [works])
   const [who, setWho] = useState<string>('')
   const [cls, setCls] = useState('')

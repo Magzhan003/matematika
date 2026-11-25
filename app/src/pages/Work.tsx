@@ -61,7 +61,8 @@ export function Work() {
   )
 }
 
-function Solve({ work, variant, name, onExit }: { work: W; variant: number; name: string; onExit: () => void }) {
+/** Solving a work. With `send` (online mode) the result goes straight to the teacher instead of a result code. */
+export function Solve({ work, variant, name, onExit, send }: { work: W; variant: number; name: string; onExit: () => void; send?: (ok: boolean[], minutes: number) => Promise<void> }) {
   const { t, i18n } = useTranslation()
   const lang = i18n.language as Lang
   const { recordAnswers } = useStore()
@@ -77,12 +78,19 @@ function Solve({ work, variant, name, onExit }: { work: W; variant: number; name
   const set = (i: number, a: Partial<Answer>) => setAnswers(answers.map((x, k) => (k === i ? { ...x, ...a } : x)))
   const blank = answers.filter((a, i) => (typed(problems[i]) ? !a.text.trim() : a.pick === null)).length
 
+  const [sent, setSent] = useState<'' | 'busy' | 'ok' | 'error'>('')
+  const trySend = async (ok: boolean[], minutes: number) => {
+    if (!send) return
+    setSent('busy')
+    try { await send(ok, minutes); setSent('ok') } catch { setSent('error') }
+  }
   const submit = () => {
     if (blank && !window.confirm(t('ent.confirmFinish', { n: blank }))) return
     const ok = problems.map((p, i) => (typed(p) ? checkTyped(p, answers[i].text) === true : answers[i].pick === opts[i].correct))
     const minutes = Math.max(1, Math.round((Date.now() - started.current) / 60000))
     recordAnswers(problems.map((p, i) => ({ key: `g:${p.gen}`, ok: ok[i] })))
     setResult({ ok, minutes, code: encodeResult({ seed: work.seed, variant, ok, minutes }) })
+    trySend(ok, minutes)
     window.scrollTo({ top: 0 })
   }
 
@@ -102,14 +110,25 @@ function Solve({ work, variant, name, onExit }: { work: W; variant: number; name
       {result && (
         <div className="space-panel" style={{ display: 'grid', gap: 10 }}>
           <h2 style={{ margin: 0 }}>{t('work.score', { s: score, n: problems.length, p: Math.round((score / problems.length) * 100) })}</h2>
-          <div>{t('work.sendCode')}</div>
-          <div className="result-code">{result.code}</div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button className="btn btn-primary" onClick={() => { navigator.clipboard?.writeText(message).then(() => setCopied(true)).catch(() => {}) }}>
-              {copied ? `✓ ${t('work.copied')}` : `📋 ${t('work.copy')}`}
-            </button>
-            <button className="btn" onClick={onExit}>{t('work.another')}</button>
-          </div>
+          {send ? (
+            <>
+              {sent === 'busy' && <div>⏳ {t('cl.sending')}</div>}
+              {sent === 'ok' && <div><b>✓ {t('cl.sent')}</b></div>}
+              {sent === 'error' && <div className="login-err">⚠️ {t('cl.sendFailed')} <button className="btn btn-sm" onClick={() => trySend(result.ok, result.minutes)}>{t('cl.retry')}</button></div>}
+              <div><button className="btn" onClick={onExit}>{t('cl.toTasks')}</button></div>
+            </>
+          ) : (
+            <>
+              <div>{t('work.sendCode')}</div>
+              <div className="result-code">{result.code}</div>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <button className="btn btn-primary" onClick={() => { navigator.clipboard?.writeText(message).then(() => setCopied(true)).catch(() => {}) }}>
+                  {copied ? `✓ ${t('work.copied')}` : `📋 ${t('work.copy')}`}
+                </button>
+                <button className="btn" onClick={onExit}>{t('work.another')}</button>
+              </div>
+            </>
+          )}
           <div className="muted small">{t('work.reviewNote')}</div>
         </div>
       )}
