@@ -2,7 +2,9 @@ import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { errKey, signIn, useCloud } from '../lib/cloud'
 
-const CONTACT = import.meta.env.VITE_SALES_CONTACT as string | undefined
+// where teachers buy access: the owner's WhatsApp (can be changed with the VITE_SALES_CONTACT variable)
+const CONTACT = (import.meta.env.VITE_SALES_CONTACT as string | undefined) || 'https://wa.me/77067168840'
+const CONTACT_LABEL = 'WhatsApp: 8 706 716 88 40'
 const SYMBOLS = ['∑', 'π', '√', '∫', 'x²', '△', '∞', '÷', 'sin', '%', '∠', 'log']
 
 /**
@@ -35,6 +37,7 @@ export function CloudLogin() {
           <h1>{t('gate.title')}</h1>
           <p className="gate-lead">{t('gate.lead')}</p>
           <ul className="gate-features">{features.map((f) => <li key={f}>{f}</li>)}</ul>
+          {CONTACT && <a className="gate-buy" href={CONTACT} target="_blank" rel="noreferrer">💬 {t('gate.buy')} · {CONTACT_LABEL}</a>}
         </section>
 
         <section className="gate-card" aria-labelledby="gate-signin">
@@ -71,7 +74,7 @@ export function CloudLogin() {
                 <div className="gate-help">
                   <p>👩‍🏫 {t('gate.helpTeacher')}</p>
                   <p>🎓 {t('gate.helpStudent')}</p>
-                  {CONTACT && <a className="btn" href={CONTACT} target="_blank" rel="noreferrer">💬 {t('gate.contact')}</a>}
+                  {CONTACT && <a className="btn gate-wa" href={CONTACT} target="_blank" rel="noreferrer">💬 {t('gate.contact')} · {CONTACT_LABEL}</a>}
                 </div>
               )}
             </form>

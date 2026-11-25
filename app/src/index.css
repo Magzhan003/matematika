@@ -1170,3 +1170,6 @@ body.pres-dragging iframe { pointer-events: none; }
   .gate-hero h1 { font-size: 26px; }
 }
 .gate-card .seg button.on { color: #fff; }
+.gate-buy { display: inline-flex; margin-top: 18px; padding: 12px 18px; border-radius: 12px; background: #22c55e; color: #fff; font-weight: 800; text-decoration: none; box-shadow: 0 10px 30px rgba(34,197,94,.35); }
+.gate-buy:hover { filter: brightness(1.06); }
+.gate-wa { background: #22c55e; color: #fff; border-color: #22c55e; text-decoration: none; justify-self: start; }
