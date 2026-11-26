@@ -1,3 +1,4 @@
+/** Outline icons (24×24, stroke = currentColor) — one consistent set instead of emoji, which differ on every computer. */
 const paths: Record<string, string> = {
   home: 'M5 12l-2 0l9-9l9 9l-2 0 M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7 M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6',
   book: 'M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0 M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0 M3 6v13 M12 6v13 M21 6v13',
@@ -13,11 +14,35 @@ const paths: Record<string, string> = {
   search: 'M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0-14 0 M21 21l-6-6',
   variable: 'M5 4c-2.5 5-2.5 10 0 16 M19 4c2.5 5 2.5 10 0 16 M9 9h1c1 0 1 1 2.016 3.527c.984 2.473.984 3.473 1.984 3.473h1 M8 16c1.5 0 3-2 4-3.5s2.5-3.5 4-3.5',
   triangle: 'M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636-2.87l-8.106-13.536a1.914 1.914 0 0 0-3.274 0z',
+  arrow: 'M5 12h14 M13 6l6 6l-6 6',
+  check: 'M5 12l5 5l10-10',
+  target: 'M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0 M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0-10 0 M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0',
+  trophy: 'M8 21h8 M12 17v4 M7 4h10 M17 4v8a5 5 0 0 1-10 0v-8 M5 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M19 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0',
+  users: 'M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2 M16 3.13a4 4 0 0 1 0 7.75 M21 21v-2a4 4 0 0 0-3-3.85',
+  clipboard: 'M9 5h-2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-12a2 2 0 0 0-2-2h-2 M9 3m0 2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z M9 12h6 M9 16h6',
+  printer: 'M17 17h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-14a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2 M17 9v-4a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v4 M7 13h10v8h-10z',
+  cube: 'M12 3l8 4.5v9l-8 4.5l-8-4.5v-9l8-4.5 M12 12l8-4.5 M12 12v9 M12 12l-8-4.5',
+  compass: 'M8 16l2-6l6-2l-2 6l-6 2 M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0',
+  calendar: 'M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2v-12z M16 3v4 M8 3v4 M4 11h16',
+  layers: 'M12 4l-8 4l8 4l8-4l-8-4 M4 12l8 4l8-4 M4 16l8 4l8-4',
+  repeat: 'M4 12v-3a3 3 0 0 1 3-3h13m-3-3l3 3l-3 3 M20 12v3a3 3 0 0 1-3 3h-13m3 3l-3-3l3-3',
+  file: 'M14 3v4a1 1 0 0 0 1 1h4 M17 21h-10a2 2 0 0 1-2-2v-14a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z M9 13h6 M9 17h6',
+  edit: 'M4 20h4l10.5-10.5a2.828 2.828 0 1 0-4-4l-10.5 10.5v4 M13.5 6.5l4 4',
+  mail: 'M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-14a2 2 0 0 1-2-2v-10z M3 7l9 6l9-6',
+  map: 'M3 7l6-3l6 3l6-3v13l-6 3l-6-3l-6 3v-13 M9 4v13 M15 7v13',
+  tool: 'M7 10h3v-3l-3.5-3.5a6 6 0 0 1 8 8l6 6a2 2 0 0 1-3 3l-6-6a6 6 0 0 1-8-8l3.5 3.5',
+  ruler: 'M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-7a1 1 0 0 0-1 1v7a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1 M4 8l2 0 M4 12l3 0 M4 16l2 0 M8 4l0 2 M12 4l0 3 M16 4l0 2',
+  bulb: 'M3 12h1m8-9v1m8 8h1m-15.4-6.4l.7.7m12.1-.7l-.7.7 M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0-1 3a2 2 0 0 1-4 0a3.5 3.5 0 0 0-1-3 M9.7 17l4.6 0',
+  graduation: 'M22 9l-10-4l-10 4l10 4l10-4v6 M6 10.6v5.4a6 3 0 0 0 12 0v-5.4',
+  sparkles: 'M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2zm0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2zm-7 12a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6z',
+  inbox: 'M4 4m0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2z M4 13h3l3 3h4l3-3h3',
+  folder: 'M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-14a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2',
+  infinity: 'M9.828 9.172a4 4 0 1 0 0 5.656a10 10 0 0 0 2.172-2.828a10 10 0 0 1 2.172-2.828a4 4 0 1 1 0 5.656a10 10 0 0 1-2.172-2.828a10 10 0 0 0-2.172-2.828',
 }
 
-export function Icon({ name, size = 20 }: { name: keyof typeof paths | string; size?: number }) {
+export function Icon({ name, size = 20, stroke = 1.8 }: { name: keyof typeof paths | string; size?: number; stroke?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke}
       strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d={paths[name] ?? ''} />
     </svg>

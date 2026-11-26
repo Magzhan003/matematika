@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { Icon } from './Icon'
 import { formulas } from '../data/formulas'
 import type { Lang } from '../i18n'
 import { focusTopics } from '../lib/mastery'
@@ -16,7 +17,7 @@ export function MyPlan() {
   if (!known) {
     return (
       <Link to="/diagnostic" className="tile dark" style={{ display: 'grid', gap: 6 }}>
-        <span style={{ fontSize: 26 }}>🧭</span>
+        <span className="plan-icon"><Icon name="compass" size={24} /></span>
         <strong style={{ fontSize: 19 }}>{t('plan.startTitle')}</strong>
         <span className="muted small">{t('plan.startDesc')}</span>
       </Link>
@@ -64,7 +65,7 @@ export function MyPlan() {
       )}
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }} className="small">
         <Link to="/map">🗺 {t('plan.map')}</Link>
-        <Link to="/diagnostic">🧭 {t('plan.again')}</Link>
+        <Link to="/diagnostic">{t('plan.again')}</Link>
       </div>
     </div>
   )

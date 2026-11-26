@@ -45,6 +45,13 @@ const extra = [
   { to: '/portfolio', key: 'portfolio', emoji: '🗂' },
 ] as { to: string; key: string; emoji: string; online?: boolean }[]
 
+/** Menu icons from one outline set (emoji look different on every computer). */
+const MENU_ICON: Record<string, string> = {
+  classes: 'users', tasks: 'inbox', classroom: 'tool', solids: 'cube', olympiad: 'trophy', worksheets: 'file', summative: 'clipboard',
+  scenario: 'calendar', textbook: 'book', program: 'layers', map: 'map', diagnostic: 'compass', review: 'repeat', games: 'puzzle',
+  progress: 'chart', geometry: 'ruler', word: 'bulb', work: 'edit', cheat: 'file', teacher: 'printer', journal: 'clipboard', portfolio: 'folder',
+}
+
 export function Layout() {
   const { t, i18n } = useTranslation()
   const { xp, theme, setTheme, dueKeys } = useStore()
@@ -70,7 +77,7 @@ export function Layout() {
     <div className="more-menu" role="menu">
       {items.map((e) => (
         <NavLink key={e.to} to={e.to} role="menuitem">
-          <span aria-hidden="true">{e.emoji}</span> {t(`nav.${e.key}`)}
+          <span className="menu-ic" aria-hidden="true"><Icon name={MENU_ICON[e.key] ?? 'layers'} size={17} /></span> {t(`nav.${e.key}`)}
           {e.key === 'review' && dueKeys.length > 0 && <span className="dot-badge">{dueKeys.length}</span>}
         </NavLink>
       ))}

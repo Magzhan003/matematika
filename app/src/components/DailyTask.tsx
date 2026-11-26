@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { problemOfDay } from '../lib/bank'
 import { todayKey, useStore } from '../lib/store'
+import { Icon } from './Icon'
 import { ProblemCard } from './ProblemCard'
 
 /** The same problem for everyone on a given day; +15 XP for solving it. */
@@ -13,7 +14,7 @@ export function DailyTask() {
   return (
     <div style={{ display: 'grid', gap: 8 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
-        <h2 style={{ margin: 0 }}>🎯 {t('daily.title')}</h2>
+        <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: 10 }}><span className="h-icon"><Icon name="target" size={20} /></span>{t('daily.title')}</h2>
         <span className="muted small">{t('daily.count', { n: daily.length })}</span>
       </div>
       {done && <div className="answer">✓ {t('daily.done')}</div>}
