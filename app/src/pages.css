@@ -69,5 +69,6 @@
   .calc-tabs { width: 100%; overflow-x: auto; }
 }
 @media print {
+  .page { padding-top: 0; }
   .page:not(.home) > h1::before, .page:not(.home) > div > h1:first-child::before, .page:not(.home) > .no-print > h1:first-child::before { display: none; }
 }

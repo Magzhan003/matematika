@@ -132,7 +132,7 @@ export function Classes() {
         )}
       </div>
       {cards.length > 0 && (
-        <section className="sheet cl-cards">
+        <section className="sheet cl-cards fit-free">
           {cards.map((c) => (
             <div key={c.login} className="cl-card">
               <b>{c.name}</b>

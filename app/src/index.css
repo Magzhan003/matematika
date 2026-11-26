@@ -357,7 +357,7 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
 .sheet .katex { color: #111; }
 .sheet-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 18px; border-bottom: 2px solid #111; padding-bottom: 8px; margin-bottom: 10px; }
 .sheet-fields { font-size: 14px; margin-bottom: 14px; }
-.sheet-list { display: grid; gap: 10px; padding-left: 22px; margin: 0; font-size: 16px; }
+.sheet-list { display: grid; gap: 10px; padding-left: 32px; margin: 0; font-size: 16px; }
 .sheet-list li.with-space { padding-bottom: 70px; border-bottom: 1px dashed #bbb; }
 .sheet-meta { margin-left: 8px; font-size: 12px; color: #777; }
 .answer-list { display: grid; gap: 4px; padding-left: 22px; font-size: 15px; }
@@ -373,6 +373,31 @@ details.section-block[open] > summary { margin-bottom: 12px; border-color: var(-
   .sheet { border: 0; border-radius: 0; padding: 0 0 10mm; page-break-after: always; break-after: page; }
   .sheet:last-child { page-break-after: auto; }
 }
+@page { size: A4; margin: 12mm; }
+@media print {
+  /* grid/flex parents stop page breaks: lay printed sheets out as plain blocks, one variant per page */
+  .page, .print-area, .ws-area, .tb-page { display: block !important; }
+  .sheet { zoom: var(--fit, 1); }
+  .sheet-list { display: block; }
+  .print-area { margin: 0; }
+  .answers .answer-list { display: block; columns: 2; column-gap: 24px; }
+  .answers .answer-list li { break-inside: avoid; }
+  .sheet-list li { break-inside: avoid; margin-bottom: 10px; }
+  .sheet-list li.with-space { padding-bottom: var(--space, 70px); }
+}
+/* the same layout on screen for a moment while the sheets are measured (lib/printfit.ts) */
+html.print-measure .no-print, html.print-measure .topbar, html.print-measure .bottom-nav { display: none !important; }
+html.print-measure .sheet { width: 186mm; box-sizing: border-box; border: 0; padding: 0 0 10mm; }
+html.print-measure .tb-sheet { display: block; }
+html.print-measure .sheet-list { display: block; }
+html.print-measure .print-area { margin: 0; }
+html.print-measure .answers .answer-list { display: block; columns: 2; column-gap: 24px; }
+html.print-measure .answers .answer-list li { break-inside: avoid; }
+html.print-measure .sheet-list li { margin-bottom: 10px; }
+html.print-measure .sheet-list li.with-space { padding-bottom: 0; }
+html.print-measure .tb-key { display: none; } /* the textbook key prints on its own page */
+html.print-measure .page { padding: 0; }
+html.print-measure .page, html.print-measure .print-area, html.print-measure .ws-area, html.print-measure .tb-page { display: block !important; }
 
 /* ---------- advanced calculator ---------- */
 .calc-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 16px; scrollbar-width: thin; }

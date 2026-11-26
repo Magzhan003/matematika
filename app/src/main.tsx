@@ -8,6 +8,9 @@ import './home.css'
 import './pages.css'
 import './i18n'
 import App from './App.tsx'
+import { installPrintFit } from './lib/printfit'
+
+installPrintFit()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
