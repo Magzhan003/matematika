@@ -5,7 +5,8 @@ import { isTeacherPath, studentOnly, useRole } from '../lib/role'
 import { useStore } from '../lib/store'
 import { Login } from '../pages/Login'
 import { CloudLogin } from '../pages/CloudLogin'
-import { cloud } from '../lib/cloud'
+import { cloud, useActiveDevices } from '../lib/cloud'
+import { AccountMenu, DeviceWarning } from './AccountMenu'
 import { CloudSync } from './CloudSync'
 import { Icon } from './Icon'
 import { MathKeyboard } from './MathKeyboard'
@@ -69,7 +70,9 @@ export function Layout() {
   const loc = useLocation()
   useEffect(() => setMore(false), [loc.pathname])
   const extraActive = extra.some((e) => loc.pathname.startsWith(e.to))
-  const { role, logout } = useRole()
+  const { role } = useRole()
+  // online: this browser reports itself every minute; more than 5 active devices → warning
+  const dev = useActiveDevices()
   // a student does not see the teacher's tools
   const items = extra.filter((e) => (role === 'teacher' ? !studentOnly.includes(e.to) : !isTeacherPath(e.to)) && (!e.online || !!cloud))
 
@@ -110,10 +113,6 @@ export function Layout() {
             {role === 'teacher' && <button className="tool-btn" onClick={() => setPres(true)} title={t('pres.title')} aria-label={t('pres.title')}>📺<span className="tool-label">{t('pres.open')}</span></button>}
             <button className={`tool-btn ${kbd ? 'on' : ''}`} onClick={() => setKbd(!kbd)} title={t('kbd.title')} aria-label={t('kbd.title')} aria-pressed={kbd}>⌨<span className="tool-label">{t('kbd.open')}</span></button>
             {role === 'student' && <span className="xp-chip" title="XP"><Icon name="star" size={16} />{xp}<span className="xp-label">XP</span></span>}
-            <button className="icon-btn role-btn" title={`${role === 'teacher' ? t('login.teacher') : t('login.student')} — ${t('login.logout')}`} aria-label={t('login.logout')}
-              onClick={() => { if (window.confirm(t('login.logoutAsk'))) logout() }}>
-              {role === 'teacher' ? '👩‍🏫' : '🎓'}
-            </button>
             <div className="seg" role="group" aria-label="Language">
               <button className={lang === 'ru' ? 'on' : ''} onClick={() => i18n.changeLanguage('ru')}>РУ</button>
               <button className={lang === 'kz' ? 'on' : ''} onClick={() => i18n.changeLanguage('kz')}>ҚАЗ</button>
@@ -126,9 +125,11 @@ export function Layout() {
             >
               <Icon name={theme === 'paper' ? 'moon' : 'sun'} />
             </button>
+            <AccountMenu devices={dev.list} overLimit={dev.overLimit} onDevicesChanged={dev.refresh} />
           </div>
         </div>
       </header>
+      {dev.overLimit && <DeviceWarning count={dev.list.length} />}
 
       <main className="shell">
         {role === 'student' && isTeacherPath(loc.pathname) ? <Navigate to="/" replace /> : <Outlet />}

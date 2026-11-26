@@ -5,6 +5,7 @@ import './fonts.css'
 import './index.css'
 import './premium.css'
 import './home.css'
+import './pages.css'
 import './i18n'
 import App from './App.tsx'
 

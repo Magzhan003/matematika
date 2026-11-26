@@ -41,7 +41,7 @@ export function Textbook() {
   return (
     <div className="page tb-page">
       <div className="no-print" style={{ display: 'grid', gap: 14 }}>
-        <h1 style={{ margin: 0 }}>📘 {t('tb.title')}</h1>
+        <h1 style={{ margin: 0 }}>{t('tb.title')}</h1>
         <div className="card tb-book">
           <div className="tb-cover">7</div>
           <div>

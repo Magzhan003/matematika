@@ -129,7 +129,7 @@ export function Scenario() {
   return (
     <div className="page">
       <div className="no-print" style={{ display: 'grid', gap: 14 }}>
-        <h1>🗓 {t('scn.title')}</h1>
+        <h1>{t('scn.title')}</h1>
         <p className="muted" style={{ margin: 0 }}>{t('scn.intro')}</p>
         <div className="card" style={{ display: 'grid', gap: 12 }}>
           <div className="chips">{[5, 6, 7, 8, 9, 10, 11].map((g) => <button key={g} className={`chip ${grade === g ? 'on' : ''}`} onClick={() => setGrade(g)}>{t('grade.n', { n: g })}</button>)}</div>

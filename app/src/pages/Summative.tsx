@@ -53,7 +53,7 @@ export function Summative() {
   return (
     <div className="page">
       <div className="no-print" style={{ display: 'grid', gap: 14 }}>
-        <h1>📝 {t('sum.title')}</h1>
+        <h1>{t('sum.title')}</h1>
         <p className="muted" style={{ margin: 0 }}>{t('sum.intro')}</p>
         <div className="card" style={{ display: 'grid', gap: 12 }}>
           <div className="chips">

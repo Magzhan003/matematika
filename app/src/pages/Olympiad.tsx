@@ -90,7 +90,7 @@ export function Olympiad() {
   const total = olympiad.filter((x) => x.value !== undefined).length
   return (
     <div className="page">
-      <h1>🏆 {t('oly.title')}</h1>
+      <h1>{t('oly.title')}</h1>
       <p className="muted">{t('oly.intro')}</p>
       <div className="card oly-filters">
         <div className="chips">

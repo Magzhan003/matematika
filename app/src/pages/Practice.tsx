@@ -50,7 +50,7 @@ function PracticeView({ id }: { id: string }) {
     <div className="page" style={{ display: 'grid', gap: 14, maxWidth: 820 }}>
       <div>
         <Link to="/map" className="muted small">← {t('map.title')}</Link>
-        <h1 style={{ margin: '4px 0 0', fontSize: 24 }}>💪 {tp.title[lang]}</h1>
+        <h1 style={{ margin: '4px 0 0', fontSize: 24 }}>{tp.title[lang]}</h1>
       </div>
       {m && (
         <div className="card" style={{ display: 'grid', gap: 6 }}>

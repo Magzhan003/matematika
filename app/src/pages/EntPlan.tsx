@@ -48,7 +48,7 @@ export function EntPlan() {
     const n = daysBetween(today, exam)
     return (
       <div className="page" style={{ display: 'grid', gap: 14 }}>
-        <h1 style={{ margin: 0 }}>📅 {t('ep.title')}</h1>
+        <h1 style={{ margin: 0 }}>{t('ep.title')}</h1>
         <p className="muted" style={{ margin: 0 }}>{t('ep.intro')}</p>
         <div className="card" style={{ display: 'grid', gap: 12 }}>
           <label style={{ display: 'grid', gap: 4, maxWidth: 260 }}>
@@ -72,7 +72,7 @@ export function EntPlan() {
   const missed = plan.days.filter((d) => d.date < today && !plan.done.includes(d.n)).length
   return (
     <div className="page" style={{ display: 'grid', gap: 14 }}>
-      <h1 style={{ margin: 0 }}>📅 {t('ep.title')}</h1>
+      <h1 style={{ margin: 0 }}>{t('ep.title')}</h1>
       <div className="card ep-progress">
         <div><b>{t('ep.progress', { done, total: plan.days.length })}</b> · {t('ep.left', { n: Math.max(0, daysBetween(today, plan.exam)) })}{missed > 0 && <span className="ep-missed"> · {t('ep.missed', { n: missed })}</span>}</div>
         <div className="ep-bar"><i style={{ width: `${(done / plan.days.length) * 100}%` }} /></div>

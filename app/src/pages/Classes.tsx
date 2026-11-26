@@ -91,7 +91,7 @@ export function Classes() {
   return (
     <div className="page">
       <div className="no-print" style={{ display: 'grid', gap: 14 }}>
-        <h1 style={{ margin: 0 }}>👥 {t('cl.classesTitle')}</h1>
+        <h1 style={{ margin: 0 }}>{t('cl.classesTitle')}</h1>
         <p className="muted" style={{ margin: 0 }}>{t('cl.classesIntro')}</p>
         <div className="card" style={{ display: 'grid', gap: 10 }}>
           <div className="chips">{classes.map((c) => <button key={c.id} className={`chip ${cur === c.id ? 'on' : ''}`} onClick={() => { setCur(c.id); setCards([]) }}>{c.name}</button>)}</div>

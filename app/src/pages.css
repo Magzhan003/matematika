@@ -1,0 +1,73 @@
+/* ===== inner pages in the «night academy» style: one heading style, refined controls ===== */
+
+/* page heading: serif title with a short gold rule above it */
+.page:not(.home) > h1,
+.page:not(.home) > div > h1:first-child,
+.page:not(.home) > .no-print > h1:first-child,
+.page:not(.home) > .page-head h1 {
+  position: relative; padding-top: 16px; font-size: clamp(32px, 3.6vw, 42px); line-height: 1.08; letter-spacing: -.01em;
+}
+.page:not(.home) > h1::before,
+.page:not(.home) > div > h1:first-child::before,
+.page:not(.home) > .no-print > h1:first-child::before,
+.page:not(.home) > .page-head h1::before {
+  content: ""; position: absolute; left: 0; top: 0; width: 44px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, #f0cf7a, #c9952f);
+}
+.page:not(.home) > h1 + p.muted, .page:not(.home) > .no-print > h1 + p.muted { font-size: 16px; max-width: 760px; }
+.page { padding-top: 30px; }
+
+/* section headings inside pages */
+.page h2 { letter-spacing: -.005em; }
+
+/* tabs (calculator, classroom tools…): segmented control */
+.calc-tabs { gap: 4px; padding: 5px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-1); width: max-content; max-width: 100%; flex-wrap: wrap; overflow: visible; }
+.calc-tab { border: 0; background: transparent; color: var(--muted); border-radius: 12px; padding: 9px 14px; font-weight: 600; transition: background .15s, color .15s; }
+.calc-tab:hover { color: var(--ink); background: var(--card-2); }
+.calc-tab.on, .calc-tab[aria-selected='true'] { background: linear-gradient(135deg, #221e57, #1c1947); color: #f6f3ff; box-shadow: 0 4px 12px rgba(28, 25, 71, .25); }
+:root[data-theme='cosmos'] .calc-tab.on, :root[data-theme='cosmos'] .calc-tab[aria-selected='true'] { background: linear-gradient(135deg, #f0cf7a, #c9952f); color: #1c1947; }
+
+/* chips */
+.chip { transition: border-color .15s, background .15s, color .15s; }
+.chip:hover { border-color: color-mix(in srgb, var(--gold) 60%, var(--line)); }
+
+/* formula cards */
+.f-card { transition: border-color .18s, box-shadow .18s, transform .18s; overflow: hidden; }
+.f-card:hover { border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); box-shadow: var(--shadow-2); }
+.f-card .f-tex { font-size: 1.08em; }
+.f-body h4 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-2); margin: 14px 0 6px; }
+.step { border-radius: 12px; }
+
+/* section tiles on the formulas / lessons pages */
+.grid .tile { border-radius: 20px; padding: 18px; }
+.grid .tile .tile-icon { width: 46px; height: 46px; border-radius: 14px; font-family: var(--font-display); font-size: 20px; background: var(--accent-soft); color: var(--gold-2); }
+.grid .tile strong { font-weight: 650; }
+.grid .tile .bar { height: 6px; background: var(--line); }
+.grid .tile .bar > div { background: linear-gradient(90deg, #f0cf7a, #c9952f); }
+
+/* tables (journal, СОР, portfolio, classes) */
+.journal, .sum-table { border-radius: 14px; overflow: hidden; }
+.table-wrap { border-radius: 16px; box-shadow: var(--shadow-1); }
+.journal th { background: var(--card-2); font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.journal tbody tr:hover td { background: color-mix(in srgb, var(--gold) 6%, transparent); }
+
+/* lesson player and problems */
+.lesson-kind { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-2); font-weight: 700; }
+.lesson-text { font-size: 18px; line-height: 1.6; }
+.board { background: var(--card-2); border: 1px solid var(--line); }
+.problem-text { font-size: 17px; line-height: 1.55; }
+.ent-item.ok { border-color: color-mix(in srgb, #22c55e 55%, var(--line)); }
+.ent-item.bad { border-color: color-mix(in srgb, #ef4444 55%, var(--line)); }
+
+/* list rows used on several pages */
+.jr-item, .tb-par, .ep-cell { transition: border-color .15s, box-shadow .15s; }
+.jr-item:hover, .tb-par:hover { border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+.tb-n { color: var(--gold-2); font-family: var(--font-display); font-size: 19px; }
+
+/* small screens */
+@media (max-width: 640px) {
+  .page { padding-top: 20px; }
+  .calc-tabs { width: 100%; overflow-x: auto; }
+}
+@media print {
+  .page:not(.home) > h1::before, .page:not(.home) > div > h1:first-child::before, .page:not(.home) > .no-print > h1:first-child::before { display: none; }
+}

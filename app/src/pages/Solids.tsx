@@ -93,7 +93,7 @@ export function Solids() {
 
   return (
     <div className="page">
-      <h1>📦 {t('sol.title')}</h1>
+      <h1>{t('sol.title')}</h1>
       <p className="muted">{t('sol.hint')}</p>
       <div className="chips" style={{ marginBottom: 12 }}>
         {solids.map((s) => <button key={s.id} className={`chip ${s.id === id ? 'on' : ''}`} onClick={() => { setId(s.id); setShowNet(false) }}>{s.icon} {t(`sol.names.${s.id}`)}</button>)}

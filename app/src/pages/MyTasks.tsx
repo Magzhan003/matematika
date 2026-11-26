@@ -34,7 +34,7 @@ export function MyTasks() {
   const done = works.filter((w) => subs.some((s) => s.work_id === w.id))
   return (
     <div className="page" style={{ display: 'grid', gap: 14, maxWidth: 760 }}>
-      <h1 style={{ margin: 0 }}>📬 {t('cl.myTasks')}</h1>
+      <h1 style={{ margin: 0 }}>{t('cl.myTasks')}</h1>
       {err && <p className="login-err">{err}</p>}
       {loading && <p className="muted">⏳ {t('cl.loading')}</p>}
       {!loading && !works.length && !err && <p className="muted">{t('cl.noTasks')}</p>}

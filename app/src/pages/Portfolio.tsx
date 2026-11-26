@@ -81,7 +81,7 @@ export function Portfolio() {
   return (
     <div className="page">
       <div className="no-print" style={{ display: 'grid', gap: 14 }}>
-        <h1 style={{ margin: 0 }}>🗂 {t('pf.title')}</h1>
+        <h1 style={{ margin: 0 }}>{t('pf.title')}</h1>
         <p className="muted" style={{ margin: 0 }}>{t('pf.intro')}</p>
         {!names.length ? (
           <div className="card" style={{ display: 'grid', gap: 8 }}>

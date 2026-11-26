@@ -14,7 +14,7 @@ export function ClassTools() {
   const tab: Tab = (tabs as readonly string[]).includes(params.get('tab') ?? '') ? (params.get('tab') as Tab) : 'timer'
   return (
     <div className="page">
-      <h1>🧰 {t('cls.title')}</h1>
+      <h1>{t('cls.title')}</h1>
       <div className="calc-tabs" role="tablist">
         {tabs.map((x) => (
           <button key={x} role="tab" aria-selected={tab === x} className={`calc-tab ${tab === x ? 'on' : ''}`} onClick={() => setParams({ tab: x }, { replace: true })}>

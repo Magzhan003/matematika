@@ -130,7 +130,7 @@ export function Worksheets() {
   return (
     <div className="page">
       <div className="no-print" style={{ display: 'grid', gap: 14 }}>
-        <h1>📑 {t('ws.title')}</h1>
+        <h1>{t('ws.title')}</h1>
         <p className="muted" style={{ margin: 0 }}>{t('ws.intro')}</p>
         <div className="ws-kinds">
           {kinds.map((k) => (

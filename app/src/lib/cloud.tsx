@@ -120,6 +120,65 @@ export async function signUpTeacher(name: string, email: string, password: strin
 export async function sendReset(email: string) { check(await need().auth.resetPasswordForEmail(email.trim(), { redirectTo: location.origin + location.pathname })) }
 export async function setNewPassword(password: string) { check(await need().auth.updateUser({ password })) }
 
+// ---------- account: name and active devices ----------
+export async function updateMyName(id: string, name: string) {
+  check(await need().from('profiles').update({ full_name: name.trim().slice(0, 80) }).eq('id', id))
+}
+/** This browser's permanent id (one per browser, not per tab). */
+export function deviceId(): string {
+  try {
+    let id = localStorage.getItem('device-id')
+    if (!id || !/^[a-z0-9-]{8,64}$/.test(id)) {
+      id = 'd-' + Array.from(crypto.getRandomValues(new Uint8Array(10)), (b) => b.toString(36).padStart(2, '0')).join('').slice(0, 20)
+      localStorage.setItem('device-id', id)
+    }
+    return id
+  } catch { return 'd-unknown-device' }
+}
+/** «Chrome · Windows», «Safari · iPhone» — enough to recognise a device, nothing more. */
+export function deviceLabel(ua = navigator.userAgent): string {
+  const os = /Android/i.test(ua) ? 'Android' : /iPhone|iPad|iPod/i.test(ua) ? (/iPad/i.test(ua) ? 'iPad' : 'iPhone') : /Windows/i.test(ua) ? 'Windows' : /Mac OS X|Macintosh/i.test(ua) ? 'Mac' : /Linux/i.test(ua) ? 'Linux' : '—'
+  const br = /YaBrowser/i.test(ua) ? 'Яндекс Браузер' : /Edg\//i.test(ua) ? 'Edge' : /OPR\/|Opera/i.test(ua) ? 'Opera' : /Firefox\//i.test(ua) ? 'Firefox' : /Chrome\//i.test(ua) ? 'Chrome' : /Safari\//i.test(ua) ? 'Safari' : 'Браузер'
+  return `${br} · ${os}`
+}
+export type DeviceRow = { device_id: string; label: string; last_seen: string }
+export const DEVICE_LIMIT = 5
+const ACTIVE_MS = 5 * 60 * 1000
+export async function heartbeat(userId: string) {
+  check(await need().from('devices').upsert({ user_id: userId, device_id: deviceId(), label: deviceLabel(), last_seen: new Date().toISOString() }))
+}
+export async function activeDevices(): Promise<DeviceRow[]> {
+  const since = new Date(Date.now() - ACTIVE_MS).toISOString()
+  return check(await need().from('devices').select('device_id, label, last_seen').gt('last_seen', since).order('last_seen', { ascending: false })) as DeviceRow[]
+}
+/** Ends the sessions on all other devices and forgets them in the list. */
+export async function signOutOthers(userId: string) {
+  const r = await need().auth.signOut({ scope: 'others' })
+  if (r.error) throw r.error
+  check(await need().from('devices').delete().eq('user_id', userId).neq('device_id', deviceId()))
+}
+
+/** Heartbeat every minute while the site is open + the list of active devices (online mode only). */
+export function useActiveDevices() {
+  const { profile } = useCloud()
+  const [list, setList] = useState<DeviceRow[]>([])
+  const [tick, setTick] = useState(0)
+  useEffect(() => {
+    if (!cloud || !profile) { setList([]); return }
+    let alive = true
+    const beat = async () => {
+      if (document.visibilityState === 'hidden') return
+      try { await heartbeat(profile.id); const l = await activeDevices(); if (alive) setList(l) } catch { /* offline: try next minute */ }
+    }
+    beat()
+    const id = setInterval(beat, 60_000)
+    const vis = () => { if (document.visibilityState === 'visible') beat() }
+    document.addEventListener('visibilitychange', vis)
+    return () => { alive = false; clearInterval(id); document.removeEventListener('visibilitychange', vis) }
+  }, [profile, tick])
+  return { list, overLimit: list.length > DEVICE_LIMIT, refresh: () => setTick((x) => x + 1) }
+}
+
 // ---------- progress ----------
 export async function loadProgress(userId: string): Promise<Record<string, unknown> | null> {
   const r = await need().from('progress').select('data').eq('user_id', userId).maybeSingle()
