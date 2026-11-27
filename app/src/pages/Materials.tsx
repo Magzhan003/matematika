@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router-dom'
 import { MathText } from '../components/MathText'
 import { Tex } from '../components/Tex'
-import { materialById, materials, trainer, trainerBook, type L, type Material, type MCQ, type SumWork } from '../data/materials'
+import { materialById, materials, trainer, type L, type Material, type MCQ, type SumWork } from '../data/materials'
 import { topicById } from '../data/topics'
 import type { Lang } from '../i18n'
 import { texValue, typedValue } from '../lib/numanswer'
@@ -56,7 +56,6 @@ function TrainerTable({ lang, topic }: { lang: Lang; topic?: string }) {
   return (
     <section className="card mat-trainer">
       <h2>{t('mat.trainer')}</h2>
-      <p className="muted small">{trainerBook[lang]}. {t('mat.trainerNote')}</p>
       <div className="table-wrap">
         <table className="journal">
           <tbody>
