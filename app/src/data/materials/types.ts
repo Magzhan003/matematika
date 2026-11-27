@@ -40,4 +40,7 @@ export type Material = {
   works?: SumWork[]
   book?: L                    // textbook the work is based on
   scale?: [number, number, number] // minimum correct answers for «5», «4», «3»
+  source?: L                  // where the task types come from
+  gen?: (seed: number) => MCQ[] // a new variant of the test for every seed
+  gens?: number               // how many task types the generator has
 }

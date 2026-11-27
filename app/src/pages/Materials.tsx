@@ -43,6 +43,7 @@ function MaterialCard({ m, lang }: { m: Material; lang: Lang }) {
       <span className="muted small">
         {t(`mat.count.${m.kind}`, { n: count(m) })}{m.minutes ? ` · ${t('mat.min', { n: m.minutes })}` : ''}{m.author ? ` · ${m.author}` : ''}
       </span>
+      {m.gen && <span className="mat-inf">∞ {t('mat.manyVariants')}</span>}
       {best !== undefined && m.mcq && <span className="mat-best">✓ {t('mat.best')}: {best} / {m.mcq.length}</span>}
     </Link>
   )
@@ -134,7 +135,7 @@ function Fields() {
   return <div className="sheet-fields">{t('teach.name')} ______________________ {t('teach.class')} ______ {t('teach.date')} ________</div>
 }
 
-function TestPrint({ m, lang }: { m: Material; lang: Lang }) {
+function TestPrint({ m, lang, variant }: { m: Material; lang: Lang; variant?: number }) {
   const { t } = useTranslation()
   const qs = m.mcq!
   const [parts, setParts] = useState({ sheet: true, key: true, sol: true })
@@ -150,7 +151,7 @@ function TestPrint({ m, lang }: { m: Material; lang: Lang }) {
       </div>
       <div className="print-area">
         <section className="sheet mat-sheet">
-          <div className="sheet-head"><b>{m.title[lang]}</b><span className="small">{m.grade === 'ent' ? t('mat.ent') : t('grade.n', { n: m.grade })}{m.minutes ? ` · ${t('mat.min', { n: m.minutes })}` : ''}</span></div>
+          <div className="sheet-head"><b>{m.title[lang]}</b><span className="small">{m.grade === 'ent' ? t('mat.ent') : t('grade.n', { n: m.grade })}{m.minutes ? ` · ${t('mat.min', { n: m.minutes })}` : ''}{variant ? ` · ${t('mat.variant', { n: variant })}` : ''}</span></div>
           <Fields />
           {m.intro && <p className="small" style={{ margin: '0 0 8px' }}>{m.intro[lang]}</p>}
           <ol className="mat-print-qs">
@@ -423,8 +424,12 @@ function Summative({ m, lang }: { m: Material; lang: Lang }) {
 
 /* ---------- one material ---------- */
 type Tab = 'theory' | 'test' | 'print'
-function MaterialView({ m, lang }: { m: Material; lang: Lang }) {
+function MaterialView({ m: base, lang }: { m: Material; lang: Lang }) {
   const { t } = useTranslation()
+  const [params, setParams] = useSearchParams()
+  const seed = Math.max(1, Number(params.get('v')) || 1)
+  const m = useMemo(() => (base.gen ? { ...base, mcq: base.gen(seed) } : base), [base, seed])
+  const newVariant = () => { const p = new URLSearchParams(params); p.set('v', String(Math.floor(Math.random() * 9000) + 2)); setParams(p, { replace: true }) }
   const tabs: Tab[] = m.kind === 'summative' ? [] : [...(m.theory ? ['theory' as const] : []), 'test', 'print']
   const [tab, setTab] = useState<Tab>(m.theory ? 'theory' : 'test')
   return (
@@ -437,6 +442,13 @@ function MaterialView({ m, lang }: { m: Material; lang: Lang }) {
           {m.minutes ? ` · ${t('mat.min', { n: m.minutes })}` : ''}{m.author ? ` · ${t('mat.author')}: ${m.author}` : ''}
         </p>
         {m.intro && <p style={{ maxWidth: 820 }}>{m.intro[lang]}</p>}
+        {m.source && <p className="muted small" style={{ maxWidth: 820 }}>📘 {m.source[lang]}</p>}
+        {m.gen && (
+          <div className="mat-variant">
+            <span>{t('mat.variant', { n: seed })}</span>
+            <button className="btn btn-sm" onClick={newVariant}>🎲 {t('mat.newVariant')}</button>
+          </div>
+        )}
         {tabs.length > 0 && (
           <div className="calc-tabs" role="tablist">
             {tabs.map((x) => <button key={x} role="tab" aria-selected={tab === x} className={`calc-tab ${tab === x ? 'on' : ''}`} onClick={() => setTab(x)}>{t(`mat.tab_${x}${x === 'test' && m.kind === 'worksheet' ? 'Ws' : ''}`)}</button>)}
@@ -445,8 +457,8 @@ function MaterialView({ m, lang }: { m: Material; lang: Lang }) {
       </div>
       {m.kind === 'summative' && <Summative m={m} lang={lang} />}
       {m.kind !== 'summative' && tab === 'theory' && <Theory m={m} lang={lang} />}
-      {m.kind === 'test' && tab === 'test' && <OnlineTest key={m.id} m={m} lang={lang} />}
-      {m.kind === 'test' && tab === 'print' && <TestPrint m={m} lang={lang} />}
+      {m.kind === 'test' && tab === 'test' && <OnlineTest key={`${m.id}-${seed}`} m={m} lang={lang} />}
+      {m.kind === 'test' && tab === 'print' && <TestPrint m={m} lang={lang} variant={m.gen ? seed : undefined} />}
       {m.kind === 'worksheet' && tab === 'test' && <Worksheet key={m.id} m={m} lang={lang} />}
       {m.kind === 'worksheet' && tab === 'print' && <WorksheetPrint m={m} lang={lang} />}
     </div>

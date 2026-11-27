@@ -38,6 +38,7 @@ jobs:
           npx tsx scripts/audit.ts
           npx tsx scripts/check-db.ts
           npx tsx scripts/check-materials.ts
+          npx tsx scripts/check-trainer.ts 120
       - name: Build
         run: npm run build
         env:

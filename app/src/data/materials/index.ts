@@ -5,6 +5,7 @@ import { q4 } from './alg10-q4'
 import { jointWork } from './joint-work'
 import { rational } from './rational'
 import { scaleTest } from './scale'
+import { trainerSets } from './trainer-sets'
 import { triangleLines } from './triangle-lines'
 import { l, type L, type Material } from './types'
 import { vieta } from './vieta'
@@ -23,7 +24,7 @@ export const alg10Summative: Material = {
   works: [...q1, ...q2, ...q3, ...q4],
 }
 
-export const materials: Material[] = [rational, triangleLines, vieta, scaleTest, jointWork, alg10Summative]
+export const materials: Material[] = [rational, triangleLines, vieta, scaleTest, jointWork, alg10Summative, ...trainerSets]
 export const materialById = (id: string) => materials.find((m) => m.id === id)
 export const materialsForTopic = (topic: string) => materials.filter((m) => m.topics.includes(topic))
 
