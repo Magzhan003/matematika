@@ -3,6 +3,7 @@ import { ClassTools } from './pages/ClassTools'
 import { Solids } from './pages/Solids'
 import { Olympiad } from './pages/Olympiad'
 import { Worksheets } from './pages/Worksheets'
+import { Materials } from './pages/Materials'
 import { Summative } from './pages/Summative'
 import { Scenario } from './pages/Scenario'
 import { EntPlan } from './pages/EntPlan'
@@ -68,6 +69,7 @@ export default function App() {
             <Route path="solids" element={<Solids />} />
             <Route path="olympiad" element={<Olympiad />} />
             <Route path="worksheets" element={<Worksheets />} />
+            <Route path="materials" element={<Materials />} />
             <Route path="summative" element={<Summative />} />
             <Route path="scenario" element={<Scenario />} />
             <Route path="work" element={<Work />} />

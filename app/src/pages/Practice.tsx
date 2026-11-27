@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
 import { LevelBadge } from '../components/FormulaCard'
 import { ProblemCard } from '../components/ProblemCard'
+import { TopicMaterials } from './Materials'
 import { formulas, type Level } from '../data/formulas'
 import { topicById } from '../data/topics'
 import type { Lang } from '../i18n'
@@ -76,6 +77,7 @@ function PracticeView({ id }: { id: string }) {
         </div>
       ))}
       <div><button className="btn" onClick={() => setRound(round + 1)}>🎲 {t('ls.morePractice')}</button></div>
+      <TopicMaterials topic={id} />
       {lessons.length > 0 && (
         <div>
           <h3 style={{ margin: '0 0 8px' }}>{t('pr.lessons')}</h3>

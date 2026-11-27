@@ -37,6 +37,7 @@ jobs:
         run: |
           npx tsx scripts/audit.ts
           npx tsx scripts/check-db.ts
+          npx tsx scripts/check-materials.ts
       - name: Build
         run: npm run build
         env:

@@ -1,0 +1,104 @@
+/* ===== «Дайын материалдар»: ready tests, worksheets, summative works ===== */
+.mat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 14px; margin-bottom: 22px; }
+.mat-card { display: grid; gap: 8px; align-content: start; color: inherit; text-decoration: none; transition: border-color .15s, box-shadow .15s, transform .15s; }
+.mat-card:hover { border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); box-shadow: var(--shadow-2); transform: translateY(-1px); }
+.mat-tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.mat-kind { font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--gold-2); }
+.mat-kind.k-summative { background: color-mix(in srgb, #6d5bd0 16%, transparent); color: #6d5bd0; }
+.mat-kind.k-worksheet { background: color-mix(in srgb, #1f9d6b 16%, transparent); color: #1f9d6b; }
+.mat-title { font-size: 17px; line-height: 1.3; }
+.mat-best { font-size: 13px; color: var(--good, #16a34a); font-weight: 600; }
+.mat-link { display: block; padding: 10px 14px; border-radius: 12px; border: 1px dashed var(--line); color: inherit; text-decoration: none; font-weight: 600; }
+.mat-link:hover, .mat-link.hot { border-color: var(--gold); background: var(--accent-soft); }
+.mat-trainer h2 { margin-top: 0; }
+.mat-trainer td { text-align: left; vertical-align: top; }
+.mat-topic { display: grid; gap: 8px; }
+.nowrap { white-space: nowrap; }
+
+/* test */
+.mat-test { display: grid; gap: 14px; margin-top: 14px; }
+.mat-qs { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; counter-reset: q; }
+.mat-q { counter-increment: q; display: grid; gap: 10px; }
+.mat-q.ok { border-color: color-mix(in srgb, #22c55e 60%, var(--line)); }
+.mat-q.bad { border-color: color-mix(in srgb, #ef4444 60%, var(--line)); }
+.mat-qtext { font-size: 16.5px; line-height: 1.55; }
+.mat-qtext::before { content: counter(q) ". "; font-weight: 800; color: var(--gold-2); }
+.mat-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 8px; }
+.mat-opt { display: flex; gap: 10px; align-items: center; text-align: left; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; cursor: pointer; transition: border-color .12s, background .12s; }
+.mat-opt:hover:not(:disabled) { border-color: var(--gold); }
+.mat-opt.on { border-color: var(--gold); background: var(--accent-soft); }
+.mat-opt.right { border-color: #22c55e; background: color-mix(in srgb, #22c55e 14%, transparent); }
+.mat-opt.wrong { border-color: #ef4444; background: color-mix(in srgb, #ef4444 12%, transparent); }
+.mat-opt:disabled { cursor: default; }
+.mat-letter { flex: none; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-weight: 800; font-size: 13px; background: var(--card-2); }
+.mat-opt.on .mat-letter, .mat-opt.right .mat-letter { background: var(--gold); color: #1c1947; }
+.mat-sol { display: grid; gap: 4px; font-size: 15px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.mat-bar { position: sticky; bottom: 12px; display: flex; gap: 12px; align-items: center; justify-content: flex-end; flex-wrap: wrap; padding: 10px 14px; border-radius: 16px; background: color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter: blur(8px); border: 1px solid var(--line); box-shadow: var(--shadow-2); }
+.mat-result { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; font-size: 17px; border-left: 4px solid #f59e0b; }
+.mat-result.good { border-left-color: #22c55e; }
+
+/* theory */
+.mat-theory { display: grid; gap: 14px; margin-top: 14px; }
+.mat-theory h2 { margin-top: 0; }
+.mat-ttable th { text-align: left; width: 34%; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--ink); background: var(--card-2); }
+.mat-ttable td, .mat-ttable th { vertical-align: top; }
+
+/* worksheet */
+.mat-free { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 8px; }
+.mat-free-item { display: grid; grid-template-columns: auto 1fr 110px; gap: 8px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.mat-free-item .input { padding: 6px 8px; }
+.mat-free-item .katex { font-size: 1.22em; }
+.mat-ws-cols .katex, .mat-keygrid .katex { font-size: 1.12em; }
+.mat-free-item.ok { border-color: #22c55e; }
+.mat-free-item.bad { border-color: #ef4444; }
+.mat-free-ans { grid-column: 2 / -1; font-size: 14px; color: var(--muted); }
+.mat-n { font-weight: 700; color: var(--gold-2); }
+
+/* summative works */
+.mat-quarters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; margin: 8px 0 12px; }
+.mat-quarter { display: grid; gap: 6px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+.mat-print-opts { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 12px 0; }
+.chip-check { display: inline-flex; gap: 6px; align-items: center; font-size: 14px; cursor: pointer; }
+.mat-wtable, .mat-dtable { width: 100%; border-collapse: collapse; font-size: 14px; margin: 6px 0 10px; }
+.mat-wtable th, .mat-wtable td, .mat-dtable th, .mat-dtable td { border: 1px solid #bbb; padding: 5px 8px; vertical-align: top; text-align: left; }
+.mat-wtable th { width: 26%; background: #f4f2ea; font-weight: 600; }
+.mat-dtable thead th { background: #f4f2ea; }
+.mat-dtable td.c { text-align: center; }
+.mat-h3 { margin: 10px 0 6px; font-size: 16px; }
+.mat-wtasks { padding-left: 22px; margin: 0; display: grid; gap: 12px; font-size: 15.5px; line-height: 1.55; }
+.mat-wtask-head { display: flex; gap: 8px; align-items: center; margin-bottom: 2px; }
+.mat-pts { margin-left: auto; font-weight: 700; }
+.mat-part { margin: 3px 0 0 6px; }
+.mat-fig { display: block; max-width: min(100%, 520px); height: auto; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; background: #fff; }
+.mat-key p { margin: 0 0 8px; line-height: 1.6; }
+.mat-key .mat-fig { display: inline-block; max-width: min(100%, 360px); margin-right: 10px; }
+
+/* printed test */
+.mat-print-qs { padding-left: 24px; margin: 0; display: grid; gap: 9px; font-size: 15px; }
+.mat-print-qs li { break-inside: avoid; }
+.mat-print-opts-row { display: grid; gap: 2px 14px; margin-top: 3px; }
+.mat-print-opts-row.four { grid-template-columns: repeat(4, 1fr); }
+.mat-print-opts-row.two { grid-template-columns: repeat(2, 1fr); }
+.mat-bubbles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 18px; margin: 10px 0; font-size: 14px; }
+.mat-bubbles > div { display: flex; gap: 8px; align-items: center; }
+.mat-bubbles b { width: 22px; text-align: right; }
+.mat-bubbles span { width: 22px; height: 22px; border: 1.5px solid #333; border-radius: 50%; display: grid; place-items: center; font-size: 11px; }
+.mat-keygrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 4px 10px; margin: 8px 0; font-size: 15px; }
+.mat-keygrid.wide { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+.mat-print-sols { padding-left: 26px; margin: 8px 0 0; display: grid; gap: 4px; font-size: 13.5px; }
+.mat-ws-group { margin: 6px 0 4px; }
+.mat-ws-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 14px; margin-top: 4px; font-size: 15px; }
+
+@media (max-width: 640px) {
+  .mat-free-item { grid-template-columns: auto 1fr; }
+  .mat-free-item .input { grid-column: 1 / -1; }
+  .mat-print-opts-row.four { grid-template-columns: repeat(2, 1fr); }
+  .mat-ws-cols, .mat-bubbles { grid-template-columns: repeat(2, 1fr); }
+}
+:root[data-theme='cosmos'] .mat-wtable th, :root[data-theme='cosmos'] .mat-dtable thead th { background: #eeeae0; color: #111; }
+@media print {
+  .mat-page .print-area { margin: 0; }
+  .mat-wtable th, .mat-dtable thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .mat-fig { max-width: 420px; }
+  .mat-key .mat-fig { max-width: 300px; }
+}

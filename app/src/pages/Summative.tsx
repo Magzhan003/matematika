@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { useClassList } from '../components/class/tools'
 import { ProblemVisual } from '../components/ProblemVisual'
 import { Tex } from '../components/Tex'
@@ -60,6 +61,7 @@ export function Summative() {
             {(['sor', 'soch'] as Kind[]).map((k) => <button key={k} className={`chip ${kind === k ? 'on' : ''}`} onClick={() => setKindAll(k)}>{t(`sum.kinds.${k}`)}</button>)}
           </div>
           <div className="chips">{[5, 6, 7, 8, 9, 10, 11].map((g) => <button key={g} className={`chip ${grade === g ? 'on' : ''}`} onClick={() => { setGrade(g); setPicked([]) }}>{t('grade.n', { n: g })}</button>)}</div>
+          <Link className={`mat-link ${grade === 10 ? 'hot' : ''}`} to="/materials?m=alg10-bzb-tzb">📚 {t('mat.sumLink')}</Link>
           <div className="chips">{[1, 2, 3, 4].map((x) => <button key={x} className={`chip ${q === x ? 'on' : ''}`} onClick={() => { setQ(x); setPicked([]) }}>{t('prog.quarter', { n: x })}</button>)}</div>
           <div>
             <div className="muted small" style={{ marginBottom: 6 }}>{kind === 'sor' ? t('sum.pickSection') : t('sum.quarterTopics')}</div>

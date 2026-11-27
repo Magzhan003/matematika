@@ -89,6 +89,7 @@ export function Ent() {
       <div className="page" style={{ display: 'grid', gap: 16 }}>
         <h1 style={{ margin: 0 }}>{t('ent.title')}</h1>
         <Link className="card ep-link" to="/ent-plan">📅 <b>{t('ep.title')}</b> <span className="muted small">— {t('ep.linkHint')}</span></Link>
+        <Link className="mat-link" to="/materials">📚 {t('mat.entLink')}</Link>
         <p className="muted" style={{ margin: 0 }}>{t('ent.intro')}</p>
         <div className="grid">
           {presets.map((p, i) => (

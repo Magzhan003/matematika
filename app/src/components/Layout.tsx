@@ -27,6 +27,7 @@ const extra = [
   { to: '/classroom', key: 'classroom', emoji: '🧰' },
   { to: '/solids', key: 'solids', emoji: '📦' },
   { to: '/olympiad', key: 'olympiad', emoji: '🏆' },
+  { to: '/materials', key: 'materials', emoji: '📚' },
   { to: '/worksheets', key: 'worksheets', emoji: '📑' },
   { to: '/summative', key: 'summative', emoji: '🎯' },
   { to: '/scenario', key: 'scenario', emoji: '🗓' },
@@ -48,7 +49,7 @@ const extra = [
 
 /** Menu icons from one outline set (emoji look different on every computer). */
 const MENU_ICON: Record<string, string> = {
-  classes: 'users', tasks: 'inbox', classroom: 'tool', solids: 'cube', olympiad: 'trophy', worksheets: 'file', summative: 'clipboard',
+  classes: 'users', tasks: 'inbox', classroom: 'tool', solids: 'cube', olympiad: 'trophy', materials: 'library', worksheets: 'file', summative: 'clipboard',
   scenario: 'calendar', textbook: 'book', program: 'layers', map: 'map', diagnostic: 'compass', review: 'repeat', games: 'puzzle',
   progress: 'chart', geometry: 'ruler', word: 'bulb', work: 'edit', cheat: 'file', teacher: 'printer', journal: 'clipboard', portfolio: 'folder',
 }
